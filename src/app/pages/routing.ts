@@ -19,7 +19,6 @@ const Routing: Routes = [
   //     import('./builder/builder.module').then((m) => m.BuilderModule),
   // },
 
-
   {
     path: 'crafted/pages/profile',
     loadChildren: () =>
