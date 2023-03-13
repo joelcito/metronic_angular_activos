@@ -13,11 +13,12 @@ const Routing: Routes = [
   },
 
   // de aqui comienza lo de joel
-  // {
-  //   path: 'builder',
-  //   loadChildren: () =>
-  //     import('./builder/builder.module').then((m) => m.BuilderModule),
-  // },
+  {
+    path: 'activo',
+    loadChildren: () =>
+      import('./activo/activo.module').then((m) => m.ActivoModule),
+  },
+  // aqui termina de joel
 
   {
     path: 'crafted/pages/profile',
