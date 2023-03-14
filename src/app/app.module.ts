@@ -15,6 +15,8 @@ import { environment } from 'src/environments/environment';
 import { FakeAPIService } from './_fake/fake-api.service';
 // #fake-end#
 
+import { ActivoModule} from 'src/app/pages/activo/activo.module'
+import { ActivoComponent } from './pages/activo/activo.component';
 function appInitializer(authService: AuthService) {
   return () => {
     return new Promise((resolve) => {
@@ -32,6 +34,9 @@ function appInitializer(authService: AuthService) {
     TranslateModule.forRoot(),
     HttpClientModule,
     ClipboardModule,
+    
+    // ActivoModule,
+
     // #fake-start#
     environment.isMockEnabled
       ? HttpClientInMemoryWebApiModule.forRoot(FakeAPIService, {

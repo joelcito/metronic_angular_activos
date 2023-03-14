@@ -11,15 +11,6 @@ const Routing: Routes = [
     loadChildren: () =>
       import('./builder/builder.module').then((m) => m.BuilderModule),
   },
-
-  // de aqui comienza lo de joel
-  {
-    path: 'activo',
-    loadChildren: () =>
-      import('./activo/activo.module').then((m) => m.ActivoModule),
-  },
-  // aqui termina de joel
-
   {
     path: 'crafted/pages/profile',
     loadChildren: () =>
@@ -61,6 +52,19 @@ const Routing: Routes = [
     path: '**',
     redirectTo: 'error/404',
   },
+
+  // {
+  //     path: 'my-page', // <= Page URL
+  //     component: MyPageComponent // <= Page component registration
+  // },
+
+  // de aqui comienza lo de joel
+  {
+    path: 'activo',
+    loadChildren: () =>
+      import('./activo/activo.module').then((m) => m.ActivoModule),
+  },
+  // aqui termina de joel
 ];
 
 export { Routing };
