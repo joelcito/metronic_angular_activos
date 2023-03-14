@@ -40,19 +40,26 @@ export class ActivoComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.model = this.layout.getLayoutConfig(
-      this.layout.getBaseLayoutTypeFromLocalStorage()
-    );
+    // this.model = this.layout.getLayoutConfig(
+    //   this.layout.getBaseLayoutTypeFromLocalStorage()
+    // );
 
     // console.log(this.activos);
-    this.activoService.getActivos().subscribe(
-      (activos) => {
-        console.log("antes de darle")
-        this.activos = activos
-        console.log("este che => ",this.activos, activos[0].descripcion)
-        console.log("ya termino")
-      }
-    );
+    // this.activoService.getActivos().subscribe(
+    //   (activos) => {
+    //     console.log("antes de darle")
+    //     this.activos = activos
+    //     console.log("este che => ",this.activos, activos[0].descripcion)
+    //     console.log("ya termino")
+    //   }
+    // )
+
+    // console.log(this.activoService.getActivos().subscribe(activos => this.activos = activos))
+
+    this.activoService.getActivos().subscribe((activos) => {
+      this.activos = activos
+    })
+    
 
     // console.log("ahora este =Z ",this.activos[0].idactivo)
 

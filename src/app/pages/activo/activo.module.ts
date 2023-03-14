@@ -19,11 +19,12 @@ import { map } from 'rxjs/operators';
   declarations: [ActivoComponent],
   imports: [
     CommonModule,
-    FormsModule,
+    // FormsModule,
     InlineSVGModule,
-    NgbTooltipModule,
+    // NgbTooltipModule,
     RouterModule.forChild([
       {path: 'listado',component: ActivoComponent},
+      // {path: 'listado',component: ActivoComponent},
     ]),
   ],
 })

@@ -1,6 +1,5 @@
-<div class="card mb-10">
+<!-- <div class="card mb-10">
   <div class="card-body d-flex align-items-center py-8">
-    <!-- begin::Icon -->
     <div class="d-flex h-80px w-80px flex-shrink-0 flex-center position-relative">
       <span class="svg-icon svg-icon-primary position-absolute opacity-15"
         [inlineSVG]="'./assets/media/icons/duotune/abstract/abs051.svg'"
@@ -8,9 +7,6 @@
       <span [inlineSVG]="'./assets/media/icons/duotune/coding/cod009.svg'"
         class="svg-icon svg-icon-3x svg-icon-primary position-absolute"></span>
     </div>
-    <!-- end::Icon  -->
-
-    <!-- begin::Description  -->
     <div class="ms-6">
       <p class="list-unstyled text-gray-600 fw-bold fs-6 p-0 m-0">
         The layout builder is to assist your set and configure your preferred
@@ -20,12 +16,10 @@
         main purpose is to help to generate the final HTML code without hassle.
         Layout builder changes don't affect pages with layout wrappers.
       </p>
-      <!-- <h1>ESTE ES DE ACTIVOS YA</h1> -->
     </div>
-    <!-- end::Description  -->
   </div>
-</div>
-<div class="card card-custom">
+</div> -->
+<div class="card card-custom d-flex">
   <!-- <div class="card-header card-header-stretch overflow-auto">
     <h1 class="mt-4">LISTADO DE ACTIVOS</h1>
   </div> -->
@@ -101,6 +95,8 @@
                 </div> -->
               </td>
               <td>
+                {{activo.descripcion}}
+
                 <!-- <div class="d-flex align-items-center">
                   <div class="symbol symbol-45px me-5">
                     <img src="./assets/media/avatars/300-14.jpg" alt="" />
@@ -586,8 +582,8 @@
     <!-- begin::Body -->
   </div>
 <hr>
-<div class="card card-custom">
-  <!-- begin::Header -->
+
+<!-- <div class="card card-custom">
   <div class="card-header card-header-stretch overflow-auto">
     <ul class="
         nav nav-stretch nav-line-tabs
@@ -616,14 +612,9 @@
       </li>
     </ul>
   </div>
-  <!-- end::Header -->
-  <!-- begin::Form -->
   <form class="form" novalidate #form="ngForm" (ngSubmit)="submitPreview()">
-    <!-- begin::Body -->
     <div class="card-body">
       <div class="tab-content pt-3">
-
-        <!-- begin::Sidebar -->
         <div class="tab-pane" [ngClass]="{ active: activeTab === 'Sidebar' }">
           <div class="form-group d-flex flex-stack">
             <div class="d-flex flex-column">
@@ -689,9 +680,6 @@
             </div>
           </div>
         </div>
-        <!-- end::Sidebar -->
-
-        <!-- begin::Header -->
         <div class="tab-pane" [ngClass]="{ active: activeTab === 'Header' }">
           <div class="form-group d-flex flex-stack">
             <div class="d-flex flex-column">
@@ -719,35 +707,24 @@
               <div class="fs-7 fw-semibold text-muted">Header content type</div>
             </div>
             <div class="d-flex justify-content-end">
-              <!--begin::Check-->
               <div class="form-check form-check-custom form-check-success form-check-solid form-check-sm ms-10">
                 <input class="form-check-input" type="radio" checked="checked" value="menu"
                   id="kt_builder_header_content_menu" name="model.app.header.default.content"
                   [(ngModel)]="model.app.header.default.content" value="menu">
-                <!--begin::Label-->
                 <label class="form-check-label text-gray-700 fw-bold text-nowrap"
                   for="kt_builder_header_content_menu">Menu</label>
-                <!--end::Label-->
               </div>
-              <!--end::Check-->
-              <!--begin::Check-->
               <div class="form-check form-check-custom form-check-success form-check-solid form-check-sm ms-10">
                 <input class="form-check-input" type="radio" value="page-title"
                   id="kt_builder_header_content_page-title" name="layout-builder[layout][app][header][default][content]"
                   name="model.app.header.default.content" value="page-title"
                   [(ngModel)]="model.app.header.default.content">
-                <!--begin::Label-->
                 <label class="form-check-label text-gray-700 fw-bold text-nowrap"
                   for="kt_builder_header_content_page-title">Page Title</label>
-                <!--end::Label-->
               </div>
-              <!--end::Check-->
             </div>
           </div>
         </div>
-        <!-- end::Header -->
-
-        <!-- begin::Toolbar -->
         <div class="tab-pane" [ngClass]="{ active: activeTab === 'Toolbar' }">
           <div class="form-group d-flex flex-stack">
             <div class="d-flex flex-column">
@@ -756,27 +733,19 @@
             </div>
             <div class="d-flex justify-content-end">
               <div class="d-flex justify-content-end">
-                <!--begin::Check-->
                 <div class="form-check form-check-custom form-check-solid form-check-success form-switch me-10">
                   <input class="form-check-input w-45px h-30px" type="checkbox"
                     name="layout-builder[layout][app][toolbar][fixed][desktop]" id="kt_builder_toolbar_fixed_desktop"
                     name="model.app.toolbar.fixed.desktop" [(ngModel)]="model.app.toolbar.fixed.desktop">
-                  <!--begin::Label-->
                   <label class="form-check-label text-gray-700 fw-bold" for="kt_builder_toolbar_fixed_desktop">Desktop
                     Mode</label>
-                  <!--end::Label-->
                 </div>
-                <!--end::Check-->
-                <!--begin::Check-->
                 <div class="form-check form-check-custom form-check-solid form-check-success form-switch">
                   <input class="form-check-input w-45px h-30px" type="checkbox" name="model.app.toolbar.fixed.mobile"
                     [(ngModel)]="model.app.toolbar.fixed.mobile" id="kt_builder_toolbar_fixed_mobile">
-                  <!--begin::Label-->
                   <label class="form-check-label text-gray-700 fw-bold" for="kt_builder_toolbar_fixed_mobile">Mobile
                     Mode</label>
-                  <!--end::Label-->
                 </div>
-                <!--end::Check-->
               </div>
             </div>
           </div>
@@ -788,109 +757,65 @@
           <div data-kt-buttons="true"
             data-kt-buttons-target=".form-check-image:not(.disabled),.form-check-input:not([disabled])"
             data-kt-initialized="1">
-            <!--begin::Option-->
             <label class="form-check-image form-check-success mb-10"
               [ngClass]="{'active': model.app.toolbar.layout === 'classic'}">
-              <!--begin::Image-->
               <div class="form-check-wrapper">
                 <img src="./assets/media/misc/layout/toolbar-classic.png" class="mw-100" alt="">
               </div>
-              <!--end::Image-->
-              <!--begin::Check-->
               <div class="form-check form-check-custom form-check-success form-check-sm form-check-solid">
                 <input class="form-check-input" type="radio" checked="checked" value="classic"
                   name="model.app.toolbar.layout" [(ngModel)]="model.app.toolbar.layout">
-                <!--begin::Label-->
                 <div class="form-check-label text-gray-800">Classic</div>
-                <!--end::Label-->
               </div>
-              <!--end::Check-->
             </label>
-            <!--end::Option-->
-            <!--begin::Option-->
             <label class="form-check-image form-check-success mb-10"
               [ngClass]="{'active': model.app.toolbar.layout === 'saas'}">
-              <!--begin::Image-->
               <div class="form-check-wrapper">
                 <img src="./assets/media/misc/layout/toolbar-saas.png" class="mw-100" alt="">
               </div>
-              <!--end::Image-->
-              <!--begin::Check-->
               <div class="form-check form-check-custom form-check-success form-check-sm form-check-solid">
                 <input class="form-check-input" type="radio" value="saas" name="model.app.toolbar.layout"
                   [(ngModel)]="model.app.toolbar.layout">
-                <!--begin::Label-->
                 <div class="form-check-label text-gray-800">SaaS</div>
-                <!--end::Label-->
               </div>
-              <!--end::Check-->
             </label>
-            <!--end::Option-->
-            <!--begin::Option-->
             <label class="form-check-image form-check-success mb-10"
               [ngClass]="{'active': model.app.toolbar.layout === 'accounting'}">
-              <!--begin::Image-->
               <div class="form-check-wrapper">
                 <img src="./assets/media/misc/layout/toolbar-accounting.png" class="mw-100" alt="">
               </div>
-              <!--end::Image-->
-              <!--begin::Check-->
               <div class="form-check form-check-custom form-check-success form-check-sm form-check-solid">
                 <input class="form-check-input" type="radio" value="accounting" name="model.app.toolbar.layout"
                   [(ngModel)]="model.app.toolbar.layout">
-                <!--begin::Label-->
                 <div class="form-check-label text-gray-800">Accounting</div>
-                <!--end::Label-->
               </div>
-              <!--end::Check-->
             </label>
-            <!--end::Option-->
-            <!--begin::Option-->
             <label class="form-check-image form-check-success mb-10"
               [ngClass]="{'active': model.app.toolbar.layout === 'extended'}">
-              <!--begin::Image-->
               <div class="form-check-wrapper">
                 <img src="./assets/media/misc/layout/toolbar-extended.png" class="mw-100" alt="">
               </div>
-              <!--end::Image-->
-              <!--begin::Check-->
               <div class="form-check form-check-custom form-check-success form-check-sm form-check-solid">
                 <input class="form-check-input" type="radio" value="extended" name="model.app.toolbar.layout"
                   [(ngModel)]="model.app.toolbar.layout">
-                <!--begin::Label-->
                 <div class="form-check-label text-gray-800">Extended</div>
-                <!--end::Label-->
               </div>
-              <!--end::Check-->
             </label>
-            <!--end::Option-->
-            <!--begin::Option-->
             <label class="form-check-image form-check-success mb-10"
               [ngClass]="{'active': model.app.toolbar.layout === 'reports'}">
-              <!--begin::Image-->
               <div class="form-check-wrapper">
                 <img src="./assets/media/misc/layout/toolbar-reports.png" class="mw-100" alt="">
               </div>
-              <!--end::Image-->
-              <!--begin::Check-->
               <div class="form-check form-check-custom form-check-success form-check-sm form-check-solid">
                 <input class="form-check-input" type="radio" value="reports" name="model.app.toolbar.layout"
                   [(ngModel)]="model.app.toolbar.layout">
-                <!--begin::Label-->
                 <div class="form-check-label text-gray-800">Reports</div>
-                <!--end::Label-->
               </div>
-              <!--end::Check-->
             </label>
-            <!--end::Option-->
           </div>
         </div>
-        <!-- end::Toolbar -->
       </div>
     </div>
-    <!-- end::Body -->
-
-    <!-- begin::Footer -->
     <div class="card-footer py-6">
       <div class="row">
         <div class="col-lg-3"></div>
@@ -925,8 +850,5 @@
         </div>
       </div>
     </div>
-
-    <!-- end::Footer -->
   </form>
-  <!-- end::Form -->
-</div>
+</div> -->
