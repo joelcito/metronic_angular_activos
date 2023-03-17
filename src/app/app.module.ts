@@ -13,10 +13,11 @@ import { AuthService } from './modules/auth/services/auth.service';
 import { environment } from 'src/environments/environment';
 // #fake-start#
 import { FakeAPIService } from './_fake/fake-api.service';
-import { ActivoModule } from './pages/activo/activo.module';
 // #fake-end#
 
-import { ActivoComponent } from './pages/activo/activo.component';
+// import { ActivoModule } from './pages/activo/activo.module';
+// import { ActivoComponent } from './pages/activo/activo.component';
+// import { GrupoComponent } from './pages/grupos/grupos.component';
 function appInitializer(authService: AuthService) {
   return () => {
     return new Promise((resolve) => {
@@ -28,6 +29,7 @@ function appInitializer(authService: AuthService) {
 
 @NgModule({
   declarations: [AppComponent],
+  // declarations: [AppComponent, GrupoComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,

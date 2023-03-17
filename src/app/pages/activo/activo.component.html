@@ -1,3 +1,30 @@
+<!-- aqui el modal -->
+<ng-template #content let-modal>
+	<div class="modal-header">
+		<h4 class="modal-title" id="modal-basic-title">Profile update</h4>
+		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+	</div>
+	<div class="modal-body">
+		<form>
+			<div class="mb-3">
+				<label for="dateOfBirth">Date of birth</label>
+				<div class="input-group">
+					<input id="dateOfBirth" class="form-control" placeholder="yyyy-mm-dd" name="dp" ngbDatepicker dp="ngbDatepicker"/>
+					<!-- <button class="btn btn-outline-secondary bi bi-calendar3" (click)="dp.toggle()" type="button"></button> -->
+				</div>
+			</div>
+		</form>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
+	</div>
+</ng-template>
+
+<button class="btn btn-lg btn-outline-primary" (click)="open(content)">Launch demo modal</button>
+
+<hr />
+<pre>{{ closeResult }}</pre>
+<!-- end del modal -->
 
 <div class="card card-custom d-flex fs-6 p-0 m-0 text-gray-600">
   <div class="card-body">
@@ -44,15 +71,15 @@
           </thead>
           <tbody>
             <tr *ngFor="let activo of activos1 | async">
-              <td>{{activo.idactivo}}</td>
-              <td>{{activo.codigo}}</td>
-              <td>{{activo.descripcion}}</td>
-              <td>{{activo.eficiencia}}</td>
-              <td>{{activo.fecha}}</td>
-              <td>{{activo.grupo.descripcion}}</td>
-              <td>{{activo.subgrupo.descripcion}}</td>
-              <td>{{activo.regimen.descripcion}}</td>
-              <td>{{activo.regional.descripcion}}</td>
+              <td>{{ activo.idactivo }}</td>
+              <td>{{ activo.codigo }}</td>
+              <td>{{ activo.descripcion }}</td>
+              <td>{{ activo.eficiencia }}</td>
+              <td>{{ activo.fecha }}</td>
+              <td>{{ (activo.grupo === null)? '' : activo.grupo.descripcion  }}</td>
+              <td>{{ (activo.subgrupo === null)? '' : activo.subgrupo.descripcion }}</td>
+              <td>{{ (activo.regimen === null)? '' : activo.regimen.descripcion }}</td>
+              <td>{{ (activo.regional === null)? '' : activo.regional.descripcion }}</td>
               <td class="text-end">
                 <button class="btn btn-info btn-icon btn-sm me-1"><i class="fas fa-eye"></i></button>
                 <!-- <button class="btn btn-warning btn-icon btn-sm"><i class="fas fa-edit"></i></button> -->

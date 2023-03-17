@@ -18,6 +18,11 @@ const Routing: Routes = [
     loadChildren: () =>
       import('./activo/activo.module').then((m) => m.ActivoModule),
   },
+  {
+    path: 'grupo',
+    loadChildren: () =>
+      import('./grupos/grupo.module').then((m) => m.GrupoModule),
+  },
   // aqui termina de joel
 
   {

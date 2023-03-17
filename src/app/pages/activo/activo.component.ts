@@ -12,9 +12,15 @@ import { Activo } from './activo';
 // import { async } from '@angular/core/testing';
 // import { Observable } from 'rxjs';
 
+// import { MdbModalRef } from 'mdb-angular-ui-kit/modal'
+
+import { ModalDismissReasons, NgbDatepickerModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+
 
 @Component({
   selector: 'app-activo',
+  // standalone: true,
+  // imports: [NgbDatepickerModule],
   templateUrl: './activo.component.html',
 })
 
@@ -28,8 +34,11 @@ export class ActivoComponent implements OnInit {
 
   activos1: any = [];
 
+  closeResult = '';
+
   constructor(
     private activoService: ActivoService,
+    private modalService: NgbModal
   ){
   }
 
@@ -41,28 +50,24 @@ export class ActivoComponent implements OnInit {
     console.log("haber este")
   }
 
-  // cargar(){
-  //   console.log("antes de cargar")
-  //   this.activoService.getActivos().subscribe(
-  //     (activos) => {
-  //       this.activos = activos
-  //       console.log(this.activos)
-  //     }
-  //   )
-  //   console.log("terminando de cargar")
-  // }
+  open(content:any) {
+		this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then(
+			(result) => {
+				this.closeResult = `Closed with: ${result}`;
+			},
+			(reason) => {
+				this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+			},
+		);
+	}
 
-  // setActiveTab(tab: Tabs) {
-  //   // this.activeTab = tab;
-  // }
-
-  // resetPreview(): void {
-  //   // this.resetLoading = true;
-  //   // this.layout.resetBaseConfig();
-  // }
-
-  // submitPreview(): void {
-  //   // this.configLoading = true;
-  //   // this.layout.saveBaseConfig(this.model); // it will refresh the page
-  // }
+	private getDismissReason(reason: any): string {
+		if (reason === ModalDismissReasons.ESC) {
+			return 'by pressing ESC';
+		} else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+			return 'by clicking on a backdrop';
+		} else {
+			return `with: ${reason}`;
+		}
+	}
 }

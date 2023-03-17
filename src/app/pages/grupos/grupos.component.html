@@ -1,0 +1,101 @@
+<!-- aqui el modal -->
+<ng-template #content let-modal>
+	<div class="modal-header modal-lg">
+		<h4 class="modal-title" id="modal-basic-title">Formulario de Grupo</h4>
+		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+	</div>
+	<div class="modal-body">
+    <!-- <form (ngSubmit)="create()"> -->
+    <form [formGroup]="grupoForm" (ngSubmit)="create()">
+      <div class="row">
+        <div class="col-md-8">
+          <label for="dateOfBirth">Descripcion</label>
+          <input type="text" class="form-control" name="descripcion" formControlName="descripcion">
+        </div>
+        <div class="col-md-4">
+          <label for="dateOfBirth">Nro de Items</label>
+          <input type="text" class="form-control" name="nro_items" formControlName="nro_items">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <label for="dateOfBirth">Vida Util</label>
+          <input type="text" class="form-control" name="vida_util" formControlName="vida_util">
+        </div>
+        <div class="col-md-6">
+          <label for="dateOfBirth">Cuenta</label>
+          <!-- <input type="text" class="form-control" name="nro_items"> -->
+        </div>
+      </div>
+      <!-- <div class="row">
+        <div class="col-md-12">
+          <button role="button">Gurdar</button>
+        </div>
+      </div> -->
+      <button type="submit">Submit</button>   
+    </form>
+		<!-- <form>
+			<div class="mb-3">
+				<label for="dateOfBirth">Date of birth</label>
+				<div class="input-group">
+					<input id="dateOfBirth" class="form-control" placeholder="yyyy-mm-dd" name="dp" ngbDatepicker dp="ngbDatepicker"/>
+					<button class="btn btn-outline-secondary bi bi-calendar3" (click)="dp.toggle()" type="button"></button>
+				</div>
+			</div>
+		</form> -->
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-success w-100" (click)="modal.close('guardar')">Guardar</button>
+	</div>
+</ng-template>
+<!-- end del modal -->
+
+<div class="card card-custom d-flex fs-6 p-0 m-0 text-gray-600">
+  <div class="card-body">
+    <div class="card-header border-0 pt-5">
+      <h3 class="card-title align-items-start flex-column">
+        <span class="card-label fw-bolder fs-3 mb-1">Listado de Activos</span>
+        <span class="text-muted mt-1 fw-bold fs-7">Registros</span>
+      </h3>
+      <div
+        class="card-toolbar" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover" title="Click to add a user" >
+        <a class="btn btn-sm btn-light-primary" (click)="openLg(content)">
+          <span [inlineSVG]="'./assets/media/icons/duotune/arrows/arr075.svg'" class="svg-icon svg-icon-3" ></span>
+          Nuevo Grupo
+        </a>
+      </div>
+    </div>
+    <div class="card-body py-3">
+      <div class="table-responsive">
+        <div *ngIf="grupos.length > 0">
+          <div class="alert alert-danger">Sin datos de registro</div>
+        </div>
+        <table class="table table-row-dashed table-row-gray-300 align-middle gs-0 gy-4 w-100">
+          <thead>
+            <tr class="fw-bolder text-muted">
+              <th class="min-w-40px">ID</th>
+              <th class="min-w-120px">DESCRIPCION</th>
+              <th class="min-w-120px">NRO ITEMS</th>
+              <th class="min-w-120px">VIDA UTIL</th>
+              <th class="min-w-120px">CUENTA</th>
+              <th class="min-w-100px text-end">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let grupo of grupos | async">
+              <td>{{ grupo.idgrupo }}</td>
+              <td>{{ grupo.descripcion }}</td>
+              <td>{{ grupo.nro_items }}</td>
+              <td>{{ grupo.vida_util }}</td>
+              <td>{{ (grupo.cuenta === null)? '' : grupo.cuenta.descripcion  }}</td>
+              <td class="text-end">
+                <button class="btn btn-info btn-icon btn-sm me-1"><i class="fas fa-eye"></i></button>
+                <!-- <button class="btn btn-warning btn-icon btn-sm"><i class="fas fa-edit"></i></button> -->
+                <button class="btn btn-danger btn-icon btn-sm me-1"><i class="fas fa-trash"></i></button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
