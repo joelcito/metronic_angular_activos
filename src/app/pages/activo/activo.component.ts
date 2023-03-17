@@ -18,6 +18,7 @@ import { Activo } from './activo';
   templateUrl: './activo.component.html',
 })
 
+// export class ActivoComponent{
 export class ActivoComponent implements OnInit {
   model: any;
   @ViewChild('form', { static: true }) form: NgForm;
@@ -40,4 +41,28 @@ export class ActivoComponent implements OnInit {
     console.log("haber este")
   }
 
+  // cargar(){
+  //   console.log("antes de cargar")
+  //   this.activoService.getActivos().subscribe(
+  //     (activos) => {
+  //       this.activos = activos
+  //       console.log(this.activos)
+  //     }
+  //   )
+  //   console.log("terminando de cargar")
+  // }
+
+  // setActiveTab(tab: Tabs) {
+  //   // this.activeTab = tab;
+  // }
+
+  // resetPreview(): void {
+  //   // this.resetLoading = true;
+  //   // this.layout.resetBaseConfig();
+  // }
+
+  // submitPreview(): void {
+  //   // this.configLoading = true;
+  //   // this.layout.saveBaseConfig(this.model); // it will refresh the page
+  // }
 }

@@ -36,7 +36,7 @@
           data-link="/crafted/account">Activo</span><span class="menu-arrow"></span></span>
       <div class="menu-sub menu-sub-accordion" routerLinkActive="menu-active-bg">
         <div class="menu-item">
-          <a class="menu-link without-sub" routerLinkActive="active" routerLink="/activo/listado"><span
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="activo/listado"><span
               class="menu-bullet"><span class="bullet bullet-dot"></span></span><span
               class="menu-title">Listado</span></a>
         </div>
@@ -213,6 +213,23 @@
         </div>
       </div>
     </div>
+
+
+    <!-- begin::1 Level -->
+    <div class="menu-item">
+      <a
+        class="menu-link without-sub"
+        routerLink="/my-page"
+        routerLinkActive="active"
+        ><span class="menu-icon">
+          <span
+            [inlineSVG]="'./assets/media/icons/duotune/general/gen019.svg'"
+            class="svg-icon svg-icon-2"
+          ></span> </span
+        ><span class="menu-title">My Page</span></a
+      >
+    </div>
+    <!-- end::1 Level -->
 
 
   </div>

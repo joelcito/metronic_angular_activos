@@ -17,11 +17,6 @@ const Routing: Routes = [
     path: 'activo',
     loadChildren: () =>
       import('./activo/activo.module').then((m) => m.ActivoModule),
-
-
-    // path: 'activo',
-    // loadChildren: () =>
-    //   import('./activo/activo.module').then((m) => m.ActivoModule),
   },
   // aqui termina de joel
 
@@ -66,6 +61,19 @@ const Routing: Routes = [
     path: '**',
     redirectTo: 'error/404',
   },
+
+  // {
+  //     path: 'my-page', // <= Page URL
+  //     component: MyPageComponent // <= Page component registration
+  // },
+
+  // de aqui comienza lo de joel
+  {
+    path: 'activo',
+    loadChildren: () =>
+      import('./activo/activo.module').then((m) => m.ActivoModule),
+  },
+  // aqui termina de joel
 ];
 
 export { Routing };
