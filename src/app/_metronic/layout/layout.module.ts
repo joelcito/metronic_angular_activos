@@ -41,6 +41,11 @@ import { ExtendedComponent } from './components/toolbar/extended/extended.compon
 import { ReportsComponent } from './components/toolbar/reports/reports.component';
 import { SaasComponent } from './components/toolbar/saas/saas.component';
 
+
+
+// import { ActivoComponent } from 'src/app/pages/activo/activo.component';
+// import { ActivoModule } from 'src/app/pages/activo/activo.module';
+
 const routes: Routes = [
   {
     path: '',
@@ -73,6 +78,7 @@ const routes: Routes = [
     ExtendedComponent,
     ReportsComponent,
     SaasComponent,
+
   ],
   imports: [
     CommonModule,
@@ -88,7 +94,7 @@ const routes: Routes = [
     DropdownMenusModule,
     NgbTooltipModule,
     TranslateModule,
-    ThemeModeModule
+    ThemeModeModule,
   ],
   exports: [RouterModule],
 })

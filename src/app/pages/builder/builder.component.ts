@@ -14,7 +14,10 @@ export class BuilderComponent implements OnInit {
   @ViewChild('form', { static: true }) form: NgForm;
   configLoading: boolean = false;
   resetLoading: boolean = false;
-  constructor(private layout: LayoutService) {}
+
+  constructor(
+    private layout: LayoutService,
+    ) {}
 
   ngOnInit(): void {
     this.model = this.layout.getLayoutConfig(

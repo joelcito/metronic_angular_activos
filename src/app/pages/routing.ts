@@ -17,6 +17,11 @@ const Routing: Routes = [
     path: 'activo',
     loadChildren: () =>
       import('./activo/activo.module').then((m) => m.ActivoModule),
+
+
+    // path: 'activo',
+    // loadChildren: () =>
+    //   import('./activo/activo.module').then((m) => m.ActivoModule),
   },
   // aqui termina de joel
 

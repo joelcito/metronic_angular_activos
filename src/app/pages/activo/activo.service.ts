@@ -20,17 +20,4 @@ export class ActivoService {
       map((response) => response as Activo[])
     )
   }
-
-  create(activo:Activo): Observable<Activo>{
-    return this.http.post<Activo>(this.urlEndPoint+"/", activo,{headers: this.httpHeaders})
-  }
-
-  getActivo(id:number): Observable<Activo>{
-    return this.http.get<Activo>(this.urlEndPoint+"/"+id)
-  }
-
-  delete(id:number): Observable<Activo>{
-    return this.http.delete<Activo>(this.urlEndPoint+"/"+id, {headers: this.httpHeaders})
-  }
-
 }
