@@ -1,55 +1,107 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ChangeDetectorRef, NgZone } from '@angular/core';
 import { Grupo } from './grupo';
 import { GrupoService } from './grupo.service';
 
 import { ModalDismissReasons, NgbDatepickerModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormGroup, FormControl } from '@angular/forms';
-
+import swal from 'sweetalert2';
 @Component({
   selector: 'app-grupos',
   templateUrl: './grupos.component.html',
 })
 export class GrupoComponent implements OnInit {
 
-  grupos:any = [];
+  // grupos:any[] = [];
+  grupos:Grupo[];
+  eliminado:Boolean = false;
   closeResult = '';
+
   @Input() grupo:Grupo = new Grupo();
 
   grupoForm = new FormGroup({
     descripcion: new FormControl(''),
-    nro_items: new FormControl(''),
-    vida_util: new FormControl(''),
+    nroItems: new FormControl(''),
+    vidaUtil: new FormControl(''),
   });
 
   constructor(
     private grupoService: GrupoService,
-    private modalService: NgbModal
-  ) { }
-
-  ngOnInit(): void {
-
-    this.grupos = this.grupoService.getGrupos();
-
-    // this.grupoService.getGrupos().subscribe((grupos) => {
-    //   this.grupos = grupos
-    //   console.log(grupos)
-    // })
+    private modalService: NgbModal,
+    private chdr:ChangeDetectorRef
+  ) {
   }
 
-  openLg(content:any) {
-		// this.modalService.open(content, { size: 'lg' });
+  ngOnInit(): void {
+    this.cargarLista()
+  }
+
+  cargarLista(){
+    this.grupoService.getGrupos().subscribe((result) => {
+      this.grupos = result;
+      this.chdr.detectChanges()
+    });
+  }
+
+  create(){
+    this.grupoService.crearGrupo(this.grupo).subscribe((grupo) => {
+      swal.fire({
+        icon: 'success',
+        title: 'Exito!',
+        text: 'Se agrego con exito',
+        timer: 1500
+      })
+      this.cargarLista();
+    })
+  }
+
+  public delete(idgrupo:String) {
+    swal.fire({
+      title: 'Estas seguro de eliminar?',
+      text: "No podras revertir este cambio!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, eliminar!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.grupoService.deleteGrupo(idgrupo).subscribe(resp => {
+          this.grupos = this.grupos.filter(gru => gru.idgrupo !== idgrupo)
+          this.chdr.detectChanges()
+          swal.fire(
+            'Eliminado!',
+            'El grupo se elimino.',
+            'success'
+          )
+        })
+      }
+    })
+  }
+
+  openLg(content:any, grupo:Grupo){
+
+    console.log(content, grupo)
+
+    if(grupo.idgrupo === ''){
+      console.log("vacio")
+    }else{
+      console.log("no vacio")
+      this.grupo.descripcion = grupo.descripcion
+      this.grupo.nroItems    = grupo.nroItems
+      this.grupo.vidaUtil    = grupo.vidaUtil
+    }
 
     this.modalService.open(content, { size: 'lg' }).result.then(
       (result) => {
         if(result==='guardar'){
-
-          console.log(this.grupo)
-
           console.log("se guardara");
         }else{
           console.log("no guardara");
         }
-        // console.log(result)
+
+        //
+        console.log("haber")
+
       },
       (reason)=>{
         console.log(reason)
@@ -78,9 +130,6 @@ export class GrupoComponent implements OnInit {
 		}
 	}
 
-  create(){
-    console.log(this.grupoForm.value)
-    // console.log(this.grupo)
-  }
+
 
 }

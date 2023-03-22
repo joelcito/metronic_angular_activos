@@ -43,6 +43,7 @@
     "prismjs": "1.28.0",
     "rxjs": "7.5.5",
     "socicon": "3.0.5",
+    "sweetalert2": "^11.7.3",
     "tslib": "2.4.0",
     "zone.js": "0.11.5"
   },
@@ -60,9 +61,9 @@
     "@types/node": "17.0.36",
     "@types/object-path": "0.11.1",
     "@types/prismjs": "1.26.0",
+    "@types/sass-loader": "8.0.3",
     "@typescript-eslint/eslint-plugin": "5.27.0",
     "@typescript-eslint/parser": "5.27.0",
-    "@types/sass-loader": "8.0.3",
     "css-loader": "6.7.1",
     "del": "6.0.0",
     "eslint": "8.16.0",
@@ -74,8 +75,8 @@
     "karma-jasmine-html-reporter": "2.0.0",
     "mini-css-extract-plugin": "2.6.1",
     "rtlcss-webpack-plugin": "4.0.7",
-    "typescript": "4.7.2",
     "sass-loader": "13.0.2",
+    "typescript": "4.7.2",
     "webpack": "5.74.0",
     "webpack-cli": "4.10.0"
   },
