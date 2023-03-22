@@ -10,7 +10,7 @@
       <div class="row">
         <div class="col-md-8">
           <label for="dateOfBirth">Descripcion</label>
-          <!-- <input type="text" class="form-control me-2" [(ngModel)]="grupo.descripcion" name="descripcion"> -->
+          <input type="text"  value="0" formControlName="idgrupo" [value]="grupo.idgrupo" [(ngModel)]="grupo.idgrupo">
           <input type="text" class="form-control me-2" formControlName="descripcion" [value]="grupo.descripcion" [(ngModel)]="grupo.descripcion">
         </div>
         <div class="col-md-4">
@@ -55,7 +55,7 @@
       </h3>
       <div
         class="card-toolbar" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover" title="Click to add a user" >
-        <a class="btn btn-sm btn-light-primary" (click)="openLg(content, grupo)">
+        <a class="btn btn-sm btn-light-primary" (click)="openLg(content,grupoReset)">
           <span [inlineSVG]="'./assets/media/icons/duotune/arrows/arr075.svg'" class="svg-icon svg-icon-3" ></span>
           Nuevo Grupo
         </a>

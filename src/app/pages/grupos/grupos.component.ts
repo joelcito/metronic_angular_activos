@@ -17,8 +17,10 @@ export class GrupoComponent implements OnInit {
   closeResult = '';
 
   @Input() grupo:Grupo = new Grupo();
+  @Input() grupoReset:Grupo = new Grupo();
 
   grupoForm = new FormGroup({
+    idgrupo: new FormControl(''),
     descripcion: new FormControl(''),
     nroItems: new FormControl(''),
     vidaUtil: new FormControl(''),
@@ -43,14 +45,22 @@ export class GrupoComponent implements OnInit {
   }
 
   create(){
-    this.grupoService.crearGrupo(this.grupo).subscribe((grupo) => {
-      swal.fire({
-        icon: 'success',
-        title: 'Exito!',
-        text: 'Se agrego con exito',
-        timer: 1500
+    if(this.grupo.idgrupo){
+      console.log("si")
+      this.grupoService.upDate(this.grupo).subscribe(result => {
+        this.cargarLista();
       })
-      this.cargarLista();
+    }else{
+      console.log("no")
+      this.grupoService.crearGrupo(this.grupo).subscribe((grupo) => {
+        this.cargarLista();
+      })
+    }
+    swal.fire({
+      icon: 'success',
+      title: 'Exito!',
+      text: 'Se gurado con exito con exito',
+      timer: 1500
     })
   }
 
@@ -80,16 +90,10 @@ export class GrupoComponent implements OnInit {
 
   openLg(content:any, grupo:Grupo){
 
-    console.log(content, grupo)
-
-    if(grupo.idgrupo === ''){
-      console.log("vacio")
-    }else{
-      console.log("no vacio")
-      this.grupo.descripcion = grupo.descripcion
-      this.grupo.nroItems    = grupo.nroItems
-      this.grupo.vidaUtil    = grupo.vidaUtil
-    }
+    this.grupo.idgrupo     = grupo.idgrupo
+    this.grupo.descripcion = grupo.descripcion
+    this.grupo.nroItems    = grupo.nroItems
+    this.grupo.vidaUtil    = grupo.vidaUtil
 
     this.modalService.open(content, { size: 'lg' }).result.then(
       (result) => {

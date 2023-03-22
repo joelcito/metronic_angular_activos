@@ -37,6 +37,7 @@ export class GrupoService {
     return this.http.delete<Grupo>(this.urlEndPoint+"/"+id, {headers:this.httpHeaders});
   }
 
-  // upDate(grupo:Grupo):Observable<Grupo>{
-  // }
+  upDate(grupo:Grupo):Observable<Grupo>{
+    return this.http.put<Grupo>(`${this.urlEndPoint}/${grupo.idgrupo}`,grupo,{headers:this.httpHeaders})
+  }
 }
