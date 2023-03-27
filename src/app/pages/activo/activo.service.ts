@@ -4,6 +4,7 @@ import { Observable, of } from 'rxjs';
 import { Activo } from './activo';
 import { map } from 'rxjs/operators';
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -15,9 +16,16 @@ export class ActivoService {
 
   constructor(private http: HttpClient) { }
 
-  getActivos():Observable<Activo[]>{
-    return this.http.get(this.urlEndPoint+"/listado").pipe(
-      map((response) => response as Activo[])
-    )
+  getActivos(){
+    return this.http.get<Activo[]>(this.urlEndPoint+"/listado")
   }
+
+  create(activo:Activo): Observable<Activo>{
+    return this.http.post<Activo>(this.urlEndPoint+"/", activo,{headers: this.httpHeaders})
+  }
+
+  delete(id:string): Observable<Activo>{
+    return this.http.delete<Activo>(this.urlEndPoint+"/"+id, {headers: this.httpHeaders})
+  }
+
 }

@@ -15,6 +15,7 @@ export class GrupoComponent implements OnInit {
   grupos:Grupo[];
   eliminado:Boolean = false;
   closeResult = '';
+  mostrar:Boolean = false;
 
   @Input() grupo:Grupo = new Grupo();
   @Input() grupoReset:Grupo = new Grupo();
@@ -41,7 +42,16 @@ export class GrupoComponent implements OnInit {
     this.grupoService.getGrupos().subscribe((result) => {
       this.grupos = result;
       this.chdr.detectChanges()
+      // console.log(this.grupos.length)
     });
+
+    if(this.grupos){
+      if(this.grupos.length > 0)
+        this.mostrar = true
+      else
+        this.mostrar = false
+    }
+
   }
 
   create(){
@@ -59,7 +69,7 @@ export class GrupoComponent implements OnInit {
     swal.fire({
       icon: 'success',
       title: 'Exito!',
-      text: 'Se gurado con exito con exito',
+      text: 'Se gurado con exito el grupo',
       timer: 1500
     })
   }

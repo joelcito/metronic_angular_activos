@@ -1,0 +1,20 @@
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http'
+import { Regional } from './regional';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class RegionalService {
+
+  private urlEndPoint: string = "http://localhost:9999/api/regional";
+  // private httpHeaders = new HttpHeaders({'Content-Type': 'application/json'});
+
+  constructor(
+    private http: HttpClient
+  ) { }
+
+  getRegionales(){
+    return this.http.get<Regional[]>(`${this.urlEndPoint}/listado`)
+  }
+}

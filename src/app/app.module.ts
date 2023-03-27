@@ -13,6 +13,12 @@ import { AuthService } from './modules/auth/services/auth.service';
 import { environment } from 'src/environments/environment';
 // #fake-start#
 import { FakeAPIService } from './_fake/fake-api.service';
+import { ComponenteComponent } from './pages/componente/componente.component';
+import { IncorporacionComponent } from './pages/incorporacion/incorporacion.component';
+import { UnidadManejoComponent } from './pages/unidad-manejo/unidad-manejo.component';
+import { RegimenComponent } from './pages/regimen/regimen.component';
+import { RegionalComponent } from './pages/regional/regional.component';
+import { DepartamentoComponent } from './pages/departamento/departamento.component';
 // #fake-end#
 
 // import { ActivoModule } from './pages/activo/activo.module';
@@ -28,7 +34,7 @@ function appInitializer(authService: AuthService) {
 }
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, ComponenteComponent, IncorporacionComponent, UnidadManejoComponent, RegimenComponent, RegionalComponent, DepartamentoComponent],
   // declarations: [AppComponent, GrupoComponent],
   imports: [
     BrowserModule,

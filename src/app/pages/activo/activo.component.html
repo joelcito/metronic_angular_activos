@@ -1,29 +1,137 @@
 <!-- aqui el modal -->
 <ng-template #content let-modal>
-	<div class="modal-header">
-		<h4 class="modal-title" id="modal-basic-title">Profile update</h4>
+	<div class="modal-header modal-lg">
+		<h4 class="modal-title" id="modal-basic-title">Formulario de Activo</h4>
 		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
 	</div>
 	<div class="modal-body">
-		<form>
-			<div class="mb-3">
-				<label for="dateOfBirth">Date of birth</label>
-				<div class="input-group">
-					<input id="dateOfBirth" class="form-control" placeholder="yyyy-mm-dd" name="dp" ngbDatepicker dp="ngbDatepicker"/>
-					<!-- <button class="btn btn-outline-secondary bi bi-calendar3" (click)="dp.toggle()" type="button"></button> -->
-				</div>
-			</div>
-		</form>
+    <form [formGroup]="activoForm" (ngSubmit)="createActivo()">
+      <div class="row mt-5">
+        <div class="col-md-3">
+          <label for="dateOfBirth">Descripcion</label>
+          <input type="text" class="form-control me-2" [(ngModel)]="activo.descripcion" formControlName="descripcion">
+        </div>
+        <div class="col-md-3">
+          <label for="dateOfBirth">Incorporacion</label>
+          <select class="form-control me-2" [(ngModel)]="activo.incorporacion" formControlName="incorporacion">
+            <option value="">Seleccione</option>
+            <option [ngValue]="incorporacion" *ngFor="let incorporacion of incorporaciones">{{ incorporacion.nombre }}</option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <label for="dateOfBirth">Grupo</label>
+          <select class="form-control me-2" (change)="buscarSubGrupo($event)" [(ngModel)]="activo.grupo" formControlName="grupo">
+            <option value="">Seleecione</option>
+            <option [ngValue]="grupo" *ngFor="let grupo of grupos">{{ grupo.descripcion }}</option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <label for="dateOfBirth">Sub Grupo</label>
+          <select class="form-control me-2" (change)="listarComponentes($event)" [(ngModel)]="activo.subgrupo" formControlName="subgrupo">
+            <option value="">Seleccione</option>
+            <option [ngValue]="subgrupo" *ngFor="let subgrupo of subGruposBuscados">{{ subgrupo.descripcion }}</option>
+          </select>
+        </div>
+      </div>
+
+
+      <div class="row mt-5" *ngIf="componentesView">
+        <div class="col" *ngFor="let componente of componentes">
+          <label for="dateOfBirth">{{ componente.nombre }}</label>
+          <input type="text" class="form-control me-2">
+        </div>
+      </div>
+
+
+      <div class="row mt-5">
+        <div class="col-md-3">
+          <label for="dateOfBirth">Codigo</label>
+          <input type="text" class="form-control me-2" [(ngModel)]="activo.codigo" formControlName="codigo">
+        </div>
+        <div class="col-md-3">
+          <label for="dateOfBirth">Regimen</label>
+          <select class="form-control me-2" [(ngModel)]="activo.regimen" formControlName="regimen">
+            <option value="">Seleccione</option>
+            <option [ngValue]="regimen" *ngFor="let regimen of regimenes">{{ regimen.nombre }}</option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <label for="dateOfBirth">Regional</label>
+          <select class="form-control me-2" [(ngModel)]="activo.regional" formControlName="regional">
+            <option value="">Seleccione</option>
+            <option [ngValue]="regional" *ngFor="let regional of regionales">{{ regional.nombre }}</option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <label for="dateOfBirth">Unidad de manejo</label>
+          <select class="form-control me-2" [(ngModel)]="activo.unidadmanejo" formControlName="unidadmanejo">
+            <option value="">Seleccione</option>
+            <option [ngValue]="uniManejo" *ngFor="let uniManejo of unidadManejos">{{ uniManejo.descripcion }}</option>
+          </select>
+        </div>
+      </div>
+      <div class="row mt-5">
+        <div class="col-md-3">
+          <label for="dateOfBirth">Placa</label>
+          <input type="text" class="form-control me-2" [(ngModel)]="activo.placa" formControlName="placa">
+        </div>
+        <div class="col-md-3">
+          <label for="dateOfBirth">Eficiencia</label>
+          <select class="form-control me-2" [(ngModel)]="activo.eficiencia" formControlName="eficiencia">
+            <option value="">Seleccione</option>
+            <option value="Nuevo">Nuevo</option>
+            <option value="Bueno">Bueno</option>
+            <option value="Regular">Regular</option>
+            <option value="Malo">Malo</option>
+            <option value="Para Baja">Para Baja</option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <label for="dateOfBirth">Forma Inicial</label>
+          <select class="form-control me-2" [(ngModel)]="activo.formainicial" formControlName="formainicial">
+            <option value="">Seleccione</option>
+            <option value="Incorporado">Incorporado</option>
+            <option value="Inc. Transferencia">Inc. Transferencia</option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <label for="dateOfBirth">Estado de Registro</label>
+          <select class="form-control me-2" [(ngModel)]="activo.estadoregistro" formControlName="estadoregistro">
+            <option value="">Seleccione</option>
+            <option value="Aprobado">Aprobado</option>
+            <option value="Anulado">Anulado</option>
+          </select>
+        </div>
+      </div>
+      <div class="row mt-5">
+        <div class="col-md-3">
+          <label for="dateOfBirth">Fecha de Compra</label>
+          <input type="date" class="form-control me-2" [(ngModel)]="activo.fechacompra" formControlName="fechacompra">
+        </div>
+        <div class="col-md-3">
+          <label for="dateOfBirth">UFV de compra</label>
+          <input type="number" class="form-control me-2" [(ngModel)]="activo.ufvcompra" formControlName="ufvcompra">
+        </div>
+        <div class="col-md-3">
+          <label for="dateOfBirth">Tasa de depreciacion</label>
+          <input type="number" class="form-control me-2" [(ngModel)]="activo.porcentaje_depreciacion" formControlName="porcentaje_depreciacion">
+        </div>
+        <div class="col-md-3">
+          <label for="dateOfBirth">Vida Util (meses)</label>
+          <input type="number" class="form-control me-2" [(ngModel)]="activo.estadoregistro" formControlName="estadoregistro">
+        </div>
+      </div>
+      <div class="row mt-5">
+        <div class="col-md-12">
+          <button class="btn btn-success w-100" type="submit">Guardar</button>
+        </div>
+      </div>
+    </form>
 	</div>
 	<div class="modal-footer">
-		<button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
+		<!-- <button type="button" class="btn btn-success w-100" (click)="modal.close('guardar')">Guardar</button> -->
 	</div>
 </ng-template>
-
-<button class="btn btn-lg btn-outline-primary" (click)="open(content)">Launch demo modal</button>
-
-<hr />
-<pre>{{ closeResult }}</pre>
 <!-- end del modal -->
 
 <div class="card card-custom d-flex fs-6 p-0 m-0 text-gray-600">
@@ -40,7 +148,7 @@
         data-bs-trigger="hover"
         title="Click to add a user"
       >
-        <a (click)="openModal()" class="btn btn-sm btn-light-primary">
+        <a (click)="openModal(content)" class="btn btn-sm btn-light-primary">
           <span
             [inlineSVG]="'./assets/media/icons/duotune/arrows/arr075.svg'"
             class="svg-icon svg-icon-3"
@@ -51,7 +159,7 @@
     </div>
     <div class="card-body py-3">
       <div class="table-responsive">
-        <div *ngIf="activos1.length > 0">
+        <div>
           <div class="alert alert-danger">Sin datos de registro</div>
         </div>
         <table class="table table-row-dashed table-row-gray-300 align-middle gs-0 gy-4">
@@ -70,7 +178,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let activo of activos1 | async">
+            <tr *ngFor="let activo of activos">
               <td>{{ activo.idactivo }}</td>
               <td>{{ activo.codigo }}</td>
               <td>{{ activo.descripcion }}</td>
@@ -81,9 +189,8 @@
               <td>{{ (activo.regimen === null)? '' : activo.regimen.descripcion }}</td>
               <td>{{ (activo.regional === null)? '' : activo.regional.descripcion }}</td>
               <td class="text-end">
-                <button class="btn btn-info btn-icon btn-sm me-1"><i class="fas fa-eye"></i></button>
-                <!-- <button class="btn btn-warning btn-icon btn-sm"><i class="fas fa-edit"></i></button> -->
-                <button class="btn btn-danger btn-icon btn-sm me-1"><i class="fas fa-trash"></i></button>
+                <button class="btn btn-info btn-icon btn-sm me-1" [routerLink]="['/activo/detalle', activo.idactivo]" ><i class="fas fa-eye"></i></button>
+                <button class="btn btn-danger btn-icon btn-sm me-1" (click)="eliminarActivo(activo)"><i class="fas fa-trash"></i></button>
               </td>
             </tr>
           </tbody>

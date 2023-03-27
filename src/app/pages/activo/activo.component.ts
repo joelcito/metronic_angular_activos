@@ -1,21 +1,28 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectorRef, Input } from '@angular/core';
 import { NgForm } from '@angular/forms';
-// import { LayoutService } from '../../_metronic/layout';
-
-// PARA LOS SERVICIOS
-// import { ActivoModule } from './activo.module';
-import { ActivoService } from './activo.service';
-import { Activo } from './activo';
-
-// import { ActivoModule } from './activo.module';
-// import { finalize, map } from 'rxjs/operators';
-// import { async } from '@angular/core/testing';
-// import { Observable } from 'rxjs';
-
-// import { MdbModalRef } from 'mdb-angular-ui-kit/modal'
 
 import { ModalDismissReasons, NgbDatepickerModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { FormGroup, FormControl } from '@angular/forms';
 
+import { Activo } from './activo';
+import { Grupo } from '../grupos/grupo';
+import { SubGrupo } from '../grupos/sub-grupo/sub-grupo';
+import { Componente } from '../componente/componente';
+import { Incorporacion } from '../incorporacion/incorporacion';
+import { UnidadManejo } from '../unidad-manejo/unidad-manejo';
+import { Regimen } from '../regimen/regimen';
+import { Regional } from '../regional/regional';
+
+import { ActivoService } from './activo.service';
+import { GrupoService } from '../grupos/grupo.service';
+import { SubGrupoService } from '../grupos/sub-grupo/sub-grupo.service';
+import { ComponenteService } from '../componente/componente.service';
+import { IncorporacionService } from '../incorporacion/incorporacion.service';
+import { UnidadManejoService } from '../unidad-manejo/unidad-manejo.service';
+import { RegimenService } from '../regimen/regimen.service';
+import { RegionalService } from '../regional/regional.service';
+
+import swal from 'sweetalert2';
 
 @Component({
   selector: 'app-activo',
@@ -32,34 +39,162 @@ export class ActivoComponent implements OnInit {
   resetLoading: boolean = false;
   tabla: boolean = false;
 
-  activos1: any = [];
+  // activos1: any = [];
+  activos: Activo[];
+  grupos: Grupo[];
+  subGrupos: SubGrupo[];
+  subGruposBuscados: SubGrupo[];
+  componentes: Componente[];
+  componentesView:Boolean = false;
+  incorporaciones:Incorporacion[];
+  unidadManejos:UnidadManejo[];
+  regimenes:Regimen[];
+  regionales:Regional[];
 
   closeResult = '';
 
+  @Input() activo: Activo = new Activo();
+
+  activoForm = new FormGroup({
+    descripcion: new FormControl(''),
+    incorporacion: new FormControl(''),
+    grupo: new FormControl(''),
+    subgrupo: new FormControl(''),
+    codigo: new FormControl(''),
+    regimen: new FormControl(''),
+    regional: new FormControl(''),
+    unidadmanejo: new FormControl(''),
+    eficiencia: new FormControl(''),
+    formainicial:new FormControl(''),
+    estadoregistro:new FormControl(''),
+    fechacompra:new FormControl(''),
+    ufvcompra:new FormControl(''),
+    porcentaje_depreciacion:new FormControl(''),
+    vida_util:new FormControl(''),
+    placa:new FormControl(''),
+  });
+
   constructor(
     private activoService: ActivoService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private chdr:ChangeDetectorRef,
+    private grupoService: GrupoService,
+    private subGrupoService:SubGrupoService,
+    private componenteService:ComponenteService,
+    private incorporacionService:IncorporacionService,
+    private unidadMaejoService:UnidadManejoService,
+    private regimenService:RegimenService,
+    private regionalService:RegionalService
   ){
   }
 
   ngOnInit(){
-    this.activos1 = this.activoService.getActivos();
+    this.listaActivos()
+    this.listaGrupos()
+    this.listaSubGrupos()
+    this.listaIncorporacion()
+    this.listaUnidadManejos()
+    this.listaRegimen()
+    this.listaRegional()
   }
 
-  openModal(){
-    console.log("haber este")
+  listaActivos(){
+    this.activoService.getActivos().subscribe(result => {
+      this.activos = result
+      this.chdr.detectChanges()
+    })
   }
 
-  open(content:any) {
-		this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then(
-			(result) => {
-				this.closeResult = `Closed with: ${result}`;
-			},
-			(reason) => {
-				this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-			},
-		);
-	}
+  listaGrupos(){
+    this.grupoService.getGrupos().subscribe(resul =>{
+      this.grupos = resul;
+    })
+  }
+
+  listaSubGrupos(){
+    this.subGrupoService.getSubGrupos().subscribe(resul =>{
+      this.subGrupos = resul;
+    })
+  }
+
+  listaIncorporacion(){
+    this.incorporacionService.getIncorporaciones().subscribe(resul =>{
+      this.incorporaciones = resul;
+    })
+  }
+
+  listaUnidadManejos(){
+    this.unidadMaejoService.getUnidadManejos().subscribe(resul =>{
+      this.unidadManejos = resul;
+    })
+  }
+
+  listaRegimen(){
+    this.regimenService.getRegimenes().subscribe(resul =>{
+      this.regimenes = resul;
+    })
+  }
+
+  listaRegional(){
+    this.regionalService.getRegionales().subscribe(resul=>{
+      this.regionales = resul;
+    })
+  }
+
+  buscaSubGruposPorGrupo(id:String) {
+    this.subGrupoService.getSubGruposByIdGrupo(id.toString()).subscribe(resul =>{
+      this.subGruposBuscados = resul;
+    })
+  }
+  buscarSubGrupo($evento:any){
+    this.buscaSubGruposPorGrupo(this.activo.grupo.idgrupo);
+    this.componentesView = false;
+  }
+
+  buscarComponentePorSubGrupo(id:String){
+    this.componenteService.getComponenteByIdSubGrupo(id.toString()).subscribe(resul =>{
+      this.componentes = resul;
+    })
+  }
+  listarComponentes($evento:any){
+    this.buscarComponentePorSubGrupo(this.activo.subgrupo.idsubgrupo)
+    this.componentesView = true;
+  }
+
+  openModal(content:any){
+    // this.grupo.idgrupo     = grupo.idgrupo
+    // this.grupo.descripcion = grupo.descripcion
+    // this.grupo.nroItems    = grupo.nroItems
+    // this.grupo.vidaUtil    = grupo.vidaUtil
+
+    this.modalService.open(content, { size: 'xl' }).result.then(
+      (result) => {
+        if(result==='guardar'){
+          console.log("se guardara");
+        }else{
+          console.log("no guardara");
+        }
+
+        //
+        console.log("haber")
+
+      },
+      (reason)=>{
+        console.log(reason)
+      }
+    );
+  }
+
+  // open(content:any) {
+	// 	this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then(
+	// 		(result) => {
+	// 			this.closeResult = `Closed with: ${result}`;
+	// 		},
+	// 		(reason) => {
+	// 			this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+	// 		},
+	// 	);
+	// }
 
 	private getDismissReason(reason: any): string {
 		if (reason === ModalDismissReasons.ESC) {
@@ -70,4 +205,40 @@ export class ActivoComponent implements OnInit {
 			return `with: ${reason}`;
 		}
 	}
+
+  createActivo(){
+    this.activoService.create(this.activo).subscribe(resul => {
+      this.listaActivos();
+      swal.fire({
+        icon: 'success',
+        title: 'Exito!',
+        text: 'Se gurado con exito el Activo',
+        timer: 1500
+      })
+    })
+  }
+
+  eliminarActivo(activo:Activo){
+    swal.fire({
+      title: 'Estas seguro de eliminar?',
+      text: "No podras revertir este cambio!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, eliminar!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.activoService.delete(activo.idactivo.toString()).subscribe(resp => {
+          this.activos = this.activos.filter(act => act.idactivo !== activo.idactivo)
+          this.chdr.detectChanges()
+          swal.fire(
+            'Eliminado!',
+            'El grupo se elimino.',
+            'success'
+          )
+        })
+      }
+    })
+  }
 }

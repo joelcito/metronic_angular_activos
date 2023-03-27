@@ -1,20 +1,36 @@
+import { Grupo } from "../grupos/grupo";
+import { SubGrupo } from "../grupos/sub-grupo/sub-grupo";
+import { Incorporacion } from "../incorporacion/incorporacion";
+import { Regimen } from "../regimen/regimen";
+import { Regional } from "../regional/regional";
+import { UnidadManejo } from "../unidad-manejo/unidad-manejo";
 export class Activo {
+
     idactivo:String = '';
-    nombre:string = '';
     descripcion:string = '';
-  
-    // grupo:Grupo = new Grupo(); 
-  
+    incorporacion:Incorporacion = new Incorporacion();
+    grupo:Grupo = new Grupo();
+    subgrupo:SubGrupo = new SubGrupo();
+    codigo:string = '';
+    regimen:Regimen = new Regimen();
+    regional:Regional = new Regional();
+    unidadmanejo:UnidadManejo = new UnidadManejo();
+    eficiencia:string = '';
+    formainicial:String = '';
+    estadoregistro:String = '';
+    fechacompra:string = '';
+    ufvcompra:String ='';
+    porcentaje_depreciacion:string = '';
+    vida_util:string  = '';
+    placa:string = '';
+
+
     // grupo:string = '';
     codigo_item:string = '';
     departameto:string = '';
-    regional:string = '';
-    fecha_compra:string = '';
     ufv_inicio:string  = '';
-    porcentaje_depreciacion:string = '';
     estado:string = '';
-    vida_util:string  = '';
-  
+
     rubro:String ='';
     tipo_cuenta:String ='';
     tipo_incorporacion:String ='';
@@ -23,8 +39,7 @@ export class Activo {
     tipo_marca:String ='';
     tipo_activo:String ='';
     numero_serie:String ='';
-    ufv_compra:String ='';
     ubicacion_general:String ='';
     ubicacion_especifica:String ='';
-  
+    fecha:String ='';
   }
