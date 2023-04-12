@@ -20,4 +20,8 @@ export class SubGrupoService {
   getSubGruposByIdGrupo(idgrupo:string){
     return this.http.get<SubGrupo[]>(`${this.urlEndPoint}/byGrupo/${idgrupo}`)
   }
+
+  getSubGrupoById(idsubgrupo:String){
+    return this.http.get<SubGrupo>(`${this.urlEndPoint}/${idsubgrupo}`)
+  }
 }

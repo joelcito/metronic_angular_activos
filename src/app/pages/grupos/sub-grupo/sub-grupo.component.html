@@ -1,27 +1,33 @@
 
 <!-- aqui el modal -->
-<!-- <ng-template #content let-modal>
+<ng-template #content let-modal>
 	<div class="modal-header modal-lg">
 		<h4 class="modal-title" id="modal-basic-title">Formulario de Grupo</h4>
 		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
 	</div>
 	<div class="modal-body">
-    <form [formGroup]="grupoForm" (ngSubmit)="create()">
+    <!-- <form [formGroup]="grupoForm" (ngSubmit)="create()"> -->
+    <form [formGroup]="subGrupoForm">
       <div class="row">
         <div class="col-md-8">
           <label for="dateOfBirth">Descripcion</label>
-          <input type="hidden" formControlName="idgrupo" [value]="grupo.idgrupo" [(ngModel)]="grupo.idgrupo">
-          <input type="text" class="form-control me-2" formControlName="descripcion" [value]="grupo.descripcion" [(ngModel)]="grupo.descripcion">
+          <!-- <input type="text" formControlName="idgrupo" [value]="grupo.idgrupo" [(ngModel)]="grupo.idgrupo">
+          <input type="text" class="form-control me-2" formControlName="descripcion" [value]="grupo.descripcion" [(ngModel)]="grupo.descripcion"> -->
+          <input type="text" class="form-control" formControlName="nombre">
         </div>
         <div class="col-md-4">
           <label for="dateOfBirth">Nro de Items</label>
-          <input type="number" class="form-control me-2" formControlName="nroItems" [value]="grupo.nroItems" [(ngModel)]="grupo.nroItems">
+          <!-- <input type="number" class="form-control me-2" formControlName="nroItems" [value]="grupo.nroItems" [(ngModel)]="grupo.nroItems"> -->
+          <input type="text" class="form-control" formControlName="subgrupo">
+
         </div>
       </div>
       <div class="row mt-3">
         <div class="col-md-6">
           <label for="dateOfBirth">Vida Util</label>
-          <input type="number" class="form-control me-2" formControlName="vidaUtil" [value]="grupo.vidaUtil" [(ngModel)]="grupo.vidaUtil">
+          <!-- <input type="number" class="form-control me-2" formControlName="vidaUtil" [value]="grupo.vidaUtil" [(ngModel)]="grupo.vidaUtil"> -->
+          <input type="text" class="form-control" formControlName="estado">
+
         </div>
         <div class="col-md-6">
           <label for="dateOfBirth">Cuenta</label>
@@ -34,15 +40,15 @@
       </div>
       <div class="row mt-5">
         <div class="col-md-12">
-          <button class="btn btn-success w-100" type="submit">Guardar</button>
+          <button class="btn btn-success w-100" type="button" (click)="guardar()">Guardar</button>
         </div>
       </div>
     </form>
 	</div>
 	<div class="modal-footer">
-		<button type="button" class="btn btn-success w-100" (click)="modal.close('guardar')">Guardar</button>
+		<!-- <button type="button" class="btn btn-success w-100" (click)="modal.close('guardar')">Guardar</button> -->
 	</div>
-</ng-template> -->
+</ng-template>
 <!-- end del modal -->
 
 <div class="card card-custom d-flex fs-6 p-0 m-0 text-gray-600">
@@ -54,8 +60,8 @@
       </h3>
       <div
         class="card-toolbar" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover" title="Click to add a user" >
-        <!-- <a class="btn btn-sm btn-light-primary" (click)="openLg(content,grupoReset)"> -->
-        <a class="btn btn-sm btn-light-primary">
+        <a class="btn btn-sm btn-light-primary" (click)="openModal(content)">
+        <!-- <a class="btn btn-sm btn-light-primary"> -->
           <span [inlineSVG]="'./assets/media/icons/duotune/arrows/arr075.svg'" class="svg-icon svg-icon-3" ></span>
           Nuevo Sub Grupo
         </a>
@@ -85,7 +91,7 @@
               <td>{{ subgrupo.fecha }}</td>
               <td class="text-end">
                 <button class="btn btn-warning btn-icon btn-sm me-1" ><i class="fas fa-edit"></i></button>
-                <button class="btn btn-info btn-icon btn-sm me-1" ><i class="fas fa-eye"></i></button>
+                <button class="btn btn-info btn-icon btn-sm me-1" [routerLink]="['/grupo/subGrupo', subgrupo.grupo.idgrupo, subgrupo.idsubgrupo]" routerLinkActive="router-link-active" ><i class="fas fa-eye"></i></button>
                 <button class="btn btn-danger btn-icon btn-sm me-1"><i class="fas fa-trash"></i></button>
               </td>
             </tr>

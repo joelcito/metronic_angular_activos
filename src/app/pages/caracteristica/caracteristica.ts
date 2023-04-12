@@ -1,5 +1,5 @@
 import { Activo } from "../activo/activo";
-import { Componente } from "../componente/componente";
+import { Componente } from "../grupos/sub-grupo/componente/componente";
 
 export class Caracteristica {
   idcaracteristica: string;

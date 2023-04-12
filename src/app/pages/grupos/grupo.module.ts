@@ -7,12 +7,14 @@ import { RouterModule } from '@angular/router';
 import { InlineSVGModule } from 'ng-inline-svg-2';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SubGrupoComponent } from './sub-grupo/sub-grupo.component';
+import { ComponenteComponent } from './sub-grupo/componente/componente.component';
 
 
 @NgModule({
   declarations: [
     GrupoComponent,
-    SubGrupoComponent
+    SubGrupoComponent,
+    ComponenteComponent
   ],
   imports: [
     CommonModule,
@@ -21,7 +23,8 @@ import { SubGrupoComponent } from './sub-grupo/sub-grupo.component';
     ReactiveFormsModule,
     RouterModule.forChild([
       {path: 'listado', component: GrupoComponent},
-      {path: 'subGrupo/:id', component: SubGrupoComponent}
+      {path: 'subGrupo/:id', component: SubGrupoComponent},
+      {path: 'subGrupo/:idgrupo/:idsubgrupo', component: ComponenteComponent}
     ])
   ]
 })

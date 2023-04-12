@@ -1,4 +1,4 @@
-import { SubGrupo } from "../grupos/sub-grupo/sub-grupo";
+import { SubGrupo } from "../sub-grupo";
 export class Componente {
   idcomponente: string;
   subgrupo:SubGrupo = new SubGrupo();

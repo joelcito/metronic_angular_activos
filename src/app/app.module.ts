@@ -13,7 +13,7 @@ import { AuthService } from './modules/auth/services/auth.service';
 import { environment } from 'src/environments/environment';
 // #fake-start#
 import { FakeAPIService } from './_fake/fake-api.service';
-import { ComponenteComponent } from './pages/componente/componente.component';
+import { ComponenteComponent } from './pages/grupos/sub-grupo/componente/componente.component';
 import { IncorporacionComponent } from './pages/incorporacion/incorporacion.component';
 import { UnidadManejoComponent } from './pages/unidad-manejo/unidad-manejo.component';
 import { RegimenComponent } from './pages/regimen/regimen.component';
@@ -36,7 +36,7 @@ function appInitializer(authService: AuthService) {
 
 @NgModule({
   declarations: [ AppComponent,
-                  ComponenteComponent,
+                  // ComponenteComponent,
                   IncorporacionComponent,
                   UnidadManejoComponent,
                   RegimenComponent,
