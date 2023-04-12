@@ -23,6 +23,11 @@ const Routing: Routes = [
     loadChildren: () =>
       import('./grupos/grupo.module').then((m) => m.GrupoModule),
   },
+  // {
+  //   path: 'componente',
+  //   loadChildren: () =>
+  //     import('./grupos/grupo.module').then((m) => m.GrupoModule),
+  // },
   // aqui termina de joel
 
   {

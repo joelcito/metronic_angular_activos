@@ -1,5 +1,5 @@
 export class Regimen {
-  idiregimen:String = '';
+  idregimen:String = '';
   nombre:String = '';
   descripcion:String = '';
   estado:String = '';

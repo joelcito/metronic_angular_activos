@@ -23,15 +23,15 @@
           <div class="col-md-8">
             <div class="form-group">
               <label for="descripcion">Descripcion</label>
-              <!-- <input type="text" class="form-control" [(ngModel)]="activo.descripcion" name="descripcion"> -->
-              <input type="text" class="form-control">
+              <input type="text" class="form-control" [(ngModel)]="activo.descripcion" name="descripcion">
+              <!-- <input type="text" class="form-control"> -->
             </div>
           </div>
           <div class="col-md-4">
             <div class="form-group">
               <label for="descripcion">Codigo</label>
-              <!-- <input type="text" class="form-control" [(ngModel)]="activo.codigo" name="codigo"> -->
-              <input type="text" class="form-control" name="codigo">
+              <input type="text" class="form-control" [(ngModel)]="activo.codigo" name="codigo">
+              <!-- <input type="text" class="form-control" name="codigo"> -->
             </div>
           </div>
         </div>
@@ -41,9 +41,10 @@
               <label for="descripcion">Grupo</label>
               <!-- <select [compareWith]="compararGrupo" class="form-control" [(ngModel)]="activo.grupo" name="grupo" (change)="buscarSubGrupo($event)"> -->
               <select class="form-control" name="grupo">
+              <!-- <select class="form-control" name="grupo"> -->
                 <option [ngValue]="undefined">Seleccione el Grupo</option>
-                <!-- <option [ngValue]="grupo" *ngFor="let grupo of grupos">{{ grupo.descripcion }}</option> -->
-                <option></option>
+                <option [selected]="grupo.idgrupo === idGrupo" [ngValue]="grupo" *ngFor="let grupo of grupos">{{ grupo.descripcion }}</option>
+                <!-- <option></option> -->
               </select>
             </div>
           </div>
@@ -51,52 +52,64 @@
             <div class="form-group">
               <label for="descripcion">Sub Grupo</label>
               <!-- <select [compareWith]="compararSubGrupo" class="form-control" [(ngModel)]="activo.subgrupo" name="subgrupo" (change)="cargaComponente($event)"> -->
-              <select class="form-control" name="subgrupo" >
+              <select class="form-control" name="subgrupo">
+              <!-- <select class="form-control" name="subgrupo" > -->
                 <option [ngValue]="undefined">Seleccione</option>
-                <!-- <option [ngValue]="subgrupo" *ngFor="let subgrupo of subGruposBuscados">{{ subgrupo.descripcion }}</option> -->
-                <option></option>
+                <option [selected]="subgrupo.idsubgrupo === idSubGrupo" [ngValue]="subgrupo" *ngFor="let subgrupo of subGrupos">{{ subgrupo.descripcion }}</option>
+                <!-- <option></option> -->
               </select>
             </div>
           </div>
           <div class="col-md-4">
             <div class="form-group">
               <label for="codigo">Regimen</label>
-              <!-- <select [compareWith]="compararRegimen" class="form-control" [(ngModel)]="activo.regimen" name="regimen"> -->
               <select class="form-control" name="regimen">
+              <!-- <select [compareWith]="compararRegimen" class="form-control" [(ngModel)]="activo.regimen" name="regimen"> -->
+              <!-- <select class="form-control" name="regimen"> -->
                 <option [ngValue]="undefined">Seleccione el Regimen</option>
-                <!-- <option [ngValue]="regimen" *ngFor="let regimen of regimenes">{{ regimen.nombre }}</option> -->
-                <option></option>
+                <option [selected]="regimen.idregimen === idregimen" [ngValue]="regimen" *ngFor="let regimen of regimenes">{{ regimen.nombre }}</option>
+                <!-- <option></option> -->
               </select>
             </div>
           </div>
         </div>
       </div>
     </div>
+
+    <div class="row mt-3">
+      <div class="col" *ngFor="let caracteristica of caracteristicas">
+        <div class="form-group">
+          <label for="descripcion">{{ caracteristica.componente.nombre }}</label>
+          <input type="text" class="form-control" value="{{ caracteristica.descripcion }}" disabled>
+        </div>
+      </div>
+    </div>
+
     <div class="row mt-3">
       <div class="col-md-4">
         <div class="form-group">
           <label for="descripcion">Regional</label>
           <select class="form-control" name="regional">
             <option [ngValue]="undefined">Seleccione el Regimen</option>
-            <!-- <option [ngValue]="regional" *ngFor="let regional of regionales">{{ regional.nombre }}</option> -->
-            <option></option>
+            <option [selected]="idregional === regional.idregional" [ngValue]="regional" *ngFor="let regional of regionales">{{ regional.nombre }}</option>
+            <!-- <option></option> -->
           </select>
         </div>
       </div>
       <div class="col-md-4">
         <label for="codigo">Unidad de Manejo</label>
           <!-- <select [compareWith]="compararUnidManejo" class="form-control"  [(ngModel)]="activo.unidadmanejo" name="unidadmanejo"> -->
-            <select class="form-control"  name="unidadmanejo">
+          <select class="form-control" name="unidadmanejo">
+            <!-- <select class="form-control"  name="unidadmanejo"> -->
             <option [ngValue]="undefined">Seleccione la unidad</option>
-            <!-- <option [ngValue]="unidamanejo" *ngFor="let unidamanejo of unidadesManejo">{{ unidamanejo.descripcion }}</option> -->
-            <option ></option>
+            <option [selected]="unidamanejo.idunidadmanejo === idunidadmanejo" [ngValue]="unidamanejo" *ngFor="let unidamanejo of unidadManejos">{{ unidamanejo.descripcion }}</option>
           </select>
       </div>
       <div class="col-md-4">
         <div class="form-group">
           <label for="descripcion">Placa</label>
-          <input type="text" class="form-control" name="placa">
-          <!-- <input type="text" class="form-control" [(ngModel)]="activo.placa" name="placa"> -->
+          <!-- <input type="text" class="form-control" name="placa"> -->
+          <input type="text" class="form-control" [(ngModel)]="activo.placa" name="placa">
         </div>
       </div>
     </div>
@@ -104,36 +117,39 @@
       <div class="col-md-4">
         <div class="form-group">
           <label for="codigo">Eficiencia</label>
-          <select class="form-control" name="eficiencia">
+          <!-- <select class="form-control" name="eficiencia"> -->
           <!-- <select class="form-control"  [(ngModel)]="activo.eficiencia" name="eficiencia"> -->
+          <select class="form-control" name="eficiencia">
             <option [ngValue]="undefined">Seleccione la unidad</option>
-            <option value="Nuevo">Nuevo</option>
-            <option value="Bueno">Bueno</option>
-            <option value="Regular">Regular</option>
-            <option value="Malo">Malo</option>
-            <option value="Para Baja">Para Baja</option>
+            <option [selected]="activo.eficiencia === 'Nuevo'" value="Nuevo">Nuevo</option>
+            <option [selected]="activo.eficiencia === 'Bueno'" value="Bueno">Bueno</option>
+            <option [selected]="activo.eficiencia === 'Regular'" value="Regular">Regular</option>
+            <option [selected]="activo.eficiencia === 'Malo'" value="Malo">Malo</option>
+            <option [selected]="activo.eficiencia === 'Para Baja'" value="Para Baja">Para Baja</option>
           </select>
         </div>
       </div>
       <div class="col-md-4">
         <div class="form-group">
           <label for="codigo">Forma inicial</label>
-          <!-- <select class="form-control" [(ngModel)]="activo.formainicial" name="formainicial"> -->
           <select class="form-control" name="formainicial">
+          <!-- <select class="form-control" [(ngModel)]="activo.formainicial" name="formainicial"> -->
+          <!-- <select class="form-control" name="formainicial"> -->
             <option [ngValue]="undefined">Seleccione</option>
-            <option value="Nuevo">Inc. Transferencia</option>
-            <option value="Bueno">Incorporado</option>
+            <option [selected]="activo.formainicial === 'Nuevo'" value="Nuevo">Inc. Transferencia</option>
+            <option [selected]="activo.formainicial === 'Bueno'" value="Bueno">Incorporado</option>
           </select>
         </div>
       </div>
       <div class="col-md-4">
         <div class="form-group">
           <label for="codigo">Estado de registro</label>
-          <select class="form-control"  name="estadoregistro">
+          <!-- <select class="form-control"  name="estadoregistro"> -->
           <!-- <select class="form-control"  [(ngModel)]="activo.estadoregistro" name="estadoregistro"> -->
+          <select class="form-control" name="estadoregistro">
             <option [ngValue]="undefined">Seleccione</option>
-            <option value="Nuevo">Anulado</option>
-            <option value="Bueno">Aprobado</option>
+            <option [selected]="activo.estadoregistro === 'Nuevo'" value="Nuevo">Anulado</option>
+            <option [selected]="activo.estadoregistro === 'Bueno'" value="Bueno">Aprobado</option>
           </select>
         </div>
       </div>
@@ -143,28 +159,29 @@
       <div class="col-md-3">
         <div class="form-group">
           <label for="descripcion">Fecha Compra</label>
-          <input type="date" class="form-control" name="fechacompra" value="2023-03-03">
+          <!-- <input type="date" class="form-control" name="fechacompra" [(ngModel)]='activo.fechacompra|date:"yyyy-MM-dd"' (ngModelChange)='fecha=$event'> -->
+          <input type="date" class="form-control" name="fechacompra" [ngModel]='activo.fechacompra|date:"yyyy-MM-dd"'>
         </div>
       </div>
       <div class="col-md-3">
         <div class="form-group">
           <label for="descripcion">UFV compra</label>
-          <input type="text" class="form-control" name="ufv">
-          <!-- <input type="text" class="form-control" [(ngModel)]="activo.ufv" name="ufv"> -->
+          <!-- <input type="text" class="form-control" name="ufv"> -->
+          <input type="text" class="form-control" [(ngModel)]="activo.ufvcompra" name="ufvcompra">
         </div>
       </div>
       <div class="col-md-3">
         <div class="form-group">
           <label for="descripcion">Tasa de depreciacion</label>
-          <input type="text" class="form-control" name="porcentaje_depreciacion">
-          <!-- <input type="text" class="form-control" [(ngModel)]="activo.porcentaje_depreciacion" name="porcentaje_depreciacion"> -->
+          <!-- <input type="text" class="form-control" name="porcentaje_depreciacion"> -->
+          <input type="text" class="form-control" [(ngModel)]="activo.porcentaje_depreciacion" name="porcentaje_depreciacion">
         </div>
       </div>
       <div class="col-md-3">
         <div class="form-group">
           <label for="descripcion">Vida util</label>
-          <input type="text" class="form-control" name="vida_util">
-          <!-- <input type="text" class="form-control" [(ngModel)]="activo.vida_util" name="vida_util"> -->
+          <!-- <input type="text" class="form-control" name="vida_util"> -->
+          <input type="text" class="form-control" [(ngModel)]="activo.vida_util" name="vida_util">
         </div>
       </div>
     </div>

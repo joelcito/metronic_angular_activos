@@ -28,4 +28,8 @@ export class ActivoService {
     return this.http.delete<Activo>(this.urlEndPoint+"/"+id, {headers: this.httpHeaders})
   }
 
+  getActivo(id:string){
+    return this.http.get<Activo>(this.urlEndPoint+"/"+id)
+  }
+
 }

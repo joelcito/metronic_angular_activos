@@ -36,9 +36,9 @@
 
 
       <div class="row mt-5" *ngIf="componentesView">
-        <div class="col" *ngFor="let componente of componentes">
-          <label for="dateOfBirth">{{ componente.nombre }}</label>
-          <input type="text" class="form-control me-2">
+        <div class="col" *ngFor="let componente of componentes;index as i">
+          <label for="dateOfBirth">{{ componente.nombre}}</label>
+          <input type="text" class="form-control me-2" id="{{ componente.estado}}">
         </div>
       </div>
 
@@ -48,6 +48,15 @@
           <label for="dateOfBirth">Codigo</label>
           <input type="text" class="form-control me-2" [(ngModel)]="activo.codigo" formControlName="codigo">
         </div>
+
+        <!-- <div class="form-group col-lg-6">
+            <label for="">CODIGO AMP:</label>&nbsp;<label for="" style="color:#ff0000">*</label>
+            <input [formControl]="codigoInput" class="form-control" type="number" placeholder="CODIGO AMP">
+            <div class="alert alert-danger" *ngIf="codigoInput.invalid && (codigoInput.dirty || codigoInput.touched)">
+              <div *ngIf="codigoInput.hasError('required')">Este campo es requerido</div>
+            </div>
+        </div> -->
+
         <div class="col-md-3">
           <label for="dateOfBirth">Regimen</label>
           <select class="form-control me-2" [(ngModel)]="activo.regimen" formControlName="regimen">
@@ -118,7 +127,7 @@
         </div>
         <div class="col-md-3">
           <label for="dateOfBirth">Vida Util (meses)</label>
-          <input type="number" class="form-control me-2" [(ngModel)]="activo.estadoregistro" formControlName="estadoregistro">
+          <input type="number" class="form-control me-2" [(ngModel)]="activo.vida_util" formControlName="vida_util">
         </div>
       </div>
       <div class="row mt-5">

@@ -1,6 +1,6 @@
 import { SubGrupo } from "../grupos/sub-grupo/sub-grupo";
 export class Componente {
-  idcomponent: string;
+  idcomponente: string;
   subgrupo:SubGrupo = new SubGrupo();
   nombre:String = "";
   estado:String = "";

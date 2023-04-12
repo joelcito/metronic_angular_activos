@@ -1,7 +1,7 @@
 import { Departamento } from "../departamento/departamento";
 
 export class Regional {
-  idiregional:String = '';
+  idregional:String = '';
   dapartamento:Departamento = new Departamento();
   nombre:String = '';
   descripcion:String = '';

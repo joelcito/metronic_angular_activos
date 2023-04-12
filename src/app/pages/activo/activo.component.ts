@@ -1,8 +1,6 @@
-import { Component, OnInit, ViewChild, ChangeDetectorRef, Input } from '@angular/core';
-import { NgForm } from '@angular/forms';
-
+import { Component, OnInit, ViewChild, ChangeDetectorRef, Input, ElementRef } from '@angular/core';
 import { ModalDismissReasons, NgbDatepickerModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { FormGroup, FormControl } from '@angular/forms';
+import { NgForm, FormGroup, FormControl } from '@angular/forms';
 
 import { Activo } from './activo';
 import { Grupo } from '../grupos/grupo';
@@ -12,6 +10,7 @@ import { Incorporacion } from '../incorporacion/incorporacion';
 import { UnidadManejo } from '../unidad-manejo/unidad-manejo';
 import { Regimen } from '../regimen/regimen';
 import { Regional } from '../regional/regional';
+import { Caracteristica } from '../caracteristica/caracteristica';
 
 import { ActivoService } from './activo.service';
 import { GrupoService } from '../grupos/grupo.service';
@@ -21,8 +20,10 @@ import { IncorporacionService } from '../incorporacion/incorporacion.service';
 import { UnidadManejoService } from '../unidad-manejo/unidad-manejo.service';
 import { RegimenService } from '../regimen/regimen.service';
 import { RegionalService } from '../regional/regional.service';
+import { CaracteristicaService } from '../caracteristica/caracteristica.service';
 
 import swal from 'sweetalert2';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'app-activo',
@@ -51,9 +52,23 @@ export class ActivoComponent implements OnInit {
   regimenes:Regimen[];
   regionales:Regional[];
 
+  idsComponentes:String[] = [];
+
+  valorComponente:String = "";
+
+  componente = {};
+  jsonComponente = [];
+  estados:String[] = [];
+  estadosValores:String[] = [];
+
   closeResult = '';
 
+  data:any = [];
+
+  @Input() ActivoDevuelto:Activo = new Activo();
+
   @Input() activo: Activo = new Activo();
+  @Input() caracteristica:Caracteristica = new Caracteristica();
 
   activoForm = new FormGroup({
     descripcion: new FormControl(''),
@@ -72,7 +87,11 @@ export class ActivoComponent implements OnInit {
     porcentaje_depreciacion:new FormControl(''),
     vida_util:new FormControl(''),
     placa:new FormControl(''),
+
+    // componentes:new FormControl([]),
   });
+
+  public codigoInput = new FormControl('');
 
   constructor(
     private activoService: ActivoService,
@@ -84,7 +103,9 @@ export class ActivoComponent implements OnInit {
     private incorporacionService:IncorporacionService,
     private unidadMaejoService:UnidadManejoService,
     private regimenService:RegimenService,
-    private regionalService:RegionalService
+    private regionalService:RegionalService,
+    private caracteristicaService:CaracteristicaService
+
   ){
   }
 
@@ -154,6 +175,11 @@ export class ActivoComponent implements OnInit {
   buscarComponentePorSubGrupo(id:String){
     this.componenteService.getComponenteByIdSubGrupo(id.toString()).subscribe(resul =>{
       this.componentes = resul;
+      for (let index = 0; index < resul.length; index++) {
+        const element = resul[index];
+        this.estados.push(element.estado);
+        this.idsComponentes.push(element.idcomponente);
+      }
     })
   }
   listarComponentes($evento:any){
@@ -207,15 +233,35 @@ export class ActivoComponent implements OnInit {
 	}
 
   createActivo(){
+
     this.activoService.create(this.activo).subscribe(resul => {
+
+      let datos:String = "";
+
+      for (let index = 0; index < this.estados.length; index++) {
+        const element = this.estados[index];
+        datos = datos + this.idsComponentes[index].toString()+"┬"+(<HTMLInputElement>document.querySelector('#'+element)).value;
+
+        if(index < (this.estados.length)-1){
+          datos = datos + "┴";
+        }else{
+          datos = datos+"┴"+resul.idactivo ;
+        }
+      }
+
+      this.caracteristicaService.agregaJson(datos).subscribe(result => {
+      })
+
       this.listaActivos();
+
       swal.fire({
         icon: 'success',
         title: 'Exito!',
         text: 'Se gurado con exito el Activo',
         timer: 1500
       })
-    })
+
+    });
   }
 
   eliminarActivo(activo:Activo){

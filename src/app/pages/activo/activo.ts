@@ -18,7 +18,11 @@ export class Activo {
     eficiencia:string = '';
     formainicial:String = '';
     estadoregistro:String = '';
+
     fechacompra:string = '';
+    // fechacompra:Date = new Date();
+
+    ufv:String ='';
     ufvcompra:String ='';
     porcentaje_depreciacion:string = '';
     vida_util:string  = '';

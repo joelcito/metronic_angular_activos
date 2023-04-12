@@ -71,25 +71,24 @@
           <thead>
             <tr class="fw-bolder text-muted">
               <th class="min-w-40px">ID</th>
-              <th class="min-w-120px">DESCRIPCION</th>
-              <th class="min-w-120px">NRO ITEMS</th>
-              <th class="min-w-120px">VIDA UTIL</th>
-              <th class="min-w-120px">CUENTA</th>
-              <th class="min-w-100px text-end">Actions</th>
+              <th class="min-w-300px">DESCRIPCION</th>
+              <th class="min-w-250px">GRUPO</th>
+              <th class="min-w-200px">FECHA</th>
+              <th class="min-w-200px text-end">Actions</th>
             </tr>
           </thead>
           <tbody>
-            <!-- <tr *ngFor="let grupo of grupos">
-              <td>{{ grupo.idgrupo }}</td>
-              <td>{{ grupo.descripcion }}</td>
-              <td>{{ grupo.nroItems }}</td>
-              <td>{{ grupo.vidaUtil }}</td>
+            <tr *ngFor="let subgrupo of subGrupos">
+              <td>{{ subgrupo.idsubgrupo }}</td>
+              <td>{{ subgrupo.descripcion }}</td>
+              <td>{{ subgrupo.grupo.descripcion }}</td>
+              <td>{{ subgrupo.fecha }}</td>
               <td class="text-end">
-                <button class="btn btn-warning btn-icon btn-sm me-1" (click)="openLg(content, grupo)"><i class="fas fa-edit"></i></button>
-                <button class="btn btn-info btn-icon btn-sm me-1" [routerLink]="['/grupo/subGrupo', grupo.idgrupo]" ><i class="fas fa-eye"></i></button>
-                <button class="btn btn-danger btn-icon btn-sm me-1" (click)="delete(grupo.idgrupo)"><i class="fas fa-trash"></i></button>
+                <button class="btn btn-warning btn-icon btn-sm me-1" ><i class="fas fa-edit"></i></button>
+                <button class="btn btn-info btn-icon btn-sm me-1" ><i class="fas fa-eye"></i></button>
+                <button class="btn btn-danger btn-icon btn-sm me-1"><i class="fas fa-trash"></i></button>
               </td>
-            </tr> -->
+            </tr>
           </tbody>
         </table>
       </div>
