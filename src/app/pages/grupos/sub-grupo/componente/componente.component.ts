@@ -57,15 +57,11 @@ export class ComponenteComponent implements OnInit {
   }
 
   openModal(content:any, componente:Componente){
-
-    // console.log(this.modalService.open(content));
-    this.modalService.dismissAll(content)
-
     this.componenteForm.get('componente')?.setValue((componente.idcomponente)? componente.idcomponente.toString() : '0');
     this.componenteForm.get('nombre')?.setValue(componente.nombre.toString());
     this.componenteForm.get('estado')?.setValue(componente.estado.toString());
 
-    this.modalService.open(content, { size: 'xl' }).result.then(
+    this.modalService.open(content, { size: '' }).result.then(
       (result) => {
         if(result==='guardar'){
           console.log("se guardara");

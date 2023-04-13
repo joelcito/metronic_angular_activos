@@ -13,8 +13,8 @@
         <div class="col-md-6">
           <label for="dateOfBirth">Nombre</label>
           <input type="text" class="form-control me-2" formControlName="nombre" id="input1" #input1 (input)="mostrarEnInput2(input1.value)">
-          <input type="text" id="subgrupo_id" formControlName="subgrupo">
-          <input type="text" formControlName="componente">
+          <input type="hidden" id="subgrupo_id" formControlName="subgrupo">
+          <input type="hidden" formControlName="componente">
         </div>
         <div class="col-md-6">
           <label for="dateOfBirth">Identificador</label>

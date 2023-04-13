@@ -40,4 +40,8 @@ export class GrupoService {
   upDate(grupo:Grupo):Observable<Grupo>{
     return this.http.put<Grupo>(`${this.urlEndPoint}/${grupo.idgrupo}`,grupo,{headers:this.httpHeaders})
   }
+
+  getGrupoById(idgrupo:String){
+    return this.http.get<Grupo>(`${this.urlEndPoint}/${idgrupo}`)
+  }
 }

@@ -9,33 +9,12 @@
     <!-- <form [formGroup]="grupoForm" (ngSubmit)="create()"> -->
     <form [formGroup]="subGrupoForm">
       <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-12">
           <label for="dateOfBirth">Descripcion</label>
           <!-- <input type="text" formControlName="idgrupo" [value]="grupo.idgrupo" [(ngModel)]="grupo.idgrupo">
           <input type="text" class="form-control me-2" formControlName="descripcion" [value]="grupo.descripcion" [(ngModel)]="grupo.descripcion"> -->
-          <input type="text" class="form-control" formControlName="nombre">
-        </div>
-        <div class="col-md-4">
-          <label for="dateOfBirth">Nro de Items</label>
-          <!-- <input type="number" class="form-control me-2" formControlName="nroItems" [value]="grupo.nroItems" [(ngModel)]="grupo.nroItems"> -->
-          <input type="text" class="form-control" formControlName="subgrupo">
-
-        </div>
-      </div>
-      <div class="row mt-3">
-        <div class="col-md-6">
-          <label for="dateOfBirth">Vida Util</label>
-          <!-- <input type="number" class="form-control me-2" formControlName="vidaUtil" [value]="grupo.vidaUtil" [(ngModel)]="grupo.vidaUtil"> -->
-          <input type="text" class="form-control" formControlName="estado">
-
-        </div>
-        <div class="col-md-6">
-          <label for="dateOfBirth">Cuenta</label>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-12">
-          <button role="button">Gurdar</button>
+          <input type="text" class="form-control" formControlName="descripcion" #input1 (input)="mayus(input1.value)">
+          <input type="text" formControlName="subgrupo">
         </div>
       </div>
       <div class="row mt-5">
@@ -60,7 +39,7 @@
       </h3>
       <div
         class="card-toolbar" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover" title="Click to add a user" >
-        <a class="btn btn-sm btn-light-primary" (click)="openModal(content)">
+        <a class="btn btn-sm btn-light-primary" (click)="openModal(content, subGrupoReset)">
         <!-- <a class="btn btn-sm btn-light-primary"> -->
           <span [inlineSVG]="'./assets/media/icons/duotune/arrows/arr075.svg'" class="svg-icon svg-icon-3" ></span>
           Nuevo Sub Grupo
@@ -90,9 +69,9 @@
               <td>{{ subgrupo.grupo.descripcion }}</td>
               <td>{{ subgrupo.fecha }}</td>
               <td class="text-end">
-                <button class="btn btn-warning btn-icon btn-sm me-1" ><i class="fas fa-edit"></i></button>
+                <button class="btn btn-warning btn-icon btn-sm me-1" (click)="openModal(content, subgrupo)"><i class="fas fa-edit"></i></button>
                 <button class="btn btn-info btn-icon btn-sm me-1" [routerLink]="['/grupo/subGrupo', subgrupo.grupo.idgrupo, subgrupo.idsubgrupo]" routerLinkActive="router-link-active" ><i class="fas fa-eye"></i></button>
-                <button class="btn btn-danger btn-icon btn-sm me-1"><i class="fas fa-trash"></i></button>
+                <button class="btn btn-danger btn-icon btn-sm me-1" (click)="eliminarSubGrupo(subgrupo)"><i class="fas fa-trash"></i></button>
               </td>
             </tr>
           </tbody>
