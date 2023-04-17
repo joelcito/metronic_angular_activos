@@ -1,6 +1,8 @@
 import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { formatDate } from '@angular/common';
+// import { map } from 'rxjs/operators';
+
 
 import { ActivoService } from '../activo.service';
 import { GrupoService } from '../../grupos/grupo.service';
@@ -43,6 +45,18 @@ export class DetalleComponent implements OnInit {
   idregional      :String = '0';
   idunidadmanejo  :String = '0';
 
+  // myObject: any;
+
+  DepGes:string;
+  ufvIni:string;
+  ufvFin:string;
+  precio:string;
+  cantMes:string;
+  ValorNeto:string;
+  costoActual:string;
+
+  defaultDate:String;
+  fechaMin:String;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -65,6 +79,10 @@ export class DetalleComponent implements OnInit {
     this.listaRegimen();
     this.listaRegional();
     this.listaUnidadManejos();
+
+    this.defaultDate = new Date().toISOString().substring(0,10)
+    this.fechaMin = new Date().toISOString().substring(0,10)
+
   }
 
   cargarActivo() {
@@ -160,6 +178,29 @@ export class DetalleComponent implements OnInit {
   onChangeDate(value:any) {
     console.log(value)
     // this.myDate = new Date(value);
+  }
+
+  calcularDepre(){
+
+    console.log((<HTMLInputElement>document.querySelector('#fechaValor')).value)
+
+    this.activatedRoute.params.subscribe(params => {
+      let id = params['id'];
+      if(id){
+        let fecha = (<HTMLInputElement>document.querySelector('#fechaValor')).value;
+        this.activoService.calculaDepre(id,fecha.toString()).subscribe(resul => {
+          this.DepGes       = resul.DepGes;
+          this.ufvIni       = resul.ufvIni;
+          this.ufvFin       = resul.ufvFin;
+          this.precio       = resul.precio+" Bs.";
+          this.cantMes      = resul.cantMes;
+          this.ValorNeto    = resul.ValorNeto;
+          this.costoActual  = resul.costoActual
+          console.log(resul)
+          this.chdr.detectChanges();
+        })
+      }
+    })
   }
 
 }

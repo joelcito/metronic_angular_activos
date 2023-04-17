@@ -20,6 +20,7 @@ export class Activo {
     estadoregistro:String = '';
 
     fechacompra:string = '';
+    precio:number = 0.0;
     // fechacompra:Date = new Date();
 
     ufv:String ='';

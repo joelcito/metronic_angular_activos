@@ -154,30 +154,37 @@
         </div>
       </div>
     </div>
-
-    <div class="row mt-3">
-      <div class="col-md-3">
+    <div class="row">
+      <div class="col-md-6">
         <div class="form-group">
           <label for="descripcion">Fecha Compra</label>
-          <!-- <input type="date" class="form-control" name="fechacompra" [(ngModel)]='activo.fechacompra|date:"yyyy-MM-dd"' (ngModelChange)='fecha=$event'> -->
           <input type="date" class="form-control" name="fechacompra" [ngModel]='activo.fechacompra|date:"yyyy-MM-dd"'>
         </div>
       </div>
-      <div class="col-md-3">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="descripcion">Precio Compra</label>
+          <input type="number" class="form-control" name="precio" [ngModel]='activo.precio'>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mt-3">
+      <div class="col-md-4">
         <div class="form-group">
           <label for="descripcion">UFV compra</label>
           <!-- <input type="text" class="form-control" name="ufv"> -->
           <input type="text" class="form-control" [(ngModel)]="activo.ufvcompra" name="ufvcompra">
         </div>
       </div>
-      <div class="col-md-3">
+      <div class="col-md-4">
         <div class="form-group">
           <label for="descripcion">Tasa de depreciacion</label>
           <!-- <input type="text" class="form-control" name="porcentaje_depreciacion"> -->
           <input type="text" class="form-control" [(ngModel)]="activo.porcentaje_depreciacion" name="porcentaje_depreciacion">
         </div>
       </div>
-      <div class="col-md-3">
+      <div class="col-md-4">
         <div class="form-group">
           <label for="descripcion">Vida util</label>
           <!-- <input type="text" class="form-control" name="vida_util"> -->
@@ -193,8 +200,19 @@
     </div>
     <hr>
     <h3 class="text-center text-primary">Historial de depreciacion del activo</h3>
+    <div class="row mt-5">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="descripcion">Fecha</label>
+          <input type="date" class="form-control" [value]="defaultDate" [max]="fechaMin" id="fechaValor">
+        </div>
+      </div>
+      <div class="col-md-6">
+        <button class="btn btn-warning w-100 btn-sm mt-6" (click)="calcularDepre()">CALCULAR DEPRE</button>
+      </div>
+    </div>
 
-    <div class="table-responsive">
+    <div class="table-responsive mt-3">
       <table class="table align-middle gs-0 gy-4">
           <thead>
               <tr class="fw-bold text-muted bg-light">
@@ -202,27 +220,44 @@
                   <th class="min-w-125px">fecha</th>
                   <th class="min-w-125px">UFV inicial</th>
                   <th class="min-w-125px">UFV Final</th>
-                  <th class="min-w-80px">Depreciacion</th>
+                  <!-- <th class="min-w-80px">Depreciacion</th> -->
+                  <th class="min-w-80px">Meses</th>
                   <th class="min-w-80px">Precio</th>
+                  <th class="min-w-80px">Cost Actualizado</th>
+                  <th class="min-w-80px">Valor Neto</th>
               </tr>
           </thead>
           <tbody>
-            <tr>
+            <!-- <tr>
               <td>2021</td>
-              <td><a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">05/01/2021</a></td>
-              <td><a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">.00152</a></td>
-              <td><a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">.0154</a></td>
-              <td><a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">85%</a></td>
-              <td><a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">2500 Bs.</a></td>
-          </tr>
-              <tr>
-                <td>2022</td>
-                <td><a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">05/01/2022</a></td>
-                <td><a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">.012154</a></td>
-                <td><a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">.1512</a></td>
-                <td><a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">75%</a></td>
-                <td><a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">2000 Bs.</a></td>
-              </tr>
+              <td><a class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">05/01/2021</a></td>
+              <td><a class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">.00152</a></td>
+              <td><a class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">.0154</a></td>
+              <td><a class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">12</a></td>
+              <td><a class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">2000 Bs.</a></td>
+              <td><a class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">2500 Bs.</a></td>
+              <td><a class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">2500 Bs.</a></td>
+            </tr>
+            <tr>
+              <td>2022</td>
+              <td><a class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">05/01/2022</a></td>
+              <td><a class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">.012154</a></td>
+              <td><a class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">.1512</a></td>
+              <td><a class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">11</a></td>
+              <td><a class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">2000 Bs.</a></td>
+              <td><a class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">2000 Bs.</a></td>
+              <td><a class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">2000 Bs.</a></td>
+            </tr> -->
+            <tr>
+              <td>{{ DepGes }}</td>
+              <td><a class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">17/04/2023</a></td>
+              <td><a class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">{{ ufvIni }}</a></td>
+              <td><a class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">{{ ufvFin }}</a></td>
+              <td><a class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">{{ cantMes }}</a></td>
+              <td><a class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">{{ precio }}</a></td>
+              <td><a class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">{{ costoActual }}</a></td>
+              <td><a class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">{{ ValorNeto }}</a></td>
+            </tr>
           </tbody>
       </table>
   </div>

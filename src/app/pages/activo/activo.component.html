@@ -6,34 +6,46 @@
 	</div>
 	<div class="modal-body">
     <form [formGroup]="activoForm" (ngSubmit)="createActivo()">
+
       <div class="row mt-5">
-        <div class="col-md-3">
-          <label for="dateOfBirth">Descripcion</label>
-          <input type="text" class="form-control me-2" [(ngModel)]="activo.descripcion" formControlName="descripcion">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+          <label for="dateOfBirth">CODIGO DE ACTIVO</label>
+          <input type="text" class="form-control" readonly [(ngModel)]="activo.codigo" formControlName="codigo">
         </div>
-        <div class="col-md-3">
-          <label for="dateOfBirth">Incorporacion</label>
-          <select class="form-control me-2" [(ngModel)]="activo.incorporacion" formControlName="incorporacion">
-            <option value="">Seleccione</option>
-            <option [ngValue]="incorporacion" *ngFor="let incorporacion of incorporaciones">{{ incorporacion.nombre }}</option>
-          </select>
-        </div>
-        <div class="col-md-3">
+        <div class="col-md-3"></div>
+      </div>
+
+      <div class="row mt-5">
+        <div class="col-md-4">
           <label for="dateOfBirth">Grupo</label>
           <select class="form-control me-2" (change)="buscarSubGrupo($event)" [(ngModel)]="activo.grupo" formControlName="grupo">
             <option value="">Seleecione</option>
             <option [ngValue]="grupo" *ngFor="let grupo of grupos">{{ grupo.descripcion }}</option>
           </select>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-4">
           <label for="dateOfBirth">Sub Grupo</label>
           <select class="form-control me-2" (change)="listarComponentes($event)" [(ngModel)]="activo.subgrupo" formControlName="subgrupo">
             <option value="">Seleccione</option>
             <option [ngValue]="subgrupo" *ngFor="let subgrupo of subGruposBuscados">{{ subgrupo.descripcion }}</option>
           </select>
         </div>
+        <div class="col-md-4">
+          <label for="dateOfBirth">Incorporacion</label>
+          <select class="form-control me-2" [(ngModel)]="activo.incorporacion" formControlName="incorporacion">
+            <option value="">Seleccione</option>
+            <option [ngValue]="incorporacion" *ngFor="let incorporacion of incorporaciones">{{ incorporacion.nombre }}</option>
+          </select>
+        </div>
       </div>
 
+      <div class="row mt-5">
+        <div class="col-md-12">
+          <label for="dateOfBirth">Descripcion</label>
+          <input type="text" class="form-control me-2" [(ngModel)]="activo.descripcion" formControlName="descripcion">
+        </div>
+      </div>
 
       <div class="row mt-5" *ngIf="componentesView">
         <div class="col" *ngFor="let componente of componentes;index as i">
@@ -42,35 +54,23 @@
         </div>
       </div>
 
-
       <div class="row mt-5">
         <div class="col-md-3">
-          <label for="dateOfBirth">Codigo</label>
-          <input type="text" class="form-control me-2" [(ngModel)]="activo.codigo" formControlName="codigo">
-        </div>
-
-        <!-- <div class="form-group col-lg-6">
-            <label for="">CODIGO AMP:</label>&nbsp;<label for="" style="color:#ff0000">*</label>
-            <input [formControl]="codigoInput" class="form-control" type="number" placeholder="CODIGO AMP">
-            <div class="alert alert-danger" *ngIf="codigoInput.invalid && (codigoInput.dirty || codigoInput.touched)">
-              <div *ngIf="codigoInput.hasError('required')">Este campo es requerido</div>
-            </div>
-        </div> -->
-
-        <div class="col-md-3">
-          <label for="dateOfBirth">Regimen</label>
-          <select class="form-control me-2" [(ngModel)]="activo.regimen" formControlName="regimen">
-            <option value="">Seleccione</option>
-            <option [ngValue]="regimen" *ngFor="let regimen of regimenes">{{ regimen.nombre }}</option>
-          </select>
-        </div>
-        <div class="col-md-3">
           <label for="dateOfBirth">Regional</label>
-          <select class="form-control me-2" [(ngModel)]="activo.regional" formControlName="regional">
+          <select class="form-control me-2" [(ngModel)]="activo.regional" formControlName="regional" (change)="generaCodRegional()">
             <option value="">Seleccione</option>
             <option [ngValue]="regional" *ngFor="let regional of regionales">{{ regional.nombre }}</option>
           </select>
         </div>
+
+        <div class="col-md-3">
+          <label for="dateOfBirth">Regimen</label>
+          <select class="form-control me-2" [(ngModel)]="activo.regimen" formControlName="regimen" (change)="generaCodRegimen()">
+            <option value="">Seleccione</option>
+            <option [ngValue]="regimen" *ngFor="let regimen of regimenes">{{ regimen.nombre }}</option>
+          </select>
+        </div>
+
         <div class="col-md-3">
           <label for="dateOfBirth">Unidad de manejo</label>
           <select class="form-control me-2" [(ngModel)]="activo.unidadmanejo" formControlName="unidadmanejo">
@@ -78,13 +78,13 @@
             <option [ngValue]="uniManejo" *ngFor="let uniManejo of unidadManejos">{{ uniManejo.descripcion }}</option>
           </select>
         </div>
-      </div>
-      <div class="row mt-5">
         <div class="col-md-3">
-          <label for="dateOfBirth">Placa</label>
+          <label for="dateOfBirth">Codigo Patrimonial</label>
           <input type="text" class="form-control me-2" [(ngModel)]="activo.placa" formControlName="placa">
         </div>
-        <div class="col-md-3">
+      </div>
+      <div class="row mt-5">
+        <div class="col-md-4">
           <label for="dateOfBirth">Eficiencia</label>
           <select class="form-control me-2" [(ngModel)]="activo.eficiencia" formControlName="eficiencia">
             <option value="">Seleccione</option>
@@ -95,7 +95,7 @@
             <option value="Para Baja">Para Baja</option>
           </select>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-4">
           <label for="dateOfBirth">Forma Inicial</label>
           <select class="form-control me-2" [(ngModel)]="activo.formainicial" formControlName="formainicial">
             <option value="">Seleccione</option>
@@ -103,7 +103,7 @@
             <option value="Inc. Transferencia">Inc. Transferencia</option>
           </select>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-4">
           <label for="dateOfBirth">Estado de Registro</label>
           <select class="form-control me-2" [(ngModel)]="activo.estadoregistro" formControlName="estadoregistro">
             <option value="">Seleccione</option>
@@ -113,19 +113,25 @@
         </div>
       </div>
       <div class="row mt-5">
-        <div class="col-md-3">
+        <div class="col-md-6">
           <label for="dateOfBirth">Fecha de Compra</label>
           <input type="date" class="form-control me-2" [(ngModel)]="activo.fechacompra" formControlName="fechacompra">
         </div>
-        <div class="col-md-3">
+        <div class="col-md-6">
+          <label for="dateOfBirth">Precio</label>
+          <input type="number" class="form-control me-2" [(ngModel)]="activo.precio" formControlName="precio">
+        </div>
+      </div>
+      <div class="row mt-5">
+        <div class="col-md-4">
           <label for="dateOfBirth">UFV de compra</label>
           <input type="number" class="form-control me-2" [(ngModel)]="activo.ufvcompra" formControlName="ufvcompra">
         </div>
-        <div class="col-md-3">
+        <div class="col-md-4">
           <label for="dateOfBirth">Tasa de depreciacion</label>
           <input type="number" class="form-control me-2" [(ngModel)]="activo.porcentaje_depreciacion" formControlName="porcentaje_depreciacion">
         </div>
-        <div class="col-md-3">
+        <div class="col-md-4">
           <label for="dateOfBirth">Vida Util (meses)</label>
           <input type="number" class="form-control me-2" [(ngModel)]="activo.vida_util" formControlName="vida_util">
         </div>

@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { RegionalComponent } from './regional.component';
+import { CuentaComponent } from './cuenta.component';
+
 
 
 @NgModule({
@@ -9,8 +10,8 @@ import { RegionalComponent } from './regional.component';
   imports: [
     CommonModule,
     RouterModule.forChild([
-      {path: 'listado', component: RegionalComponent},
+      {path: 'listado', component: CuentaComponent},
     ])
   ]
 })
-export class RegionalModule { }
+export class CuentaModule { }

@@ -23,11 +23,41 @@ const Routing: Routes = [
     loadChildren: () =>
       import('./grupos/grupo.module').then((m) => m.GrupoModule),
   },
-  // {
-  //   path: 'componente',
-  //   loadChildren: () =>
-  //     import('./grupos/grupo.module').then((m) => m.GrupoModule),
-  // },
+  {
+    path: 'regimen',
+    loadChildren: () =>
+      import('./regimen/regimen.module').then((m) => m.RegimenModule),
+  },
+  {
+    path: 'cuenta',
+    loadChildren: () =>
+      import('./cuenta/cuenta.module').then((m) => m.CuentaModule),
+  },
+  {
+    path: 'departamento',
+    loadChildren: () =>
+      import('./departamento/departamento.module').then((m) => m.DepartamentoModule),
+  },
+  {
+    path: 'incorporacion',
+    loadChildren: () =>
+      import('./incorporacion/incorporacion.module').then((m) => m.IncorporacionModule),
+  },
+  {
+    path: 'partida',
+    loadChildren: () =>
+      import('./partida/partida.module').then((m) => m.PartidaModule),
+  },
+  {
+    path: 'regional',
+    loadChildren: () =>
+      import('./regional/regional.module').then((m) => m.RegionalModule),
+  },
+  {
+    path: 'transaccion',
+    loadChildren: () =>
+      import('./regional/regional.module').then((m) => m.RegionalModule),
+  },
   // aqui termina de joel
 
   {

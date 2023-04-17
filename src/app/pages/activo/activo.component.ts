@@ -65,6 +65,12 @@ export class ActivoComponent implements OnInit {
 
   data:any = [];
 
+  codRegional:String = "";
+  codRegimen:String = "";
+  codGrupo:String = "";
+  codCorrelativo:String = "";
+
+
   @Input() ActivoDevuelto:Activo = new Activo();
 
   @Input() activo: Activo = new Activo();
@@ -83,6 +89,7 @@ export class ActivoComponent implements OnInit {
     formainicial:new FormControl(''),
     estadoregistro:new FormControl(''),
     fechacompra:new FormControl(''),
+    precio:new FormControl(''),
     ufvcompra:new FormControl(''),
     porcentaje_depreciacion:new FormControl(''),
     vida_util:new FormControl(''),
@@ -117,11 +124,14 @@ export class ActivoComponent implements OnInit {
     this.listaUnidadManejos()
     this.listaRegimen()
     this.listaRegional()
+
+    // this.defaultDate = new Date().toISOString().toString()
   }
 
   listaActivos(){
     this.activoService.getActivos().subscribe(result => {
       this.activos = result
+      console.log(this.activos);
       this.chdr.detectChanges()
     })
   }
@@ -169,6 +179,9 @@ export class ActivoComponent implements OnInit {
   }
   buscarSubGrupo($evento:any){
     this.buscaSubGruposPorGrupo(this.activo.grupo.idgrupo);
+    this.codGrupo = this.activo.grupo.idgrupo;
+    let nueCodNew = String("COS-"+this.codRegional+"-"+this.codRegimen+"-"+this.codGrupo+"-151");
+    this.activoForm.get('codigo')?.setValue(nueCodNew);
     this.componentesView = false;
   }
 
@@ -233,7 +246,6 @@ export class ActivoComponent implements OnInit {
 	}
 
   createActivo(){
-
     this.activoService.create(this.activo).subscribe(resul => {
 
       let datos:String = "";
@@ -286,5 +298,19 @@ export class ActivoComponent implements OnInit {
         })
       }
     })
+  }
+
+  generaCodRegimen(){
+    let dato = JSON.parse(JSON.stringify(this.activoForm.value.regimen)).idregimen;
+    this.codRegimen = dato;
+    let nueCodNew = String("COS-"+this.codRegional+"-"+dato+"-"+this.codGrupo+"-151");
+    this.activoForm.get('codigo')?.setValue(nueCodNew);
+  }
+
+  generaCodRegional(){
+    let dato = JSON.parse(JSON.stringify(this.activoForm.value.regional)).idregional;
+    this.codRegional = dato;
+    let nueCodNew = String("COS-"+dato+"-"+this.codRegimen+"-"+this.codGrupo+"-151");
+    this.activoForm.get('codigo')?.setValue(nueCodNew);
   }
 }

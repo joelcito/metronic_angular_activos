@@ -32,4 +32,14 @@ export class ActivoService {
     return this.http.get<Activo>(this.urlEndPoint+"/"+id)
   }
 
+  calculaDepre(id:String, fecha:String){
+    // return this.http.get(`${this.urlEndPoint}/calculaDepre/${id}`);
+    return this.http.get(`${this.urlEndPoint}/calculaDepre/${id}/${fecha}`).pipe(map(res => JSON.parse(JSON.stringify(res))));
+  }
+
+  // sacarDepre(id:String):Observable<string>{
+  //   return this.http.get<string>(this.urlEndPoint+"/calculaDepre/"+id);
+  //   // return this.http.get<string>(this.urlEndPoint+"/calculaDepre/"+id);
+  // }
+
 }

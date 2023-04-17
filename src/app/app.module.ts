@@ -20,6 +20,8 @@ import { RegimenComponent } from './pages/regimen/regimen.component';
 import { RegionalComponent } from './pages/regional/regional.component';
 import { DepartamentoComponent } from './pages/departamento/departamento.component';
 import { CaracteristicaComponent } from './pages/caracteristica/caracteristica.component';
+import { PartidaComponent } from './pages/partida/partida.component';
+import { TransaccionComponent } from './pages/transaccion/transaccion.component';
 // #fake-end#
 
 // import { ActivoModule } from './pages/activo/activo.module';
@@ -42,7 +44,10 @@ function appInitializer(authService: AuthService) {
                   RegimenComponent,
                   RegionalComponent,
                   DepartamentoComponent,
-                  CaracteristicaComponent],
+                  CaracteristicaComponent,
+                  PartidaComponent,
+                  TransaccionComponent,
+                  ],
   // declarations: [AppComponent, GrupoComponent],
   imports: [
     BrowserModule,
