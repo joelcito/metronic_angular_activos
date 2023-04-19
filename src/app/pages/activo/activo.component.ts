@@ -21,6 +21,7 @@ import { UnidadManejoService } from '../unidad-manejo/unidad-manejo.service';
 import { RegimenService } from '../regimen/regimen.service';
 import { RegionalService } from '../regional/regional.service';
 import { CaracteristicaService } from '../caracteristica/caracteristica.service';
+import { UfvService } from '../ufv/ufv.service';
 
 import swal from 'sweetalert2';
 import { map } from 'rxjs';
@@ -70,6 +71,8 @@ export class ActivoComponent implements OnInit {
   codGrupo:String = "";
   codCorrelativo:String = "";
 
+  maxValFecha:String;
+
 
   @Input() ActivoDevuelto:Activo = new Activo();
 
@@ -111,7 +114,8 @@ export class ActivoComponent implements OnInit {
     private unidadMaejoService:UnidadManejoService,
     private regimenService:RegimenService,
     private regionalService:RegionalService,
-    private caracteristicaService:CaracteristicaService
+    private caracteristicaService:CaracteristicaService,
+    private ufvService:UfvService
 
   ){
   }
@@ -125,7 +129,7 @@ export class ActivoComponent implements OnInit {
     this.listaRegimen()
     this.listaRegional()
 
-    // this.defaultDate = new Date().toISOString().toString()
+    this.maxValFecha = new Date().toISOString().substring(0,10)
   }
 
   listaActivos(){
@@ -312,5 +316,20 @@ export class ActivoComponent implements OnInit {
     this.codRegional = dato;
     let nueCodNew = String("COS-"+dato+"-"+this.codRegimen+"-"+this.codGrupo+"-151");
     this.activoForm.get('codigo')?.setValue(nueCodNew);
+  }
+
+  sacaUfv(){
+    if(this.activoForm.value.fechacompra){
+      let fecha = (this.activoForm.value.fechacompra)?.toString() ;
+      if(fecha){
+        this.ufvService.getUfvByFecha(fecha).subscribe(res => {
+          if(res){
+            this.activoForm.get('ufvcompra')?.setValue(String(res.valor));
+          }else{
+            console.log("denotr del sub cribes")
+          }
+        })
+      }
+    }
   }
 }

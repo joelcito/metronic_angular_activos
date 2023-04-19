@@ -1,7 +1,9 @@
 import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { formatDate } from '@angular/common';
+import { formatDate,DatePipe } from '@angular/common';
 // import { map } from 'rxjs/operators';
+import { FormGroup, FormControl } from '@angular/forms';
+
 
 
 import { ActivoService } from '../activo.service';
@@ -12,6 +14,7 @@ import { UnidadManejoService } from '../../unidad-manejo/unidad-manejo.service';
 import { RegimenService } from '../../regimen/regimen.service';
 import { RegionalService } from '../../regional/regional.service';
 import { CaracteristicaService } from '../../caracteristica/caracteristica.service';
+import { UfvService } from '../../ufv/ufv.service';
 
 
 import { Activo } from '../activo';
@@ -55,8 +58,28 @@ export class DetalleComponent implements OnInit {
   ValorNeto:string;
   costoActual:string;
 
+
+  PERDepGes:string;
+  PERufvIni:string;
+  PERufvFin:string;
+  PERprecio:string;
+  PERcantMes:string;
+  PERValorNeto:string;
+  PERcostoActual:string;
+
+
   defaultDate:String;
   fechaMin:String;
+  valorFechaIni:String;
+  depreValorMaxFechaFin:String;
+
+  depreciacionForm = new FormGroup({
+    depreActivoId: new FormControl(''),
+    depreFechaIni: new FormControl(''),
+    depreUfvIni: new FormControl(''),
+    depreFechaFin: new FormControl(''),
+    depreUfvFin: new FormControl(''),
+  });
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -68,7 +91,10 @@ export class DetalleComponent implements OnInit {
     private unidadMaejoService:UnidadManejoService,
     private regimenService:RegimenService,
     private regionalService:RegionalService,
-    private caracteristicaService:CaracteristicaService
+    private caracteristicaService:CaracteristicaService,
+    private ufvService:UfvService,
+
+    private datePipe:DatePipe
 
   ) { }
 
@@ -81,7 +107,9 @@ export class DetalleComponent implements OnInit {
     this.listaUnidadManejos();
 
     this.defaultDate = new Date().toISOString().substring(0,10)
-    this.fechaMin = new Date().toISOString().substring(0,10)
+    // this.fechaMin = new Date().toISOString().substring(0,10)
+    this.depreValorMaxFechaFin = new Date().toISOString().substring(0,10)
+
 
   }
 
@@ -91,7 +119,7 @@ export class DetalleComponent implements OnInit {
       if(id){
         this.activoService.getActivo(id.toString()).subscribe(activo => {
           this.activo = activo;
-          // console.log("este = ",activo)
+          console.log("este = ",activo)
           if(activo.grupo){
             this.idGrupo = activo.grupo.idgrupo;
             let idgrupoB = activo.grupo.idgrupo.toString();
@@ -100,6 +128,13 @@ export class DetalleComponent implements OnInit {
               this.chdr.detectChanges();
             })
           }
+
+          // valores para la depreciacion
+          this.valorFechaIni = new Date(activo.fechacompra.toString()).toISOString().substring(0,10);
+          this.depreciacionForm.get('depreFechaIni')?.setValue(String(this.valorFechaIni))
+          this.depreciacionForm.get('depreUfvIni')?.setValue(String(activo.ufvcompra))
+          this.depreciacionForm.get('depreActivoId')?.setValue(String(activo.idactivo))
+          // END valores para la depreciacion
 
           if(activo.subgrupo){
             this.idSubGrupo = activo.subgrupo.idsubgrupo
@@ -121,11 +156,11 @@ export class DetalleComponent implements OnInit {
 
         this.caracteristicaService.getCaracteristicasByIdActivo(id).subscribe(res => {
           this.caracteristicas = res;
-          console.log(this.caracteristicas,res)
+          // console.log(this.caracteristicas,res)
           // this.chdr.detectChanges();
         })
 
-        console.log(this.caracteristicas)
+        // console.log(this.caracteristicas)
 
       }else{
         console.log("n che");
@@ -177,7 +212,6 @@ export class DetalleComponent implements OnInit {
 
   onChangeDate(value:any) {
     console.log(value)
-    // this.myDate = new Date(value);
   }
 
   calcularDepre(){
@@ -192,10 +226,10 @@ export class DetalleComponent implements OnInit {
           this.DepGes       = resul.DepGes;
           this.ufvIni       = resul.ufvIni;
           this.ufvFin       = resul.ufvFin;
-          this.precio       = resul.precio+" Bs.";
+          this.precio       = resul.precio;
           this.cantMes      = resul.cantMes;
           this.ValorNeto    = resul.ValorNeto;
-          this.costoActual  = resul.costoActual
+          this.costoActual  = resul.costoActual;
           console.log(resul)
           this.chdr.detectChanges();
         })
@@ -203,4 +237,34 @@ export class DetalleComponent implements OnInit {
     })
   }
 
+  calcularDeprePersonalizado(){
+    // console.log(this.depreciacionForm.value)
+    let json =  JSON.stringify(this.depreciacionForm.value);
+    this.activoService.calculaDepreModificable(json).subscribe(resul => {
+      this.PERDepGes       = resul.DepGes;
+      this.PERufvIni       = resul.ufvIni;
+      this.PERufvFin       = resul.ufvFin;
+      this.PERprecio       = resul.precio;
+      this.PERcantMes      = resul.cantMes;
+      this.PERValorNeto    = resul.ValorNeto;
+      this.PERcostoActual  = resul.costoActual;
+      console.log(resul)
+      this.chdr.detectChanges();
+    })
+  }
+
+  sacaUfv(){
+    if(this.depreciacionForm.value.depreFechaFin){
+      let fecha = (this.depreciacionForm.value.depreFechaFin)?.toString() ;
+      if(fecha){
+        this.ufvService.getUfvByFecha(fecha).subscribe(res => {
+          if(res){
+            this.depreciacionForm.get('depreUfvFin')?.setValue(String(res.valor))
+          }else{
+            console.log("denotr del sub cribes")
+          }
+        })
+      }
+    }
+  }
 }

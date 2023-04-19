@@ -6,6 +6,9 @@ import { InlineSVGModule } from 'ng-inline-svg-2';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DetalleComponent } from './detalle/detalle.component';
 
+import { DatePipe } from '@angular/common';
+
+
 
 @NgModule({
   declarations: [ActivoComponent, DetalleComponent],
@@ -20,6 +23,9 @@ import { DetalleComponent } from './detalle/detalle.component';
       {path: 'detalle/:id', component: DetalleComponent}
     ]),
   ],
+  providers:[
+    DatePipe
+  ]
 
 })
 

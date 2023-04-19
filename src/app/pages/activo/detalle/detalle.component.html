@@ -195,11 +195,48 @@
     <div class="row mt-3">
       <div class="col-md-12">
         <button class="btn btn-success w-100">Editar Activo</button>
-        <!-- <button class="btn btn-success w-100" (click)="editar()">Editar Activo</button> -->
       </div>
     </div>
     <hr>
     <h3 class="text-center text-primary">Historial de depreciacion del activo</h3>
+
+    <form [formGroup]="depreciacionForm">
+      <div class="row mt-5">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="descripcion">FECHA INICIO</label>
+            <input type="date" class="form-control" [value]="valorFechaIni" formControlName="depreFechaIni">
+            <input type="text" formControlName="depreActivoId">
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="descripcion">VALOR UFV</label>
+            <input type="number" class="form-control" formControlName="depreUfvIni">
+          </div>
+        </div>
+      </div>
+      <div class="row mt-5">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="descripcion">FECHA FIN</label>
+            <input type="date" class="form-control" formControlName="depreFechaFin" [max]="depreValorMaxFechaFin" (change)="sacaUfv()">
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="descripcion">VALOR UFV</label>
+            <input type="number" class="form-control" formControlName="depreUfvFin">
+          </div>
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="col-md-12">
+          <button class="btn btn-sm w-100 btn-warning" (click)="calcularDeprePersonalizado()">CALCULAR DEPRESIACION</button>
+        </div>
+      </div>
+    </form>
+
     <div class="row mt-5">
       <div class="col-md-6">
         <div class="form-group">
@@ -257,6 +294,16 @@
               <td><a class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">{{ precio }}</a></td>
               <td><a class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">{{ costoActual }}</a></td>
               <td><a class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">{{ ValorNeto }}</a></td>
+            </tr>
+            <tr class="bg-success">
+              <td>{{ PERDepGes }}</td>
+              <td><a class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">17/04/2023</a></td>
+              <td><a class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">{{ PERufvIni }}</a></td>
+              <td><a class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">{{ PERufvFin }}</a></td>
+              <td><a class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">{{ PERcantMes }}</a></td>
+              <td><a class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">{{ PERprecio }}</a></td>
+              <td><a class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">{{ PERcostoActual }}</a></td>
+              <td><a class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">{{ PERValorNeto }}</a></td>
             </tr>
           </tbody>
       </table>

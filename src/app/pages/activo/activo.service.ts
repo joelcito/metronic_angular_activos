@@ -33,13 +33,10 @@ export class ActivoService {
   }
 
   calculaDepre(id:String, fecha:String){
-    // return this.http.get(`${this.urlEndPoint}/calculaDepre/${id}`);
     return this.http.get(`${this.urlEndPoint}/calculaDepre/${id}/${fecha}`).pipe(map(res => JSON.parse(JSON.stringify(res))));
   }
-
-  // sacarDepre(id:String):Observable<string>{
-  //   return this.http.get<string>(this.urlEndPoint+"/calculaDepre/"+id);
-  //   // return this.http.get<string>(this.urlEndPoint+"/calculaDepre/"+id);
-  // }
-
+  calculaDepreModificable(json:string){
+    return this.http.post(`${this.urlEndPoint}/calculaDepreModificable`, json,{headers: this.httpHeaders}).pipe(map(rest => JSON.parse(JSON.stringify(rest)))
+    )
+  }
 }

@@ -22,6 +22,7 @@ import { DepartamentoComponent } from './pages/departamento/departamento.compone
 import { CaracteristicaComponent } from './pages/caracteristica/caracteristica.component';
 import { PartidaComponent } from './pages/partida/partida.component';
 import { TransaccionComponent } from './pages/transaccion/transaccion.component';
+import { UfvComponent } from './pages/ufv/ufv.component';
 // #fake-end#
 
 // import { ActivoModule } from './pages/activo/activo.module';
@@ -45,8 +46,9 @@ function appInitializer(authService: AuthService) {
                   RegionalComponent,
                   DepartamentoComponent,
                   CaracteristicaComponent,
-                  PartidaComponent,
+                  // PartidaComponent,
                   TransaccionComponent,
+                  UfvComponent,
                   ],
   // declarations: [AppComponent, GrupoComponent],
   imports: [

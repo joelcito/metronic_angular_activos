@@ -115,7 +115,7 @@
       <div class="row mt-5">
         <div class="col-md-6">
           <label for="dateOfBirth">Fecha de Compra</label>
-          <input type="date" class="form-control me-2" [(ngModel)]="activo.fechacompra" formControlName="fechacompra">
+          <input type="date" class="form-control me-2" [(ngModel)]="activo.fechacompra" formControlName="fechacompra" (change)="sacaUfv()" [max]="maxValFecha">
         </div>
         <div class="col-md-6">
           <label for="dateOfBirth">Precio</label>
@@ -125,7 +125,7 @@
       <div class="row mt-5">
         <div class="col-md-4">
           <label for="dateOfBirth">UFV de compra</label>
-          <input type="number" class="form-control me-2" [(ngModel)]="activo.ufvcompra" formControlName="ufvcompra">
+          <input type="number" class="form-control me-2" [(ngModel)]="activo.ufvcompra" formControlName="ufvcompra" readonly>
         </div>
         <div class="col-md-4">
           <label for="dateOfBirth">Tasa de depreciacion</label>
