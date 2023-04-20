@@ -1,48 +1,61 @@
 import { Component, Input, OnInit, ChangeDetectorRef, NgZone } from '@angular/core';
-import { Grupo } from './grupo';
-import { GrupoService } from './grupo.service';
-
 import { ModalDismissReasons, NgbDatepickerModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormGroup, FormControl } from '@angular/forms';
 import swal from 'sweetalert2';
+
+import { Cuenta } from '../cuenta/cuenta';
+import { Grupo } from './grupo';
+
+import { CuentaService } from '../cuenta/cuenta.service';
+import { GrupoService } from './grupo.service';
 @Component({
   selector: 'app-grupos',
   templateUrl: './grupos.component.html',
 })
 export class GrupoComponent implements OnInit {
 
-  // grupos:any[] = [];
   grupos:Grupo[];
   eliminado:Boolean = false;
   closeResult = '';
   mostrar:Boolean = false;
+  cuentas:Cuenta[];
 
-  @Input() grupo:Grupo = new Grupo();
-  @Input() grupoReset:Grupo = new Grupo();
+  grupoReset:Grupo = new Grupo();
+
+  // @Input() grupo:Grupo = new Grupo();
+  // @Input() grupoReset:Grupo = new Grupo();
 
   grupoForm = new FormGroup({
     idgrupo: new FormControl(''),
     descripcion: new FormControl(''),
     nroItems: new FormControl(''),
     vidaUtil: new FormControl(''),
+    cuenta: new FormControl(''),
   });
 
   constructor(
     private grupoService: GrupoService,
     private modalService: NgbModal,
-    private chdr:ChangeDetectorRef
+    private chdr:ChangeDetectorRef,
+    private cuentaService:CuentaService
   ) {
   }
 
   ngOnInit(): void {
     this.cargarLista()
+    this.listaCuentas()
+  }
+
+  listaCuentas(){
+    this.cuentaService.getCuentas().subscribe(result =>{
+      this.cuentas = result
+    })
   }
 
   cargarLista(){
     this.grupoService.getGrupos().subscribe((result) => {
       this.grupos = result;
       this.chdr.detectChanges()
-      // console.log(this.grupos.length)
     });
 
     if(this.grupos){
@@ -55,23 +68,42 @@ export class GrupoComponent implements OnInit {
   }
 
   create(){
-    if(this.grupo.idgrupo){
-      console.log("si")
-      this.grupoService.upDate(this.grupo).subscribe(result => {
-        this.cargarLista();
+    let id = String(this.grupoForm.value.cuenta);
+    if(id){
+      this.cuentaService.getCuenta(id).subscribe(result => {
+        const grupoNew = new Grupo();
+        grupoNew.cuenta = result
+        grupoNew.descripcion = String(this.grupoForm.value.descripcion);
+        grupoNew.vidaUtil = String(this.grupoForm.value.vidaUtil)
+        grupoNew.nroItems = String(this.grupoForm.value.nroItems)
+        if(Number(this.grupoForm.value.idgrupo) === 0){
+          this.grupoService.crearGrupo(grupoNew).subscribe(result => {
+            this.cargarLista()
+          })
+        }else{
+          grupoNew.idgrupo = String(this.grupoForm.value.idgrupo)
+          this.grupoService.upDate(grupoNew).subscribe(result => {
+            this.cargarLista()
+          })
+        }
+      })
+      swal.fire({
+        icon: 'success',
+        title: 'Exito!',
+        text: 'Se registro con exito el grupo',
+        timer: 1500
       })
     }else{
-      console.log("no")
-      this.grupoService.crearGrupo(this.grupo).subscribe((grupo) => {
-        this.cargarLista();
+      swal.fire({
+        icon: 'error',
+        title: 'Error!',
+        text: 'Debe seleccionar una cuenta',
+        timer: 1500
       })
     }
-    swal.fire({
-      icon: 'success',
-      title: 'Exito!',
-      text: 'Se gurado con exito el grupo',
-      timer: 1500
-    })
+    setTimeout(() => {
+      this.modalService.dismissAll('content')
+    }, 1500);
   }
 
   public delete(idgrupo:String) {
@@ -99,11 +131,11 @@ export class GrupoComponent implements OnInit {
   }
 
   openLg(content:any, grupo:Grupo){
-
-    this.grupo.idgrupo     = grupo.idgrupo
-    this.grupo.descripcion = grupo.descripcion
-    this.grupo.nroItems    = grupo.nroItems
-    this.grupo.vidaUtil    = grupo.vidaUtil
+    this.grupoForm.get('idgrupo')?.setValue(String((grupo.idgrupo?grupo.idgrupo:'0')))
+    this.grupoForm.get('descripcion')?.setValue(String(grupo.descripcion))
+    this.grupoForm.get('nroItems')?.setValue(String(grupo.nroItems))
+    this.grupoForm.get('vidaUtil')?.setValue(String(grupo.vidaUtil))
+    this.grupoForm.get('cuenta')?.setValue(String(grupo.cuenta?grupo.cuenta.idcuenta:''))
 
     this.modalService.open(content, { size: 'lg' }).result.then(
       (result) => {

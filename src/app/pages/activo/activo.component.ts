@@ -187,6 +187,12 @@ export class ActivoComponent implements OnInit {
     let nueCodNew = String("COS-"+this.codRegional+"-"+this.codRegimen+"-"+this.codGrupo+"-151");
     this.activoForm.get('codigo')?.setValue(nueCodNew);
     this.componentesView = false;
+
+    console.log(this.activo.grupo)
+    this.activo.vida_util                 = this.activo.grupo.vidaUtil.toString()
+    this.activo.porcentaje_depreciacion   = String(100/Number(this.activo.grupo.vidaUtil))
+
+    console.log(this.activo.grupo.vidaUtil,100/Number(this.activo.grupo.vidaUtil),Number(this.activo.grupo.vidaUtil)/100)
   }
 
   buscarComponentePorSubGrupo(id:String){

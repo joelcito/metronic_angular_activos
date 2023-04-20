@@ -12,14 +12,22 @@
       <div class="row">
         <div class="col-md-6">
           <label for="dateOfBirth">Nombre</label>
-          <!-- <input type="text" class="form-control me-2" formControlName="nombre" id="input1" #input1 (input)="mostrarEnInput2(input1.value)">
-          <input type="hidden" id="subgrupo_id" formControlName="subgrupo">
-          <input type="hidden" formControlName="componente"> -->
+          <input type="text" class="form-control me-2" formControlName="nombre">
+          <input type="text" formControlName="partida">
         </div>
         <div class="col-md-6">
-          <label for="dateOfBirth">Identificador</label>
-          <!-- <input type="number" class="form-control me-2" formControlName="nroItems" [value]="grupo.nroItems" [(ngModel)]="grupo.nroItems"> -->
-          <!-- <input type="text" class="form-control me-2" id="input2" formControlName="estado" readonly> -->
+          <label for="dateOfBirth">Descripcion</label>
+          <input type="text" class="form-control me-2" formControlName="descripcion">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <label for="dateOfBirth">Debe</label>
+          <input type="text" class="form-control me-2" formControlName="debe">
+        </div>
+        <div class="col-md-6">
+          <label for="dateOfBirth">Haber</label>
+          <input type="text" class="form-control me-2" formControlName="haber">
         </div>
       </div>
       <div class="row mt-5">
@@ -39,16 +47,14 @@
   <div class="card-body">
     <div class="card-header border-0 pt-5">
       <h3 class="card-title align-items-start flex-column">
-        <span class="card-label fw-bolder fs-3 mb-1">Listado de Componentes</span>
+        <span class="card-label fw-bolder fs-3 mb-1">Listado de Partidas</span>
         <!-- <span class="text-muted mt-1 fw-bold fs-7">Registros</span> -->
       </h3>
       <div
         class="card-toolbar" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover" title="Click to add a user" >
-        <!-- <a class="btn btn-sm btn-light-primary" (click)="openLg(content,grupoReset)"> -->
         <a (click)="openModal(content, partidaReset)" class="btn btn-sm btn-light-primary">
-        <!-- <a href="#" class="btn btn-sm btn-light-primary"> -->
           <span [inlineSVG]="'./assets/media/icons/duotune/arrows/arr075.svg'" class="svg-icon svg-icon-3" ></span>
-          Nuevo Componente
+          Nueva Partida
         </a>
       </div>
     </div>
@@ -62,24 +68,25 @@
           <thead>
             <tr class="fw-bolder text-muted">
               <th class="min-w-40px">ID</th>
-              <th class="min-w-300px">NOMBRE</th>
-              <th class="min-w-300px">DESCRIPCION</th>
-              <th class="min-w-250px">DEBE</th>
-              <th class="min-w-200px">HABER</th>
+              <th class="min-w-200px">NOMBRE</th>
+              <th class="min-w-200px">DESCRIPCION</th>
+              <th class="min-w-150px">DEBE</th>
+              <th class="min-w-150px">HABER</th>
               <th class="min-w-200px text-end">Actions</th>
             </tr>
           </thead>
           <tbody>
-            <!-- <tr *ngFor="let componente of componentes">
-              <td>{{ componente.idcomponente }}</td>
-              <td>{{ componente.nombre }}</td>
-              <td>{{ componente.estado }}</td>
-              <td>{{ componente.fecha }}</td>
+            <tr *ngFor="let partida of partidas">
+              <td>{{ partida.idpartida }}</td>
+              <td>{{ partida.nombre }}</td>
+              <td>{{ partida.descripcion }}</td>
+              <td>{{ partida.debe }}</td>
+              <td>{{ partida.haber }}</td>
               <td class="text-end">
-                <button class="btn btn-warning btn-icon btn-sm me-1" (click)="openModal(content,componente)"><i class="fas fa-edit"></i></button>
-                <button class="btn btn-danger btn-icon btn-sm me-1"(click)="eliminarComponente(componente)" ><i class="fas fa-trash"></i></button>
+                <button class="btn btn-warning btn-icon btn-sm me-1" (click)="openModal(content,partida)"><i class="fas fa-edit"></i></button>
+                <button class="btn btn-danger btn-icon btn-sm me-1"(click)="eliminarComponente(partida)" ><i class="fas fa-trash"></i></button>
               </td>
-            </tr> -->
+            </tr>
           </tbody>
         </table>
       </div>

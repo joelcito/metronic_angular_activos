@@ -1,12 +1,12 @@
+import { Partida } from "../partida/partida";
+
 export class Cuenta {
-
-  // idgrupo:String      = '';
-  // // cuenta:String       = '';
-  // cuenta:null       = null;
-  // descripcion:String  = '';
-  // vidaUtil:String     = '';
-  // estado:String       = '';
-  // nroItems:String     = '';
-  // fecha:String        = '';
-
+  idcuenta:string         = '';
+  nombre:String           = '';
+  descripcion:String      = '';
+  nroCuenta:String       = '';
+  partida:Partida         =  new Partida();
+  fecha:Date              =  new  Date();
+  fechacreacion:Date      =  new  Date();
+  fechamodificacion:Date  =  new  Date();
 }

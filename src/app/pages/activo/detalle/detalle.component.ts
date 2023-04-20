@@ -119,7 +119,6 @@ export class DetalleComponent implements OnInit {
       if(id){
         this.activoService.getActivo(id.toString()).subscribe(activo => {
           this.activo = activo;
-          console.log("este = ",activo)
           if(activo.grupo){
             this.idGrupo = activo.grupo.idgrupo;
             let idgrupoB = activo.grupo.idgrupo.toString();
@@ -156,8 +155,6 @@ export class DetalleComponent implements OnInit {
 
         this.caracteristicaService.getCaracteristicasByIdActivo(id).subscribe(res => {
           this.caracteristicas = res;
-          // console.log(this.caracteristicas,res)
-          // this.chdr.detectChanges();
         })
 
         // console.log(this.caracteristicas)
@@ -211,12 +208,9 @@ export class DetalleComponent implements OnInit {
   }
 
   onChangeDate(value:any) {
-    console.log(value)
   }
 
   calcularDepre(){
-
-    console.log((<HTMLInputElement>document.querySelector('#fechaValor')).value)
 
     this.activatedRoute.params.subscribe(params => {
       let id = params['id'];
@@ -230,7 +224,6 @@ export class DetalleComponent implements OnInit {
           this.cantMes      = resul.cantMes;
           this.ValorNeto    = resul.ValorNeto;
           this.costoActual  = resul.costoActual;
-          console.log(resul)
           this.chdr.detectChanges();
         })
       }
@@ -238,7 +231,6 @@ export class DetalleComponent implements OnInit {
   }
 
   calcularDeprePersonalizado(){
-    // console.log(this.depreciacionForm.value)
     let json =  JSON.stringify(this.depreciacionForm.value);
     this.activoService.calculaDepreModificable(json).subscribe(resul => {
       this.PERDepGes       = resul.DepGes;
@@ -248,7 +240,6 @@ export class DetalleComponent implements OnInit {
       this.PERcantMes      = resul.cantMes;
       this.PERValorNeto    = resul.ValorNeto;
       this.PERcostoActual  = resul.costoActual;
-      console.log(resul)
       this.chdr.detectChanges();
     })
   }

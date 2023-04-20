@@ -1,21 +1,10 @@
+import { Cuenta } from "../cuenta/cuenta";
 export class Grupo {
     idgrupo:String      = '';
-    // cuenta:String       = '';
-    cuenta:null       = null;
+    cuenta:Cuenta = new Cuenta();
     descripcion:String  = '';
     vidaUtil:String     = '';
     estado:String       = '';
     nroItems:String     = '';
     fecha:String        = '';
 }
-
-// export interface Grupo {
-//   idgrupo:String    ,
-//   // cuenta:String   ,
-//   cuenta:null       ,
-//   descripcion:String ,
-//   vidaUtil:String    ,
-//   estado:String      ,
-//   nroItems:String    ,
-//   fecha:String       ,
-// }

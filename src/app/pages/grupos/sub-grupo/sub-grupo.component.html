@@ -14,7 +14,7 @@
           <!-- <input type="text" formControlName="idgrupo" [value]="grupo.idgrupo" [(ngModel)]="grupo.idgrupo">
           <input type="text" class="form-control me-2" formControlName="descripcion" [value]="grupo.descripcion" [(ngModel)]="grupo.descripcion"> -->
           <input type="text" class="form-control" formControlName="descripcion" #input1 (input)="mayus(input1.value)">
-          <input type="text" formControlName="subgrupo">
+          <input type="hidden" formControlName="subgrupo">
         </div>
       </div>
       <div class="row mt-5">

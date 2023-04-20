@@ -129,11 +129,11 @@
         </div>
         <div class="col-md-4">
           <label for="dateOfBirth">Tasa de depreciacion</label>
-          <input type="number" class="form-control me-2" [(ngModel)]="activo.porcentaje_depreciacion" formControlName="porcentaje_depreciacion">
+          <input type="number" class="form-control me-2" [(ngModel)]="activo.porcentaje_depreciacion" formControlName="porcentaje_depreciacion" readonly>
         </div>
         <div class="col-md-4">
-          <label for="dateOfBirth">Vida Util (meses)</label>
-          <input type="number" class="form-control me-2" [(ngModel)]="activo.vida_util" formControlName="vida_util">
+          <label for="dateOfBirth">Vida Util (años)</label>
+          <input type="number" class="form-control me-2" [(ngModel)]="activo.vida_util" formControlName="vida_util" readonly>
         </div>
       </div>
       <div class="row mt-5">
