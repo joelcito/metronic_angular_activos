@@ -156,9 +156,6 @@ export class DetalleComponent implements OnInit {
         this.caracteristicaService.getCaracteristicasByIdActivo(id).subscribe(res => {
           this.caracteristicas = res;
         })
-
-        // console.log(this.caracteristicas)
-
       }else{
         console.log("n che");
       }
