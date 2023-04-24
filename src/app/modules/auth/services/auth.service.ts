@@ -45,6 +45,8 @@ export class AuthService implements OnDestroy {
 
   // public methods
   login(email: string, password: string): Observable<UserType> {
+
+    // console.log(email, password)
     this.isLoadingSubject.next(true);
     return this.authHttpService.login(email, password).pipe(
       map((auth: AuthModel) => {
