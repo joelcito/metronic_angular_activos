@@ -127,26 +127,23 @@ export class DetalleComponent implements OnInit {
               this.chdr.detectChanges();
             })
           }
-
-          // valores para la depreciacion
-          this.valorFechaIni = new Date(activo.fechacompra.toString()).toISOString().substring(0,10);
+          // // valores para la depreciacion
+          if(activo.fechacompra){
+            this.valorFechaIni = new Date(activo.fechacompra.toString()).toISOString().substring(0,10);
+          }
           this.depreciacionForm.get('depreFechaIni')?.setValue(String(this.valorFechaIni))
           this.depreciacionForm.get('depreUfvIni')?.setValue(String(activo.ufvcompra))
           this.depreciacionForm.get('depreActivoId')?.setValue(String(activo.idactivo))
-          // END valores para la depreciacion
-
+          // // END valores para la depreciacion
           if(activo.subgrupo){
             this.idSubGrupo = activo.subgrupo.idsubgrupo
           }
-
           if(activo.regimen){
             this.idregimen = activo.regimen.idregimen
           }
-
           if(activo.regional){
             this.idregional = activo.regional.idregional
           }
-
           if(activo.unidadmanejo){
             this.idunidadmanejo = activo.unidadmanejo.idunidadmanejo;
           }

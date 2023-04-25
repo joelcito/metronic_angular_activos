@@ -41,6 +41,11 @@ export class SubGrupoComponent implements OnInit {
   cargarListaSubGrupo(){
     this.activatedRoute.params.subscribe(params => {
       let id = params['id'];
+
+
+      // console.log(id)
+
+
       if(id){
         this.subGrupoService.getSubGruposByIdGrupo(id.toString()).subscribe(result => {
           this.subGrupos = result

@@ -177,7 +177,9 @@ export class ActivoComponent implements OnInit {
   }
 
   buscaSubGruposPorGrupo(id:String) {
-    this.subGrupoService.getSubGruposByIdGrupo(id.toString()).subscribe(resul =>{
+
+    console.log(id.trim())
+    this.subGrupoService.getSubGruposByIdGrupo(id.toString().trim()).subscribe(resul =>{
       this.subGruposBuscados = resul;
     })
   }
