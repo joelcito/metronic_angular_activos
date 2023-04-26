@@ -24,6 +24,17 @@
             <option [ngValue]="grupo" *ngFor="let grupo of grupos">{{ grupo.descripcion }}</option>
           </select>
         </div>
+
+        <div class="col-md-4">
+          <label for="dateOfBirth">Tasa de depreciacion</label>
+          <input type="number" class="form-control me-2" [(ngModel)]="activo.porcentaje_depreciacion" formControlName="porcentaje_depreciacion" readonly>
+        </div>
+        <div class="col-md-4">
+          <label for="dateOfBirth">Vida Util (años)</label>
+          <input type="number" class="form-control me-2" [(ngModel)]="activo.vida_util" formControlName="vida_util" readonly>
+        </div>
+      </div>
+      <div class="row mt-5">
         <div class="col-md-4">
           <label for="dateOfBirth">Sub Grupo</label>
           <select class="form-control me-2" (change)="listarComponentes($event)" [(ngModel)]="activo.subgrupo" formControlName="subgrupo">
@@ -38,12 +49,16 @@
             <option [ngValue]="incorporacion" *ngFor="let incorporacion of incorporaciones">{{ incorporacion.nombre }}</option>
           </select>
         </div>
+
+
+
       </div>
 
       <div class="row mt-5">
         <div class="col-md-12">
           <label for="dateOfBirth">Descripcion</label>
-          <input type="text" class="form-control me-2" [(ngModel)]="activo.descripcion" formControlName="descripcion">
+          <!-- <input type="text" class="form-control me-2" [(ngModel)]="activo.descripcion" formControlName="descripcion"> -->
+          <textarea cols="30" rows="2" class="form-control me-2" [(ngModel)]="activo.descripcion" formControlName="descripcion"></textarea>
         </div>
       </div>
 
@@ -56,21 +71,19 @@
 
       <div class="row mt-5">
         <div class="col-md-3">
-          <label for="dateOfBirth">Regional</label>
-          <select class="form-control me-2" [(ngModel)]="activo.regional" formControlName="regional" (change)="generaCodRegional()">
-            <option value="">Seleccione</option>
-            <option [ngValue]="regional" *ngFor="let regional of regionales">{{ regional.nombre }}</option>
-          </select>
-        </div>
-
-        <div class="col-md-3">
           <label for="dateOfBirth">Regimen</label>
           <select class="form-control me-2" [(ngModel)]="activo.regimen" formControlName="regimen" (change)="generaCodRegimen()">
             <option value="">Seleccione</option>
             <option [ngValue]="regimen" *ngFor="let regimen of regimenes">{{ regimen.nombre }}</option>
           </select>
         </div>
-
+        <div class="col-md-3">
+          <label for="dateOfBirth">Regional</label>
+          <select class="form-control me-2" [(ngModel)]="activo.regional" formControlName="regional" (change)="generaCodRegional()">
+            <option value="">Seleccione</option>
+            <option [ngValue]="regional" *ngFor="let regional of regionales">{{ regional.nombre }}</option>
+          </select>
+        </div>
         <div class="col-md-3">
           <label for="dateOfBirth">Unidad de manejo</label>
           <select class="form-control me-2" [(ngModel)]="activo.unidadmanejo" formControlName="unidadmanejo">
@@ -78,10 +91,12 @@
             <option [ngValue]="uniManejo" *ngFor="let uniManejo of unidadManejos">{{ uniManejo.descripcion }}</option>
           </select>
         </div>
-        <div class="col-md-3">
+
+        <!-- <div class="col-md-3">
           <label for="dateOfBirth">Codigo Patrimonial</label>
           <input type="text" class="form-control me-2" [(ngModel)]="activo.placa" formControlName="placa">
-        </div>
+        </div> -->
+
       </div>
       <div class="row mt-5">
         <div class="col-md-4">
@@ -104,37 +119,27 @@
             <option value="Inc. Transferencia">Inc. Transferencia</option>
           </select>
         </div>
-        <div class="col-md-4">
+        <!-- <div class="col-md-4">
           <label for="dateOfBirth">Estado de Registro</label>
           <select class="form-control me-2" [(ngModel)]="activo.estadoregistro" formControlName="estadoregistro">
             <option value="">Seleccione</option>
             <option value="Aprobado">Aprobado</option>
             <option value="Anulado">Anulado</option>
           </select>
-        </div>
+        </div> -->
       </div>
       <div class="row mt-5">
-        <div class="col-md-6">
+        <div class="col-md-4">
           <label for="dateOfBirth">Fecha de Compra</label>
           <input type="date" class="form-control me-2" [(ngModel)]="activo.fechacompra" formControlName="fechacompra" (change)="sacaUfv()" [max]="maxValFecha">
         </div>
-        <div class="col-md-6">
+        <div class="col-md-4">
           <label for="dateOfBirth">Precio</label>
           <input type="number" class="form-control me-2" [(ngModel)]="activo.precio" formControlName="precio">
         </div>
-      </div>
-      <div class="row mt-5">
         <div class="col-md-4">
           <label for="dateOfBirth">UFV de compra</label>
           <input type="number" class="form-control me-2" [(ngModel)]="activo.ufvcompra" formControlName="ufvcompra">
-        </div>
-        <div class="col-md-4">
-          <label for="dateOfBirth">Tasa de depreciacion</label>
-          <input type="number" class="form-control me-2" [(ngModel)]="activo.porcentaje_depreciacion" formControlName="porcentaje_depreciacion" readonly>
-        </div>
-        <div class="col-md-4">
-          <label for="dateOfBirth">Vida Util (años)</label>
-          <input type="number" class="form-control me-2" [(ngModel)]="activo.vida_util" formControlName="vida_util" readonly>
         </div>
       </div>
       <div class="row mt-5">
