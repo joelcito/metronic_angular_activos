@@ -88,11 +88,12 @@
           <label for="dateOfBirth">Eficiencia</label>
           <select class="form-control me-2" [(ngModel)]="activo.eficiencia" formControlName="eficiencia">
             <option value="">Seleccione</option>
-            <option value="Nuevo">Nuevo</option>
-            <option value="Bueno">Bueno</option>
-            <option value="Regular">Regular</option>
-            <option value="Malo">Malo</option>
-            <option value="Para Baja">Para Baja</option>
+            <option value="Nuevo">A | Nuevo</option>
+            <option value="Bueno">B | Bueno</option>
+            <option value="Regular">C | Regular(+)</option>
+            <option value="Regular">D | Regular(-)</option>
+            <option value="Malo">E | Malo</option>
+            <option value="Para Baja">F | Para Baja</option>
           </select>
         </div>
         <div class="col-md-4">
@@ -125,7 +126,7 @@
       <div class="row mt-5">
         <div class="col-md-4">
           <label for="dateOfBirth">UFV de compra</label>
-          <input type="number" class="form-control me-2" [(ngModel)]="activo.ufvcompra" formControlName="ufvcompra" readonly>
+          <input type="number" class="form-control me-2" [(ngModel)]="activo.ufvcompra" formControlName="ufvcompra">
         </div>
         <div class="col-md-4">
           <label for="dateOfBirth">Tasa de depreciacion</label>
@@ -175,7 +176,7 @@
     <div class="card-body py-3">
       <div class="table-responsive">
         <div>
-          <div class="alert alert-danger">Sin datos de registro</div>
+          <!-- <div class="alert alert-danger">Sin datos de registro</div> -->
         </div>
         <table class="table table-row-dashed table-row-gray-300 align-middle gs-0 gy-4">
           <thead>
