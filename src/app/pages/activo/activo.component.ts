@@ -139,6 +139,8 @@ export class ActivoComponent implements OnInit {
       this.activosPer = resul
       this.chdr.detectChanges()
     })
+
+    
   }
 
   listaActivos(){
@@ -348,5 +350,17 @@ export class ActivoComponent implements OnInit {
         })
       }
     }
+  }
+
+  buscarActivo(codActivo:String, descripcionActivo:String){
+     this.activoService.buscarActivo(codActivo,descripcionActivo).subscribe(res => {
+      this.activosPer = res
+      console.log(res)
+      this.chdr.detectChanges()
+     })
+  }
+
+  convertirMayusculas(valor: any){
+    
   }
 }

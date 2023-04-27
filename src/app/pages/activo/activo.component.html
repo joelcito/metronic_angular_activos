@@ -4,7 +4,7 @@
 		<h4 class="modal-title" id="modal-basic-title">Formulario de Activo</h4>
 		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
 	</div>
-	<div class="modal-body">
+	<div class="modal-body" style="background-color: rgb(191, 222, 231);">
     <form [formGroup]="activoForm" (ngSubmit)="createActivo()">
 
       <div class="row mt-5">
@@ -58,7 +58,7 @@
         <div class="col-md-12">
           <label for="dateOfBirth">Descripcion</label>
           <!-- <input type="text" class="form-control me-2" [(ngModel)]="activo.descripcion" formControlName="descripcion"> -->
-          <textarea cols="30" rows="2" class="form-control me-2" [(ngModel)]="activo.descripcion" formControlName="descripcion"></textarea>
+          <textarea cols="30" rows="2" style="box-shadow: 0px 0px 5px #2c90b5;" class="form-control" [(ngModel)]="activo.descripcion" formControlName="descripcion"></textarea>
         </div>
       </div>
 
@@ -178,6 +178,20 @@
         </a>
       </div>
     </div>
+    <div class="row mt-5">
+      <div class="col-md-3">
+        <label for="dateOfBirth">CODIGO DE ACTIVO</label>
+        <!-- <input type="text" class="form-control" id="codigoActivo"> -->
+        <input type="text" class="form-control" #codigoActivo (keyup)="convertirMayusculas($event.target)">
+      </div>
+      <div class="col-md-5">
+        <label for="dateOfBirth">DESCRIPCION</label>
+        <input type="text" class="form-control" #descripcionActivo>
+      </div>
+      <div class="col-md-4 mt-6">
+        <button class="btn btn-success w-100" (click)="buscarActivo(codigoActivo.value, descripcionActivo.value)"><i class="fa fa-search"></i> Buscar</button>
+      </div>
+    </div>
     <div class="card-body py-3">
       <div class="table-responsive">
         <div>
@@ -198,17 +212,23 @@
               <th class="min-w-100px text-end">Actions</th>
             </tr> -->
             <tr class="fw-bolder text-muted">
-              <th>CODIGO</th>
+              <!-- <th>ID</th> -->
+              <th class="min-w-150px">CODIGO</th>
               <th>DESCRIPCION</th>
-              <th>PRECIO</th>
+              <th>ESTADO</th>
+              <th>FECHA COMPRA</th>
+              <th>REGIONAL</th>
               <th class="min-w-100px text-end">Actions</th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let actPer of activosPer">
-              <td>{{ actPer.idactivo }}</td>
+              <!-- <td>{{ actPer.idactivo }}</td> -->
+              <td>{{ actPer.codigo }}</td>
               <td>{{ actPer.descripcion }}</td>
-              <td>{{ actPer.precio }}</td>
+              <td>{{ actPer.estado }}</td>
+              <td>{{ actPer.fechacompra }}</td>
+              <td>{{ actPer.regional_id }}</td>
               <td class="text-end">
                 <button class="btn btn-info btn-icon btn-sm me-1" [routerLink]="['/activo/detalle', actPer.idactivo]" ><i class="fas fa-eye"></i></button>
                 <!-- <button class="btn btn-info btn-icon btn-sm me-1" [routerLink]="['/activo/detalle', activo.idactivo]" ><i class="fas fa-eye"></i></button> -->
