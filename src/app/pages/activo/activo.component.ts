@@ -74,6 +74,9 @@ export class ActivoComponent implements OnInit {
   maxValFecha:String;
 
 
+  activosPer: any[] = [];
+
+
   @Input() ActivoDevuelto:Activo = new Activo();
 
   @Input() activo: Activo = new Activo();
@@ -121,7 +124,7 @@ export class ActivoComponent implements OnInit {
   }
 
   ngOnInit(){
-    this.listaActivos()
+    //this.listaActivos()
     this.listaGrupos()
     this.listaSubGrupos()
     this.listaIncorporacion()
@@ -130,6 +133,12 @@ export class ActivoComponent implements OnInit {
     this.listaRegional()
 
     this.maxValFecha = new Date().toISOString().substring(0,10)
+
+    this.activoService.listarParsonalizado().subscribe(resul => {
+      console.log(resul)
+      this.activosPer = resul
+      this.chdr.detectChanges()
+    })
   }
 
   listaActivos(){

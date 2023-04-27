@@ -39,4 +39,16 @@ export class ActivoService {
     return this.http.post(`${this.urlEndPoint}/calculaDepreModificable`, json,{headers: this.httpHeaders}).pipe(map(rest => JSON.parse(JSON.stringify(rest)))
     )
   }
+
+  listarParsonalizado(){
+    return this.http.get<any[]>(this.urlEndPoint+"/listadoPer")
+  }
+
+  buscarActivo(idactivo:String, descripcion:String){
+    const datos = {
+      variable1: idactivo,
+      variable2: descripcion
+    };
+    return this.http.post<any[]>(this.urlEndPoint+"/buscaActivo",datos,{headers: this.httpHeaders})
+  }
 }
