@@ -101,6 +101,7 @@ export class ActivoComponent implements OnInit {
     porcentaje_depreciacion:new FormControl(''),
     vida_util:new FormControl(''),
     placa:new FormControl(''),
+    estado:new FormControl(''),
 
     // componentes:new FormControl([]),
   });
@@ -206,12 +207,7 @@ export class ActivoComponent implements OnInit {
     this.activo.vida_util                 = this.activo.grupo.vidaUtil.toString()
     this.activo.porcentaje_depreciacion   = String(100/Number(this.activo.grupo.vidaUtil))
 
-    // console.log(this.activo.grupo.vidaUtil,100/Number(this.activo.grupo.vidaUtil),Number(this.activo.grupo.vidaUtil)/100)
-
-    console.log("aqui a buscar lo demas");
-
     this.grupoService.getCuentaPartidaByIdGrupo(this.activo.grupo.idgrupo).subscribe(resul => {
-              console.log(resul);
       (document.querySelector('#cuentaContableId') as HTMLInputElement).value = resul.cuenta_id;
       (document.querySelector('#cuentaContableDescripcion') as HTMLInputElement).value = resul.des1;
       (document.querySelector('#partidaContableId') as HTMLInputElement).value = resul.cod1;

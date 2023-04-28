@@ -126,6 +126,13 @@ export class DetalleComponent implements OnInit {
               this.subGrupos = result;
               this.chdr.detectChanges();
             })
+
+            this.grupoService.getCuentaPartidaByIdGrupo(idgrupoB).subscribe(resul => {
+              (document.querySelector('#cuentaContableId') as HTMLInputElement).value = resul.cuenta_id;
+              (document.querySelector('#cuentaContableDescripcion') as HTMLInputElement).value = resul.des1;
+              (document.querySelector('#partidaContableId') as HTMLInputElement).value = resul.cod1;
+              (document.querySelector('#partidaContableDescipcion') as HTMLInputElement).value = resul.des2;
+            })
           }
           // // valores para la depreciacion
           if(activo.fechacompra){
@@ -145,6 +152,8 @@ export class DetalleComponent implements OnInit {
             this.idregional = activo.regional.idregional
           }
           if(activo.unidadmanejo){
+
+            console.log(activo.unidadmanejo.idunidadmanejo)
             this.idunidadmanejo = activo.unidadmanejo.idunidadmanejo;
           }
           this.chdr.detectChanges();

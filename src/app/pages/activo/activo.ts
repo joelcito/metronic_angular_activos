@@ -12,6 +12,7 @@ export class Activo {
     grupo:Grupo = new Grupo();
     subgrupo:SubGrupo = new SubGrupo();
     codigo:string = '';
+    codigoalterno:string = '';
     regimen:Regimen = new Regimen();
     regional:Regional = new Regional();
     unidadmanejo:UnidadManejo = new UnidadManejo();
