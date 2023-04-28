@@ -17,7 +17,7 @@
       </div>
 
       <div class="row mt-5">
-        <div class="col-md-4">
+        <div class="col-md-6">
           <label for="dateOfBirth">Grupo</label>
           <select class="form-control me-2" (change)="buscarSubGrupo($event)" [(ngModel)]="activo.grupo" formControlName="grupo">
             <option value="">Seleecione</option>
@@ -25,13 +25,39 @@
           </select>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-3">
           <label for="dateOfBirth">Tasa de depreciacion</label>
           <input type="number" class="form-control me-2" [(ngModel)]="activo.porcentaje_depreciacion" formControlName="porcentaje_depreciacion" readonly>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
           <label for="dateOfBirth">Vida Util (años)</label>
           <input type="number" class="form-control me-2" [(ngModel)]="activo.vida_util" formControlName="vida_util" readonly>
+        </div>
+      </div>
+      <div class="row mt-5">
+        <div class="col-md-6">
+          <div class="row">
+            <div class="col-md-3">
+              <label for="dateOfBirth">Cuenta Contable</label>
+              <input type="text" class="form-control" id="cuentaContableId" readonly>
+            </div>
+            <div class="col-md-9">
+              <label for="dateOfBirth">Descripcion</label>
+              <input type="text" class="form-control" id="cuentaContableDescripcion" readonly>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="row">
+            <div class="col-md-3">
+              <label for="dateOfBirth">Partida Presup</label>
+              <input type="text" class="form-control" id="partidaContableId" readonly>
+            </div>
+            <div class="col-md-9">
+              <label for="dateOfBirth">Descripcion</label>
+              <input type="text" class="form-control" id="partidaContableDescipcion" readonly>
+            </div>
+          </div>
         </div>
       </div>
       <div class="row mt-5">

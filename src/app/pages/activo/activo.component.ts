@@ -37,6 +37,7 @@ import { map } from 'rxjs';
 export class ActivoComponent implements OnInit {
   model: any;
   @ViewChild('form', { static: true }) form: NgForm;
+
   configLoading: boolean = false;
   resetLoading: boolean = false;
   tabla: boolean = false;
@@ -201,11 +202,21 @@ export class ActivoComponent implements OnInit {
     this.activoForm.get('codigo')?.setValue(nueCodNew);
     this.componentesView = false;
 
-    console.log(this.activo.grupo)
+    // console.log(this.activo.grupo)
     this.activo.vida_util                 = this.activo.grupo.vidaUtil.toString()
     this.activo.porcentaje_depreciacion   = String(100/Number(this.activo.grupo.vidaUtil))
 
-    console.log(this.activo.grupo.vidaUtil,100/Number(this.activo.grupo.vidaUtil),Number(this.activo.grupo.vidaUtil)/100)
+    // console.log(this.activo.grupo.vidaUtil,100/Number(this.activo.grupo.vidaUtil),Number(this.activo.grupo.vidaUtil)/100)
+
+    console.log("aqui a buscar lo demas");
+
+    this.grupoService.getCuentaPartidaByIdGrupo(this.activo.grupo.idgrupo).subscribe(resul => {
+              console.log(resul);
+      (document.querySelector('#cuentaContableId') as HTMLInputElement).value = resul.cuenta_id;
+      (document.querySelector('#cuentaContableDescripcion') as HTMLInputElement).value = resul.des1;
+      (document.querySelector('#partidaContableId') as HTMLInputElement).value = resul.cod1;
+      (document.querySelector('#partidaContableDescipcion') as HTMLInputElement).value = resul.des2;
+    })
   }
 
   buscarComponentePorSubGrupo(id:String){

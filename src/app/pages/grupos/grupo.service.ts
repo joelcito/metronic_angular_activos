@@ -11,6 +11,7 @@ import { Observable, Subject } from 'rxjs';
 export class GrupoService {
 
   private urlEndPoint:String = "http://localhost:9999/api/grupo";
+  private urlEndPointExterno:String = "http://localhost:9999/api/externo";
   private httpHeaders = new HttpHeaders({'Content-Type': 'application/json'});
 
   constructor(
@@ -43,5 +44,9 @@ export class GrupoService {
 
   getGrupoById(idgrupo:String){
     return this.http.get<Grupo>(`${this.urlEndPoint}/${idgrupo}`)
+  }
+
+  getCuentaPartidaByIdGrupo(idgrupo:String){
+    return this.http.get<any>(`${this.urlEndPointExterno}/getCuentaPartidaByIdGrupo/${idgrupo}`, {headers:this.httpHeaders})
   }
 }
