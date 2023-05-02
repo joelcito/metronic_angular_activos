@@ -127,6 +127,7 @@ export class ActivoComponent implements OnInit {
 
   ngOnInit(){
     //this.listaActivos()
+    this.listaActivosPersonalizado()
     this.listaGrupos()
     this.listaSubGrupos()
     this.listaIncorporacion()
@@ -136,11 +137,7 @@ export class ActivoComponent implements OnInit {
 
     this.maxValFecha = new Date().toISOString().substring(0,10)
 
-    this.activoService.listarParsonalizado().subscribe(resul => {
-      console.log(resul)
-      this.activosPer = resul
-      this.chdr.detectChanges()
-    })
+    
 
     
   }
@@ -149,6 +146,14 @@ export class ActivoComponent implements OnInit {
     this.activoService.getActivos().subscribe(result => {
       this.activos = result
       console.log(this.activos);
+      this.chdr.detectChanges()
+    })
+  }
+
+  listaActivosPersonalizado(){
+    this.activoService.listarParsonalizado().subscribe(resul => {
+      console.log(resul)
+      this.activosPer = resul
       this.chdr.detectChanges()
     })
   }
@@ -278,6 +283,8 @@ export class ActivoComponent implements OnInit {
   createActivo(){
     this.activoService.create(this.activo).subscribe(resul => {
 
+      console.log(resul)
+
       let datos:String = "";
 
       for (let index = 0; index < this.estados.length; index++) {
@@ -294,7 +301,9 @@ export class ActivoComponent implements OnInit {
       this.caracteristicaService.agregaJson(datos).subscribe(result => {
       })
 
-      this.listaActivos();
+      this.listaActivosPersonalizado()
+
+      //this.listaActivos();
 
       swal.fire({
         icon: 'success',
