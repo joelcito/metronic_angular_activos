@@ -10,9 +10,17 @@ import { Observable, Subject } from 'rxjs';
 })
 export class GrupoService {
 
-  private urlEndPoint:String = "http://localhost:9999/api/grupo";
-  private urlEndPointExterno:String = "http://localhost:9999/api/externo";
-  private httpHeaders = new HttpHeaders({'Content-Type': 'application/json'});
+  // private urlEndPoint:String = "http://localhost:9999/api/grupo";
+  // private urlEndPointExterno:String = "http://localhost:9999/api/externo";
+  
+  // private urlEndPoint:String = "http://10.150.10.23:9003/api/grupo";
+  private urlEndPoint:String = "api/grupo";
+  private urlEndPointExterno:String = "http://10.150.10.23:9003/api/externo";
+
+  private httpHeaders = new HttpHeaders({
+    'Content-Type': 'application/json',
+    // 'Access-Control-Allow-Origin': 'http://10.150.10.13'
+  });
 
   constructor(
     private http:HttpClient
@@ -24,6 +32,8 @@ export class GrupoService {
     // return this.http.get(`${this.urlEndPoint}/listado`).pipe(
     // )
     return this.http.get<Grupo[]>(`${this.urlEndPoint}/listado`)
+
+    // return this.http.get<Grupo[]>(`${this.urlEndPoint}/listado`)
   }
 
   crearGrupo(grupo: Grupo):Observable<Grupo>{

@@ -8,7 +8,9 @@ import { Observable } from 'rxjs';
 })
 export class SubGrupoService {
 
-  private urlEndPoint:String = "http://localhost:9999/api/subGrupo";
+  // private urlEndPoint:String = "http://localhost:9999/api/subGrupo";
+  // private urlEndPoint:String = "http://10.150.10.23:9003/api/subGrupo";
+  private urlEndPoint:String = "api/subGrupo";
   private httpHeaders = new HttpHeaders({'Content-Type': 'application/json'});
 
 

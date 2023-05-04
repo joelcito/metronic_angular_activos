@@ -55,17 +55,17 @@
       <div
         class="card-toolbar" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover" title="Click to add a user" >
         <!-- <a class="btn btn-sm btn-light-primary" (click)="openLg(content,grupoReset)"> -->
-        <a (click)="openModal(content, cuentaRest)" class="btn btn-sm btn-light-primary">
+        <!-- <a (click)="openModal(content, cuentaRest)" class="btn btn-sm btn-light-primary">
           <span [inlineSVG]="'./assets/media/icons/duotune/arrows/arr075.svg'" class="svg-icon svg-icon-3" ></span>
           Nueva Cuenta
-        </a>
+        </a> -->
       </div>
     </div>
     <div class="card-body py-3">
       <div class="table-responsive">
         <!-- <div *ngIf="mostrar"> -->
         <div>
-          <div class="alert alert-danger">Sin datos de registro</div>
+          <!-- <div class="alert alert-danger">Sin datos de registro</div> -->
         </div>
         <table class="table table-row-dashed table-row-gray-300 align-middle gs-0 gy-4 w-100">
           <thead>
@@ -75,7 +75,7 @@
               <th class="min-w-300px">DESCRIPCION</th>
               <th class="min-w-100px">NRO CUENTA</th>
               <th class="min-w-100px">PARTIDA</th>
-              <th class="min-w-200px text-end">Actions</th>
+              <!-- <th class="min-w-200px text-end">Actions</th> -->
             </tr>
           </thead>
           <tbody>
@@ -84,11 +84,11 @@
               <td>{{ cuenta.nombre }}</td>
               <td>{{ cuenta.descripcion }}</td>
               <td>{{ cuenta.nroCuenta }}</td>
-              <td>{{ cuenta.partida.nombre }}</td>
-              <td class="text-end">
+              <td>{{ (cuenta.partida)? cuenta.partida.idpartida  : ''}}</td>
+              <!-- <td class="text-end">
                 <button class="btn btn-warning btn-icon btn-sm me-1" (click)="openModal(content,cuenta)"><i class="fas fa-edit"></i></button>
                 <button class="btn btn-danger btn-icon btn-sm me-1"(click)="eliminarComponente(cuenta)" ><i class="fas fa-trash"></i></button>
-              </td>
+              </td> -->
             </tr>
           </tbody>
         </table>

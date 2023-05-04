@@ -1,1 +1,94 @@
-<p>regimen works!</p>
+<!-- aqui el modal -->
+<ng-template #content let-modal>
+	<div class="modal-header modal-lg">
+		<h4 class="modal-title" id="modal-basic-title">Formulario de Grupo</h4>
+		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+	</div>
+	<div class="modal-body">
+    <!-- <form (ngSubmit)="create()"> -->
+    <!-- <form [formGroup]="grupoForm">
+      <div class="row">
+        <div class="col-md-8">
+          <label for="dateOfBirth">Descripcion</label>
+          <input type="hidden" formControlName="idgrupo">
+          <input type="text" class="form-control me-2" formControlName="descripcion">
+        </div>
+        <div class="col-md-4">
+          <label for="dateOfBirth">Nro de Items</label>
+          <input type="number" class="form-control me-2" formControlName="nroItems">
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="col-md-6">
+          <label for="dateOfBirth">Vida Util</label>
+          <input type="number" class="form-control me-2" formControlName="vidaUtil">
+        </div>
+        <div class="col-md-6">
+          <label for="dateOfBirth">Cuenta</label>
+          <select class="form-control" formControlName="cuenta">
+            <option value="">SELECCIONE</option>
+            <option *ngFor="let cuenta of cuentas" value="{{ cuenta.idcuenta }}">{{ cuenta.nombre }}</option>
+          </select>
+        </div>
+      </div>
+      <div class="row mt-5">
+        <div class="col-md-12">
+          <button class="btn btn-success w-100" (click)="create()">Guardar</button>
+        </div>
+      </div>
+    </form> -->
+	</div>
+	<div class="modal-footer">
+		<!-- <button type="button" class="btn btn-success w-100" (click)="modal.close('guardar')">Guardar</button> -->
+	</div>
+</ng-template>
+<!-- end del modal -->
+
+<div class="card card-custom d-flex fs-6 p-0 m-0 text-gray-600">
+  <div class="card-body">
+    <div class="card-header border-0 pt-5">
+      <h3 class="card-title align-items-start flex-column">
+        <span class="card-label fw-bolder fs-3 mb-1">Listado de Regimen</span>
+        <span class="text-muted mt-1 fw-bold fs-7">Registros</span>
+      </h3>
+      <div
+        class="card-toolbar" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover" title="Click to add a user" >
+        <!-- <a class="btn btn-sm btn-light-primary" (click)="openLg(content,grupoReset)">
+          <span [inlineSVG]="'./assets/media/icons/duotune/arrows/arr075.svg'" class="svg-icon svg-icon-3" ></span>
+          Nuevo Grupo
+        </a> -->
+      </div>
+    </div>
+    <div class="card-body py-3">
+      <div class="table-responsive">
+        <div *ngIf="mostrar">
+          <div class="alert alert-danger">Sin datos de registro</div>
+        </div>
+        <table class="table table-row-dashed table-row-gray-300 align-middle gs-0 gy-4 w-100">
+          <thead>
+            <tr class="fw-bolder text-muted">
+              <th class="min-w-40px">ID</th>
+              <th class="min-w-600px">NOMBRE</th>
+              <th class="min-w-100px">DESCRIPCION</th>
+              <th class="min-w-120px">ESTADO</th>
+              <!-- <th class="min-w-150px text-end">Actions</th> -->
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let regimen of regimenes">
+              <td>{{ regimen.idregimen }}</td>
+              <td>{{ regimen.nombre }}</td>
+              <td>{{ regimen.descripcion }}</td>
+              <td>{{ regimen.estado }}</td>
+              <!-- <td class="text-end">
+                <button class="btn btn-warning btn-icon btn-sm me-1" (click)="openLg(content, regimen)"><i class="fas fa-edit"></i></button>
+                <button class="btn btn-info btn-icon btn-sm me-1" [routerLink]="['/grupo/subGrupo', regimen.idregimen.trim()]" ><i class="fas fa-eye"></i></button>
+                <button class="btn btn-warning btn-icon btn-sm"><i class="fas fa-edit"></i></button>
+                <button class="btn btn-danger btn-icon btn-sm me-1" (click)="delete(grupo.idgrupo)"><i class="fas fa-trash"></i></button>
+              </td> -->
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>

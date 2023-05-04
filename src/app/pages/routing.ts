@@ -58,6 +58,11 @@ const Routing: Routes = [
     loadChildren: () =>
       import('./regional/regional.module').then((m) => m.RegionalModule),
   },
+  {
+    path: 'unidadmanejo',
+    loadChildren: () =>
+      import('./unidad-manejo/unidad-manejo.module').then((m) => m.UnidadManejoModule),
+  },
   // aqui termina de joel
 
   {

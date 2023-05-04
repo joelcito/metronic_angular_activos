@@ -11,7 +11,9 @@ import { map } from 'rxjs/operators';
 
 export class ActivoService {
 
-  private urlEndPoint: string = "http://localhost:9999/api/activo";
+  // private urlEndPoint: string = "http://localhost:9999/api/activo";
+  // private urlEndPoint: string = "http://10.150.10.23:9003/api/activo";
+  private urlEndPoint: string = "api/activo";
   private httpHeaders = new HttpHeaders({'Content-Type': 'application/json'});
 
   constructor(private http: HttpClient) { }

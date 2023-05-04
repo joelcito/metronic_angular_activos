@@ -6,8 +6,8 @@ import { environment } from '../../../../../environments/environment';
 import { AuthModel } from '../../models/auth.model';
 
 // ESTE ES DE PRUEB APERO NO HAY CHEE
-// const API_USERS_URL = `${environment.apiUrl}/auth`;
-const API_USERS_URL = "http://localhost:9999/api/externo";
+ const API_USERS_URL = `${environment.apiUrl}/auth`;
+//const API_USERS_URL = "http://localhost:9999/api/externo";
 
 @Injectable({
   providedIn: 'root',

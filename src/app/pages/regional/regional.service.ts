@@ -7,7 +7,9 @@ import { Regional } from './regional';
 })
 export class RegionalService {
 
-  private urlEndPoint: string = "http://localhost:9999/api/regional";
+  // private urlEndPoint: string = "http://localhost:9999/api/regional";
+  // private urlEndPoint: string = "http://10.150.10.23:9003/api/regional";
+  private urlEndPoint: string = "api/regional";
   // private httpHeaders = new HttpHeaders({'Content-Type': 'application/json'});
 
   constructor(

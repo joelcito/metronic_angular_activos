@@ -41,7 +41,7 @@ function appInitializer(authService: AuthService) {
   declarations: [ AppComponent,
                   // ComponenteComponent,
                   IncorporacionComponent,
-                  UnidadManejoComponent,
+                  // UnidadManejoComponent,
                   RegimenComponent,
                   RegionalComponent,
                   DepartamentoComponent,

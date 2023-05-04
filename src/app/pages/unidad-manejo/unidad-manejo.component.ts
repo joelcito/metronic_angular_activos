@@ -1,4 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+
+import { UnidadManejo } from './unidad-manejo';
+
+import { UnidadManejoService } from './unidad-manejo.service';
 
 @Component({
   selector: 'app-unidad-manejo',
@@ -6,9 +10,23 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UnidadManejoComponent implements OnInit {
 
-  constructor() { }
+  unidad_manejos:UnidadManejo[] = [];
+
+
+  constructor(
+    private unidadManejoService:UnidadManejoService,
+    private chdr:ChangeDetectorRef,
+  ) { }
 
   ngOnInit(): void {
+    this.listadoUnidadesdeManejo();
+  }
+
+  listadoUnidadesdeManejo(){
+    this.unidadManejoService.getUnidadManejos().subscribe(result =>{
+      this.unidad_manejos = result;
+      this.chdr.detectChanges();
+    })
   }
 
 }

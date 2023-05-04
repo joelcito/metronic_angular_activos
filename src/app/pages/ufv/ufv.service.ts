@@ -10,7 +10,9 @@ import { Ufv } from './ufv';
 })
 export class UfvService {
 
-  private urlEndPoint: string = "http://localhost:9999/api/ufv";
+  // private urlEndPoint: string = "http://localhost:9999/api/ufv";
+  // private urlEndPoint: string = "http://10.150.10.23:9003/api/ufv";
+  private urlEndPoint: string = "api/ufv";
   private httpHeaders = new HttpHeaders({'Content-Type': 'application/json'});
 
   constructor(

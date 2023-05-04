@@ -10,7 +10,9 @@ import { Observable } from 'rxjs';
 })
 export class PartidaService {
 
-  private urlEndPoint:String = "http://localhost:9999/api/partida";
+  // private urlEndPoint:String = "http://localhost:9999/api/partida";
+  // private urlEndPoint:String = "http://10.150.10.23:9003/api/partida";
+  private urlEndPoint:String = "api/partida";
   private httpHeaders = new HttpHeaders({'Content-Type': 'application/json'});
 
   constructor(

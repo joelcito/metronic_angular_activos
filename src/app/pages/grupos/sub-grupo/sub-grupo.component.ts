@@ -20,7 +20,8 @@ export class SubGrupoComponent implements OnInit {
   subGrupos:SubGrupo [] = [];
   subGrupoReset = new SubGrupo();
   grupo = new Grupo();
-
+  mostrar:Boolean = false;
+  
   subGrupoForm = new FormGroup({
     descripcion: new FormControl(''),
     subgrupo: new FormControl(''),
@@ -41,11 +42,6 @@ export class SubGrupoComponent implements OnInit {
   cargarListaSubGrupo(){
     this.activatedRoute.params.subscribe(params => {
       let id = params['id'];
-
-
-      // console.log(id)
-
-
       if(id){
         this.subGrupoService.getSubGruposByIdGrupo(id.toString()).subscribe(result => {
           this.subGrupos = result

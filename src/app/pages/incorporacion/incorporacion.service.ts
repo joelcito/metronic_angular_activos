@@ -7,7 +7,9 @@ import { Incorporacion } from './incorporacion';
 })
 export class IncorporacionService {
 
-  private urlEndPoint: string = "http://localhost:9999/api/incorporacion";
+  // private urlEndPoint: string = "http://localhost:9999/api/incorporacion";
+  // private urlEndPoint: string = "http://10.150.10.23:9003/api/incorporacion";
+  private urlEndPoint: string = "api/incorporacion";
 
   constructor(
     private http: HttpClient
