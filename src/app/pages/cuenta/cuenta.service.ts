@@ -4,6 +4,8 @@ import { Observable } from 'rxjs';
 
 import { Cuenta } from './cuenta';
 
+import { URL_GLOBAL } from 'src/app/config';
+
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +14,9 @@ export class CuentaService {
 
   // private urlEndPoint:String = "http://localhost:9999/api/cuenta";
   // private urlEndPoint:String = "http://10.150.10.23:9003/api/cuenta";
-  private urlEndPoint:String = "api/cuenta";
+  // private urlEndPoint:String = "api/cuenta";
+  private urlEndPoint: string = URL_GLOBAL+"/cuenta";
+
   private httpHeaders = new HttpHeaders({'Content-Type': 'application/json'});
 
   constructor(

@@ -3,6 +3,8 @@ import { HttpClient,HttpHeaders } from '@angular/common/http';
 import { SubGrupo } from './sub-grupo';
 import { Observable } from 'rxjs';
 
+import { URL_GLOBAL } from 'src/app/config';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -10,7 +12,9 @@ export class SubGrupoService {
 
   // private urlEndPoint:String = "http://localhost:9999/api/subGrupo";
   // private urlEndPoint:String = "http://10.150.10.23:9003/api/subGrupo";
-  private urlEndPoint:String = "api/subGrupo";
+  // private urlEndPoint:String = "api/subGrupo";
+  private urlEndPoint: string = URL_GLOBAL+"/subGrupo";
+
   private httpHeaders = new HttpHeaders({'Content-Type': 'application/json'});
 
 

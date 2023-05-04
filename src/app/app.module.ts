@@ -23,6 +23,9 @@ import { CaracteristicaComponent } from './pages/caracteristica/caracteristica.c
 import { PartidaComponent } from './pages/partida/partida.component';
 import { TransaccionComponent } from './pages/transaccion/transaccion.component';
 import { UfvComponent } from './pages/ufv/ufv.component';
+
+// import { LocalizedString } from '@angular/compiler';
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 // #fake-end#
 
 // import { ActivoModule } from './pages/activo/activo.module';
@@ -73,8 +76,14 @@ function appInitializer(authService: AuthService) {
     {
       provide: APP_INITIALIZER,
       useFactory: appInitializer,
+      
+
       multi: true,
       deps: [AuthService],
+    },
+    {
+      provide: LocationStrategy,
+      useClass: HashLocationStrategy,
     },
   ],
   bootstrap: [AppComponent],

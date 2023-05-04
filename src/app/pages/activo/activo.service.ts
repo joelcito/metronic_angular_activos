@@ -4,6 +4,8 @@ import { Observable, of } from 'rxjs';
 import { Activo } from './activo';
 import { map } from 'rxjs/operators';
 
+import { URL_GLOBAL } from 'src/app/config';
+
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +15,10 @@ export class ActivoService {
 
   // private urlEndPoint: string = "http://localhost:9999/api/activo";
   // private urlEndPoint: string = "http://10.150.10.23:9003/api/activo";
-  private urlEndPoint: string = "api/activo";
+  // private urlEndPoint: string = "api/activo";
+
+  private urlEndPoint: string = URL_GLOBAL+"/activo";
+
   private httpHeaders = new HttpHeaders({'Content-Type': 'application/json'});
 
   constructor(private http: HttpClient) { }

@@ -5,6 +5,8 @@ import { Grupo } from './grupo';
 import { map, tap } from 'rxjs/operators';
 import { Observable, Subject } from 'rxjs';
 
+import { URL_GLOBAL } from 'src/app/config';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -14,8 +16,11 @@ export class GrupoService {
   // private urlEndPointExterno:String = "http://localhost:9999/api/externo";
   
   // private urlEndPoint:String = "http://10.150.10.23:9003/api/grupo";
-  private urlEndPoint:String = "api/grupo";
-  private urlEndPointExterno:String = "http://10.150.10.23:9003/api/externo";
+  // private urlEndPoint:String = "api/grupo";
+  private urlEndPoint: string = URL_GLOBAL+"/grupo";
+
+  // private urlEndPointExterno:String = "http://10.150.10.23:9003/api/externo";
+  private urlEndPointExterno:String = URL_GLOBAL+"/externo";
 
   private httpHeaders = new HttpHeaders({
     'Content-Type': 'application/json',

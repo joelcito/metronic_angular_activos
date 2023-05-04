@@ -5,6 +5,8 @@ import { Partida } from './partida';
 
 import { Observable } from 'rxjs';
 
+import { URL_GLOBAL } from 'src/app/config';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -12,7 +14,9 @@ export class PartidaService {
 
   // private urlEndPoint:String = "http://localhost:9999/api/partida";
   // private urlEndPoint:String = "http://10.150.10.23:9003/api/partida";
-  private urlEndPoint:String = "api/partida";
+  // private urlEndPoint:String = "api/partida";
+  private urlEndPoint: string = URL_GLOBAL+"/partida";
+
   private httpHeaders = new HttpHeaders({'Content-Type': 'application/json'});
 
   constructor(
