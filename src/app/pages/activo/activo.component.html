@@ -9,11 +9,11 @@
       <div class="row mt-5">
         <div class="col-md-4">
           <label for="dateOfBirth">CODIGO DE ACTIVO</label>
-          <input type="text" class="form-control" readonly [(ngModel)]="activo.codigo" formControlName="codigo">
+          <input type="text" class="form-control" [(ngModel)]="activo.codigo" formControlName="codigo">
         </div>
         <div class="col-md-4">
-          <label for="dateOfBirth">CODIGO DE ALTERNO DEL ACTIVO</label>
-          <input type="text" class="form-control" readonly [(ngModel)]="activo.codigoalterno" formControlName="codigoalterno">
+          <!-- <label for="dateOfBirth">CODIGO DE ALTERNO DEL ACTIVO</label>
+          <input type="text" class="form-control" readonly [(ngModel)]="activo.codigoalterno" formControlName="codigoalterno"> -->
         </div>
         <div class="col-md-4">
           <div class="d-flex align-items-center mt-7 justify-content-center">
@@ -33,19 +33,22 @@
         <div class="col-md-4">
           <div class="form-group">
             <label for="descripcion">Proveedor</label>
-            <input type="text" class="form-control">
+            <select class="form-control" #provedor formControlName="provedor" [(ngModel)]="activo.codprovedor" (change)="obtienDatosProvedor()">
+              <option value="">SELECCIONE</option>
+              <option value="{{ provedor.cod }}" *ngFor="let provedor of provedores">{{ provedor.des }}</option>
+            </select>
           </div>
         </div>
         <div class="col-md-4">
           <div class="form-group">
             <label for="descripcion">Nit</label>
-            <input type="text" class="form-control">
+            <input type="text" class="form-control" readonly id="nitprovedor">
           </div>
         </div>
         <div class="col-md-4">
           <div class="form-group">
             <label for="descripcion">Factura</label>
-            <input type="text" class="form-control">
+            <input type="text" class="form-control" formControlName="factura" [(ngModel)]="activo.factura">
           </div>
         </div>
       </div>
@@ -277,8 +280,16 @@
               <!-- <td>{{ actPer.idactivo }}</td> -->
               <td>{{ actPer.codigo }}</td>
               <td>{{ actPer.descripcion }}</td>
-              <td>{{ actPer.estado }}</td>
-              <td>{{ actPer.fechacompra }}</td>
+              <td>
+                <span class="badge badge-light-warning fw-dold" *ngIf="actPer.estado == 'MAN'">MANTENIMIENTO</span>
+                <span class="badge badge-light-success fw-dold" *ngIf="actPer.estado == 'PRO'">PROPIEDAD</span>
+                <span class="badge badge-light-info fw-dold" *ngIf="actPer.estado == 'ALQ'">ALQUILER</span>
+                <span class="badge badge-light-danger fw-dold" *ngIf="actPer.estado == 'DES'">DESUSO</span>
+                <span class="badge badge-light-primary fw-dold" *ngIf="actPer.estado == 'DON'">DONACION</span>
+                <span class="badge badge-light-dark fw-white" *ngIf="actPer.estado == 'TRA'">TRANSFERENCIA</span>
+              </td>
+              <!-- <td>{{ actPer.fechacompra | date:'medium' }}</td> -->
+              <td>{{ actPer.fechacompra | date:'dd/M/yyyy' }}</td>
               <td>{{ actPer.nombre }}</td>
               <td class="text-end">
                 <button class="btn btn-info btn-icon btn-sm me-1" [routerLink]="['/activo/detalle', actPer.idactivo]" ><i class="fas fa-eye"></i></button>

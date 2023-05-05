@@ -15,6 +15,7 @@ import { RegimenService } from '../../regimen/regimen.service';
 import { RegionalService } from '../../regional/regional.service';
 import { CaracteristicaService } from '../../caracteristica/caracteristica.service';
 import { UfvService } from '../../ufv/ufv.service';
+import { ProvedorService } from '../../provedor/provedor.service';
 
 
 import { Activo } from '../activo';
@@ -41,12 +42,14 @@ export class DetalleComponent implements OnInit {
   regimenes        :Regimen[];
   regionales       :Regional[];
   caracteristicas  :Caracteristica[];
+  provedores: any[];
 
   idGrupo         :String = '0';
   idSubGrupo      :String = '0';
   idregimen       :String = '0';
   idregional      :String = '0';
   idunidadmanejo  :String = '0';
+  idcodprovedor   :String = '';
 
   // myObject: any;
 
@@ -94,7 +97,8 @@ export class DetalleComponent implements OnInit {
     private caracteristicaService:CaracteristicaService,
     private ufvService:UfvService,
 
-    private datePipe:DatePipe
+    private datePipe:DatePipe,
+    private provedorService:ProvedorService
 
   ) { }
 
@@ -110,7 +114,7 @@ export class DetalleComponent implements OnInit {
     // this.fechaMin = new Date().toISOString().substring(0,10)
     this.depreValorMaxFechaFin = new Date().toISOString().substring(0,10)
 
-
+    this.listaProvedores();
   }
 
   cargarActivo() {
@@ -157,6 +161,16 @@ export class DetalleComponent implements OnInit {
             console.log(activo.unidadmanejo.idunidadmanejo)
             this.idunidadmanejo = activo.unidadmanejo.idunidadmanejo;
           }
+
+          // PARA EL PROVEDOR
+          if(activo.codprovedor){
+            this.idcodprovedor = activo.codprovedor;
+            this.provedorService.getProvedor(this.idcodprovedor).subscribe(resul => {
+              const nitprovedor = document.getElementById('nitprovedor') as HTMLInputElement;
+              nitprovedor.value = resul.cod.toString();
+            })
+          }
+
           this.chdr.detectChanges();
         })
 
@@ -261,5 +275,12 @@ export class DetalleComponent implements OnInit {
         })
       }
     }
+  }
+
+  listaProvedores(){
+    this.provedorService.getProvedoresTodo().subscribe(resul =>{
+      this.provedores = resul;
+      this.chdr.detectChanges();
+    })
   }
 }

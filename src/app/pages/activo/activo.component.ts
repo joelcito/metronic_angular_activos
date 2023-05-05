@@ -76,6 +76,7 @@ export class ActivoComponent implements OnInit {
 
 
   activosPer: any[] = [];
+  provedores: any[] = [];
 
 
   @Input() ActivoDevuelto:Activo = new Activo();
@@ -103,6 +104,8 @@ export class ActivoComponent implements OnInit {
     placa:new FormControl(''),
     estado:new FormControl(''),
     codigoalterno:new FormControl(''),
+    provedor:new FormControl(''),
+    factura:new FormControl(''),
     // componentes:new FormControl([]),
   });
 
@@ -137,8 +140,7 @@ export class ActivoComponent implements OnInit {
 
     this.maxValFecha = new Date().toISOString().substring(0,10)
 
-    
-
+    this.listadoPrvedores()
     
   }
 
@@ -282,6 +284,9 @@ export class ActivoComponent implements OnInit {
 	}
 
   createActivo(){
+
+    console.log(this.activo)
+
     this.activoService.create(this.activo).subscribe(resul => {
 
       let datos:String = "";
@@ -383,5 +388,18 @@ export class ActivoComponent implements OnInit {
 
   toUppercaseDes(){
     this.activo.descripcion = this.activo.descripcion.toUpperCase();
+  }
+
+  listadoPrvedores() {
+    this.activoService.listaProvedores().subscribe(result =>{
+      this.provedores = result
+      this.chdr.detectChanges()
+    })
+  }
+
+  obtienDatosProvedor(){
+    // console.log(this.activo.codprovedor)
+    const nitprovedor = document.getElementById('nitprovedor') as HTMLInputElement;
+    nitprovedor.value = this.activo.codprovedor.toString();
   }
 }

@@ -20,6 +20,10 @@ export class Activo {
     formainicial:String = '';
     estadoregistro:String = '';
 
+    codprovedor:String = '';
+    nuevocodigo:String = '';
+    factura:String = '';
+
     fechacompra:string = '';
     precio:number = 0.0;
     // fechacompra:Date = new Date();

@@ -211,29 +211,26 @@
       <div class="col-md-4">
         <div class="form-group">
           <label for="descripcion">Proveedor</label>
-          <input type="text" class="form-control">
+          <select class="form-control" name="provedor">
+            <option [ngValue]="undefined">Seleccione provedor</option>
+            <option [selected]="provedor.cod === idcodprovedor" [ngValue]="provedor" *ngFor="let provedor of provedores">{{provedor.des}}</option>
+          </select>
         </div>
       </div>
       <div class="col-md-4">
         <div class="form-group">
           <label for="descripcion">Nit</label>
-          <input type="text" class="form-control">
+          <input type="text" class="form-control" readonly id="nitprovedor">
         </div>
       </div>
       <div class="col-md-4">
         <div class="form-group">
           <label for="descripcion">Factura</label>
-          <input type="text" class="form-control">
+          <input type="text" class="form-control" [(ngModel)]="activo.factura">
         </div>
       </div>
     </div>
-
-    <br>
-    <br>
-    <br>
-    <br>
-
-
+    
     <div class="row mt-3">
       <div class="col" *ngFor="let caracteristica of caracteristicas">
         <div class="form-group">
@@ -267,16 +264,8 @@
         </div>
       </div>
     </div> -->
-    <div class="row">
-      <div class="col-md-6">
-        
-      </div>
-      <div class="col-md-6">
-        
-      </div>
-    </div>
 
-    <div class="row mt-3">
+    <div class="row mt-3" *ngIf="activo.estadoregistro != 'APR'">
       <div class="col-md-12">
         <button class="btn btn-success w-100">Editar Activo</button>
       </div>

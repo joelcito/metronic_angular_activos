@@ -63,6 +63,11 @@ const Routing: Routes = [
     loadChildren: () =>
       import('./unidad-manejo/unidad-manejo.module').then((m) => m.UnidadManejoModule),
   },
+  {
+    path: 'provedor',
+    loadChildren: () =>
+    import('./provedor/provedor.module').then((m) => m.ProvedorModule),
+  },
   // aqui termina de joel
 
   {

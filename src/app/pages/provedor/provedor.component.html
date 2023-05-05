@@ -1,0 +1,108 @@
+
+<!-- aqui el modal -->
+<ng-template #content let-modal>
+	<div class="modal-header modal-lg">
+		<h4 class="modal-title" id="modal-basic-title">Formulario de Componente</h4>
+		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+	</div>
+	<div class="modal-body">
+    <!-- <form [formGroup]="grupoForm" (ngSubmit)="create()"> -->
+    <form [formGroup]="provedorForm">
+    <!-- <form> -->
+      <div class="row">
+        <div class="col-md-6">
+          <label for="dateOfBirth">Nombre</label>
+          <input type="text" class="form-control me-2" formControlName="nombre">
+          <input type="text" formControlName="provedor">
+        </div>
+        <div class="col-md-6">
+          <label for="dateOfBirth">Nit</label>
+          <input type="text" class="form-control me-2" formControlName="nit">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <label for="dateOfBirth">Direccion</label>
+          <input type="text" class="form-control me-2" formControlName="dirceccion">
+        </div>
+        <div class="col-md-6">
+          <label for="dateOfBirth">Telefono</label>
+          <input type="text" class="form-control me-2" formControlName="telefono">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <label for="dateOfBirth">Fax</label>
+          <input type="text" class="form-control me-2" formControlName="fax">
+        </div>
+        <div class="col-md-6">
+          <label for="dateOfBirth">Email</label>
+          <input type="text" class="form-control me-2" formControlName="email">
+        </div>
+      </div>
+      <div class="row mt-5">
+        <div class="col-md-12">
+          <button class="btn btn-success w-100" type="button" (click)="guardar()">Guardar</button>
+        </div>
+      </div>
+    </form>
+	</div>
+	<div class="modal-footer">
+		<!-- <button type="button" class="btn btn-dark w-100" (click)="modal.close('guardar')">Cerrar</button> -->
+	</div>
+</ng-template>
+<!-- end del modal -->
+
+<div class="card card-custom d-flex fs-6 p-0 m-0 text-gray-600">
+  <div class="card-body">
+    <div class="card-header border-0 pt-5">
+      <h3 class="card-title align-items-start flex-column">
+        <span class="card-label fw-bolder fs-3 mb-1">Listado de Provedores</span>
+        <!-- <span class="text-muted mt-1 fw-bold fs-7">Registros</span> -->
+      </h3>
+      <div
+        class="card-toolbar" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover" title="Click to add a user" >
+        <a (click)="openModal(content, provedorReset)" class="btn btn-sm btn-light-primary">
+        <!-- <a (click)="openModal(content)" class="btn btn-sm btn-light-primary"> -->
+          <span [inlineSVG]="'./assets/media/icons/duotune/arrows/arr075.svg'" class="svg-icon svg-icon-3" ></span>
+          Nuevo Provedor
+        </a>
+      </div>
+    </div>
+    <div class="card-body py-3">
+      <div class="table-responsive">
+        <!-- <div *ngIf="mostrar"> -->
+        <div>
+          <!-- <div class="alert alert-danger">Sin datos de registro</div> -->
+        </div>
+        <table class="table table-row-dashed table-row-gray-300 align-middle gs-0 gy-4 w-100">
+          <thead>
+            <tr class="fw-bolder text-muted">
+              <th class="min-w-300px">NOMBRE</th>
+              <th class="min-w-100px">NIT</th>
+              <th class="min-w-100px">DIRECCION</th>
+              <th class="min-w-50px">TELEFONO</th>
+              <th class="min-w-50px">FAX</th>
+              <th class="min-w-20px">EMAIL</th>
+              <th class="min-w-20px text-end">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let provedor of provedores">
+              <td>{{ provedor.des }}</td>
+              <td>{{ provedor.cod }}</td>
+              <td>{{ provedor.dir }}</td>
+              <td>{{ provedor.tel }}</td>
+              <td>{{ provedor.fax }}</td>
+              <td>{{ provedor.email }}</td>
+              <td>
+                <button class="btn btn-warning btn-icon btn-sm me-1" (click)="openModal(content,provedor)"><i class="fas fa-edit"></i></button>
+                <!-- <button class="btn btn-danger btn-icon btn-sm me-1"(click)="eliminarComponente(partida)" ><i class="fas fa-trash"></i></button> -->
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+

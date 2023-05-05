@@ -18,6 +18,7 @@ export class ActivoService {
   // private urlEndPoint: string = "api/activo";
 
   private urlEndPoint: string = URL_GLOBAL+"/activo";
+  private urlEndPointExterno: string = URL_GLOBAL+"/externo";
 
   private httpHeaders = new HttpHeaders({'Content-Type': 'application/json'});
 
@@ -59,7 +60,8 @@ export class ActivoService {
     return this.http.post<any[]>(this.urlEndPoint+"/buscaActivo",datos,{headers: this.httpHeaders})
   }
 
-  sacaElUltimoActivo(){
-    
+  listaProvedores(){
+    return this.http.get<any[]>(`${this.urlEndPointExterno}/getProvedores`)
   }
+  
 }

@@ -1,3 +1,10 @@
+// {
+//     "/api/*":{
+//         "target":"http://localhost:9999",
+//         "secure":false,
+//         "logLevel":"debug"
+//     }
+// }
 {
     "/api/*":{
         "target":"http://10.150.10.23:9003",
