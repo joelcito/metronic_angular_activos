@@ -119,6 +119,7 @@ export class DetalleComponent implements OnInit {
       if(id){
         this.activoService.getActivo(id.toString()).subscribe(activo => {
           this.activo = activo;
+          console.log(activo)
           if(activo.grupo){
             this.idGrupo = activo.grupo.idgrupo;
             let idgrupoB = activo.grupo.idgrupo.toString();

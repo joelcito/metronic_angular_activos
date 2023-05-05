@@ -102,7 +102,7 @@ export class ActivoComponent implements OnInit {
     vida_util:new FormControl(''),
     placa:new FormControl(''),
     estado:new FormControl(''),
-
+    codigoalterno:new FormControl(''),
     // componentes:new FormControl([]),
   });
 
@@ -145,14 +145,12 @@ export class ActivoComponent implements OnInit {
   listaActivos(){
     this.activoService.getActivos().subscribe(result => {
       this.activos = result
-      console.log(this.activos);
       this.chdr.detectChanges()
     })
   }
 
   listaActivosPersonalizado(){
     this.activoService.listarParsonalizado().subscribe(resul => {
-      console.log(resul)
       this.activosPer = resul
       this.chdr.detectChanges()
     })
@@ -196,7 +194,6 @@ export class ActivoComponent implements OnInit {
 
   buscaSubGruposPorGrupo(id:String) {
 
-    console.log(id.trim())
     this.subGrupoService.getSubGruposByIdGrupo(id.toString().trim()).subscribe(resul =>{
       this.subGruposBuscados = resul;
     })
@@ -205,7 +202,7 @@ export class ActivoComponent implements OnInit {
     this.buscaSubGruposPorGrupo(this.activo.grupo.idgrupo);
     this.codGrupo = this.activo.grupo.idgrupo;
     let nueCodNew = String("COS-"+this.codRegional+"-"+this.codRegimen+"-"+this.codGrupo+"-151");
-    this.activoForm.get('codigo')?.setValue(nueCodNew);
+    this.activoForm.get('codigoalterno')?.setValue(nueCodNew);
     this.componentesView = false;
 
     // console.log(this.activo.grupo)
@@ -240,6 +237,10 @@ export class ActivoComponent implements OnInit {
     // this.grupo.descripcion = grupo.descripcion
     // this.grupo.nroItems    = grupo.nroItems
     // this.grupo.vidaUtil    = grupo.vidaUtil
+
+    // this.activoForm.get('codigo')?.setValue(String('COS-10-123'));
+    // this.activo.codigo = "COS-10-123";
+
 
     this.modalService.open(content, { size: 'xl' }).result.then(
       (result) => {
@@ -282,8 +283,6 @@ export class ActivoComponent implements OnInit {
 
   createActivo(){
     this.activoService.create(this.activo).subscribe(resul => {
-
-      console.log(resul)
 
       let datos:String = "";
 
@@ -343,14 +342,14 @@ export class ActivoComponent implements OnInit {
     let dato = JSON.parse(JSON.stringify(this.activoForm.value.regimen)).idregimen;
     this.codRegimen = dato;
     let nueCodNew = String("COS-"+this.codRegional+"-"+dato+"-"+this.codGrupo+"-151");
-    this.activoForm.get('codigo')?.setValue(nueCodNew);
+    this.activoForm.get('codigoalterno')?.setValue(nueCodNew);
   }
 
   generaCodRegional(){
     let dato = JSON.parse(JSON.stringify(this.activoForm.value.regional)).idregional;
     this.codRegional = dato;
     let nueCodNew = String("COS-"+dato+"-"+this.codRegimen+"-"+this.codGrupo+"-151");
-    this.activoForm.get('codigo')?.setValue(nueCodNew);
+    this.activoForm.get('codigoalterno')?.setValue(nueCodNew);
   }
 
   sacaUfv(){
@@ -371,12 +370,18 @@ export class ActivoComponent implements OnInit {
   buscarActivo(codActivo:String, descripcionActivo:String){
      this.activoService.buscarActivo(codActivo,descripcionActivo).subscribe(res => {
       this.activosPer = res
-      console.log(res)
       this.chdr.detectChanges()
      })
   }
 
-  convertirMayusculas(valor: any){
-    
+  convertirAMayusculas(){
+    const codigoActivo = document.getElementById('codigoActivo') as HTMLInputElement;
+    codigoActivo.value = codigoActivo.value.toUpperCase();
+
+    // codigoActivo.value = (document.getElementById('codigoActivo') as HTMLInputElement).value.toUpperCase()
+  }
+
+  toUppercaseDes(){
+    this.activo.descripcion = this.activo.descripcion.toUpperCase();
   }
 }

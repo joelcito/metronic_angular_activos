@@ -58,4 +58,8 @@ export class ActivoService {
     };
     return this.http.post<any[]>(this.urlEndPoint+"/buscaActivo",datos,{headers: this.httpHeaders})
   }
+
+  sacaElUltimoActivo(){
+    
+  }
 }
