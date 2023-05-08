@@ -33,6 +33,7 @@
         <div class="col-md-4">
           <div class="form-group">
             <label for="descripcion">Proveedor</label>
+
             <select class="form-control" #provedor formControlName="provedor" [(ngModel)]="activo.codprovedor" (change)="obtienDatosProvedor()">
               <option value="">SELECCIONE</option>
               <option value="{{ provedor.cod }}" *ngFor="let provedor of provedores">{{ provedor.des }}</option>
