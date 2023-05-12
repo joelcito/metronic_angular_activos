@@ -372,8 +372,9 @@ export class ActivoComponent implements OnInit {
     }
   }
 
-  buscarActivo(codActivo:String, descripcionActivo:String){
-     this.activoService.buscarActivo(codActivo,descripcionActivo).subscribe(res => {
+  buscarActivo(codActivo:String, descripcionActivo:String, estadoVigencia:String){
+    console.log(codActivo,descripcionActivo,estadoVigencia)
+     this.activoService.buscarActivo(codActivo,descripcionActivo,estadoVigencia).subscribe(res => {
       this.activosPer = res
       this.chdr.detectChanges()
      })

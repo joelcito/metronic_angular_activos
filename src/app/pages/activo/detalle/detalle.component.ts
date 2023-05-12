@@ -3,7 +3,9 @@ import { ActivatedRoute } from '@angular/router';
 import { formatDate,DatePipe } from '@angular/common';
 // import { map } from 'rxjs/operators';
 import { FormGroup, FormControl } from '@angular/forms';
+import { ModalDismissReasons, NgbDatepickerModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
+import swal from 'sweetalert2';
 
 
 import { ActivoService } from '../activo.service';
@@ -42,7 +44,13 @@ export class DetalleComponent implements OnInit {
   regimenes        :Regimen[];
   regionales       :Regional[];
   caracteristicas  :Caracteristica[];
-  provedores: any[];
+  provedores       :any[];
+  listMovimientos  :any[];
+  estadoActivo     :boolean;
+  ultimoActivoMov  :any;
+  listadoCargos   : any[];
+  listadoUbiEsp   : any[];
+  listadoreparticiones   : any[];
 
   idGrupo         :String = '0';
   idSubGrupo      :String = '0';
@@ -76,6 +84,8 @@ export class DetalleComponent implements OnInit {
   valorFechaIni:String;
   depreValorMaxFechaFin:String;
 
+  buscaCedulaAsignacion:boolean = false;
+
   depreciacionForm = new FormGroup({
     depreActivoId: new FormControl(''),
     depreFechaIni: new FormControl(''),
@@ -83,6 +93,40 @@ export class DetalleComponent implements OnInit {
     depreFechaFin: new FormControl(''),
     depreUfvFin: new FormControl(''),
   });
+
+
+  formularioLibreacion = new FormGroup({
+    fecha: new FormControl(''),
+    cargo: new FormControl(''),
+    reparticion: new FormControl(''),
+    ubicacion: new FormControl(''),
+    descgeneral: new FormControl(''),
+    destino: new FormControl(''),
+    observacion: new FormControl(''),
+    nombre: new FormControl(''),
+    cedula: new FormControl(''),
+    activo: new FormControl(''),
+    ultimoMov: new FormControl(''),
+    estadoregistro: new FormControl(''),
+    tipo: new FormControl('LIB'),
+  });
+
+  formularioAsignacion = new FormGroup({
+    fecha: new FormControl(''),
+    cargo: new FormControl(''),
+    reparticion: new FormControl(''),
+    ubicacion: new FormControl(''),
+    descgeneral: new FormControl(''),
+    destino: new FormControl(''),
+    observacion: new FormControl(''),
+    nombre: new FormControl(''),
+    cedula: new FormControl(''),
+    activo: new FormControl(''),
+    ultimoMov: new FormControl(''),
+    estadoregistro: new FormControl(''),
+    tipo: new FormControl('ASI'),
+  });
+
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -98,7 +142,9 @@ export class DetalleComponent implements OnInit {
     private ufvService:UfvService,
 
     private datePipe:DatePipe,
-    private provedorService:ProvedorService
+    private provedorService:ProvedorService,
+
+    private modalService: NgbModal,
 
   ) { }
 
@@ -115,6 +161,21 @@ export class DetalleComponent implements OnInit {
     this.depreValorMaxFechaFin = new Date().toISOString().substring(0,10)
 
     this.listaProvedores();
+  }
+
+  listaMovimientos(id:String){
+    this.activoService.listaMovimientosActivoById(id).subscribe(resul => {
+      this.listMovimientos = resul
+      this.chdr.detectChanges();
+    })
+  }
+
+  sacaUltimoMovActivo(id:String){
+    this.activoService.getUltimoMovActivo(id).subscribe(result => {
+      console.log(result)
+      this.ultimoActivoMov = result;
+      this.chdr.detectChanges();
+    })
   }
 
   cargarActivo() {
@@ -177,6 +238,11 @@ export class DetalleComponent implements OnInit {
         this.caracteristicaService.getCaracteristicasByIdActivo(id).subscribe(res => {
           this.caracteristicas = res;
         })
+
+        // PARA LOS MOVIMIENTOS DE CADA ACTIVO
+        this.listaMovimientos(id);
+        this.sacaUltimoMovActivo(id);
+
       }else{
         console.log("n che");
       }
@@ -281,6 +347,154 @@ export class DetalleComponent implements OnInit {
     this.provedorService.getProvedoresTodo().subscribe(resul =>{
       this.provedores = resul;
       this.chdr.detectChanges();
+    })
+  }
+
+  liberarActivo(content:any){
+    this.activoService.getCargos().subscribe(result =>{
+      this.listadoCargos = result;
+    })
+    this.activoService.getUbiEsp().subscribe(result =>{
+      this.listadoUbiEsp = result;
+    })
+    this.formularioLibreacion.get('activo')?.setValue(String(this.activo.idactivo));
+    this.formularioLibreacion.get('estadoregistro')?.setValue(String(this.activo.estadoregistro));
+    if(this.ultimoActivoMov){
+      console.log(this.ultimoActivoMov);
+      this.formularioLibreacion.get('ultimoMov')?.setValue(JSON.stringify(this.ultimoActivoMov));
+    }
+    this.activoService.getPersonaByCi(this.ultimoActivoMov.ci).subscribe(resul => {
+      this.formularioLibreacion.get('cedula')?.setValue(String(resul.ci));
+      this.formularioLibreacion.get('nombre')?.setValue(String(resul.des.trim())+" "+String(resul.des1.trim())+" "+String(resul.des2.trim()));
+      console.log(resul)
+    })
+
+    this.activoService.getReparticiones().subscribe(result => {
+      console.log(result)
+    })
+
+    this.modalService.open(content, { size: 'lg' }).result.then(
+      (result) => {
+        if(result==='guardar'){
+          console.log("se guardara");
+        }else{
+          console.log("no guardara");
+        }
+        console.log("haber")
+      },
+      (reason)=>{
+        console.log(reason)
+      }
+    );
+  }
+
+  guardarLiberacion(){
+    let json = this.formularioLibreacion.value; 
+    this.activoService.guardaLiberacionActivo(json).subscribe(resul => {
+      if(resul.estado === "success"){
+        this.listaMovimientos(resul.cod);
+        this.sacaUltimoMovActivo(resul.cod);
+        swal.fire({
+          icon: 'success',
+          title: 'Exito!',
+          text: 'Se '+resul.mensaje+' con exito el activo',
+          timer: 2000
+        })
+        setTimeout(() => {
+          this.modalService.dismissAll('content')
+        }, 2500);
+      }else{
+        swal.fire({
+          icon: 'error',
+          title: 'Error!',
+          text: 'Algo paso con la liberacion',
+          timer: 1000
+        })
+      }
+    })
+  }
+  
+  guardarAsignacion(){
+    let json = this.formularioAsignacion.value; 
+
+    console.log(json)
+
+    this.activoService.guardaLiberacionActivo(json).subscribe(resul => {
+      if(resul.estado === "success"){
+        this.listaMovimientos(resul.cod);
+        this.sacaUltimoMovActivo(resul.cod);
+        swal.fire({
+          icon: 'success',
+          title: 'Exito!',
+          text: 'Se '+resul.mensaje+' con exito el activo',
+          timer: 2000
+        })
+        setTimeout(() => {
+          this.modalService.dismissAll('content')
+        }, 2500);
+      }else{
+        swal.fire({
+          icon: 'error',
+          title: 'Error!',
+          text: 'Algo paso con la liberacion',
+          timer: 1000
+        })
+      }
+    })
+  }
+
+  abreModalAsignacion(modalAsignacion:any){
+
+    this.activoService.getCargos().subscribe(result =>{
+      this.listadoCargos = result;
+    })
+    this.activoService.getUbiEsp().subscribe(result =>{
+      this.listadoUbiEsp = result;
+    })
+    this.formularioAsignacion.get('activo')?.setValue(String(this.activo.idactivo));
+    this.formularioAsignacion.get('estadoregistro')?.setValue(String(this.activo.estadoregistro));
+    if(this.ultimoActivoMov){
+      console.log(this.ultimoActivoMov);
+      this.formularioAsignacion.get('ultimoMov')?.setValue(JSON.stringify(this.ultimoActivoMov));
+    }
+
+    // this.activoService.getPersonaByCi(this.ultimoActivoMov.ci).subscribe(resul => {
+    //   this.formularioAsignacion.get('cedula')?.setValue(String(resul.ci));
+    //   this.formularioAsignacion.get('nombre')?.setValue(String(resul.des.trim())+" "+String(resul.des1.trim())+" "+String(resul.des2.trim()));
+    //   console.log(resul)
+    // })
+
+    this.modalService.open(modalAsignacion, { size: 'lg' }).result.then(
+      (result) => {
+        if(result==='guardar'){
+          console.log("se guardara");
+        }else{
+          console.log("no guardara");
+        }
+        console.log("haber")
+      },
+      (reason)=>{
+        console.log(reason)
+      }
+    );
+  }
+
+  buscarPersona(){
+
+    var ci = String(this.formularioAsignacion.value.cedula);
+
+    this.activoService.getPersonaByCi(ci).subscribe(result =>{
+
+      console.log(result, Object.keys(result).length)
+
+      if(Object.keys(result).length === 0){
+        this.buscaCedulaAsignacion = true;
+      }else{
+        this.formularioAsignacion.get('nombre')?.setValue(result.des.trim()+" "+result.des1.trim()+" "+result.des2.trim());
+        this.buscaCedulaAsignacion = false;
+      }
+
+      console.log(this.buscaCedulaAsignacion)
     })
   }
 }

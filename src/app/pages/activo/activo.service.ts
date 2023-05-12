@@ -52,16 +52,45 @@ export class ActivoService {
     return this.http.get<any[]>(this.urlEndPoint+"/listadoPer")
   }
 
-  buscarActivo(idactivo:String, descripcion:String){
+  buscarActivo(idactivo:String, descripcion:String, buscarActivo:String){
     const datos = {
       variable1: idactivo,
-      variable2: descripcion
+      variable2: descripcion,
+      variable3: buscarActivo
     };
     return this.http.post<any[]>(this.urlEndPoint+"/buscaActivo",datos,{headers: this.httpHeaders})
   }
 
   listaProvedores(){
     return this.http.get<any[]>(`${this.urlEndPointExterno}/getProvedores`)
+  }
+
+  listaMovimientosActivoById(idactivo:String){
+    return this.http.get<any[]>(`${this.urlEndPointExterno}/listaMovimientosActivoById/${idactivo}`)
+  }
+
+  getUltimoMovActivo(idactivo:String){
+    return this.http.get<any>(`${this.urlEndPointExterno}/getUltimoMovActivo/${idactivo}`)
+  }
+
+  getCargos(){
+    return this.http.get<any[]>(`${this.urlEndPointExterno}/getCargos`)
+  }
+
+  getUbiEsp(){
+    return this.http.get<any[]>(`${this.urlEndPointExterno}/getUbiEsp`)
+  }
+
+  guardaLiberacionActivo(json:any){
+    return this.http.post<any>(`${this.urlEndPointExterno}/guardaLiberacionActivo`,json,{headers: this.httpHeaders});
+  }
+
+  getPersonaByCi(ci:String){
+    return this.http.get<any>(`${this.urlEndPointExterno}/getPersonaByCi/${ci}`)
+  }
+  
+  getReparticiones(){
+    return this.http.get<any[]>(`${this.urlEndPointExterno}/getReparticiones`)
   }
   
 }

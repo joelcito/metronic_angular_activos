@@ -7,11 +7,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DetalleComponent } from './detalle/detalle.component';
 
 import { DatePipe } from '@angular/common';
+import { AsignacionComponent } from './asignacion/asignacion.component';
 
 
 
 @NgModule({
-  declarations: [ActivoComponent, DetalleComponent],
+  declarations: [ActivoComponent, DetalleComponent, AsignacionComponent],
   imports: [
     CommonModule,
     InlineSVGModule,
@@ -20,7 +21,8 @@ import { DatePipe } from '@angular/common';
     ReactiveFormsModule,
     RouterModule.forChild([
       {path: 'listado',component: ActivoComponent},
-      {path: 'detalle/:id', component: DetalleComponent}
+      {path: 'detalle/:id', component: DetalleComponent},
+      {path: 'asignacion/:id', component: AsignacionComponent}
     ]),
   ],
   providers:[
