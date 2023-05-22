@@ -25,6 +25,6 @@ export class ProvedorService {
   }
 
   guardarProvedor(json:any){
-    return this.http.post<any>(`${this.urlEndPointExterno}/guardarProvedor/`,json , { headers: this.httpHeaders})
+    return this.http.post<any>(`${this.urlEndPointExterno}/guardarProvedor`, json , { headers: this.httpHeaders})
   }
 }

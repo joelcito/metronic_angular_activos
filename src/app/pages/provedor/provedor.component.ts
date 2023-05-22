@@ -67,8 +67,13 @@ export class ProvedorComponent implements OnInit {
       }
     );
 	}
+
   guardar(){
     console.log(this.provedorForm.value)
+    let json = this.provedorForm.value
+    this.provedorService.guardarProvedor(json).subscribe(result => {
+      console.log(result)
+    })
   }
 
   listaProvedor(){
@@ -77,5 +82,4 @@ export class ProvedorComponent implements OnInit {
       this.chdr.detectChanges()
     })
   }
-
 }
