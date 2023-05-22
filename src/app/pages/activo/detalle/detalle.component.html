@@ -151,6 +151,35 @@
 </ng-template>
 <!-- end del modal -->
 
+
+<!-- aqui el modal MODIFICACION -->
+<ng-template #modalModificacion let-modal>
+	<div class="modal-header modal-lg">
+		<h3 class="modal-title" id="modal-basic-title">FORMULARIO DE <span class="text-info"> ( REFACCION ) </span></h3>
+		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+	</div>
+	<div class="modal-body">
+    <form [formGroup]="formularioModificacion">    
+      <div class="row mt-5">
+        <div class="col-md-12">
+          <label for="descripcion">Descripcion</label>
+          <textarea class="form-control" cols="30" rows="5" formControlName="descripcion"></textarea>
+          <input type="hidden" formControlName="activo">
+        </div>
+      </div>
+      <div class="row mt-5">
+        <div class="col-md-12">
+          <button class="btn btn-success w-100" (click)="guardarModificacion()">Guardar</button>
+        </div>
+      </div>
+    </form>
+	</div>
+	<div class="modal-footer">
+		<!-- <button type="button" class="btn btn-success w-100" (click)="modal.close('guardar')">Guardar</button> -->
+	</div>
+</ng-template>
+<!-- end del modal MODIFICACION-->
+
 <div class="card mb-5 mb-xxl-8">
   <div class="card-body pt-9 pb-0">
     <div class="d-flex flex-wrap flex-sm-nowrap">
@@ -179,7 +208,7 @@
               <div class="col-md-6">
                 <label for="descripcion">Estado de Vigencia</label>
                 <div class="d-flex align-items-center mt-2 justify-content-center" *ngIf="ultimoActivoMov?.estado == '1'">
-                  <a class="text-gray-900 text-hover-danger fs-2 fw-bold me-1">ASIGNADO</a>
+                  <a class="text-gray-900 text-hover-success fs-2 fw-bold me-1">ASIGNADO</a>
                   <a>
                     <span class="svg-icon svg-icon-1 svg-icon-danger">
                       <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24">
@@ -190,9 +219,9 @@
                   </a>
                 </div>
                 <div class="d-flex align-items-center mt-2 justify-content-center" *ngIf="ultimoActivoMov?.estado == '0'">
-                  <a class="text-gray-900 text-hover-success fs-2 fw-bold me-1">LIBRE</a>
+                  <a class="text-gray-900 text-hover-success fs-2 fw-bold me-1">LIBERADO</a>
                   <a>
-                    <span class="svg-icon svg-icon-1 svg-icon-success">
+                    <span class="svg-icon svg-icon-1 svg-icon-danger">
                       <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24">
                         <path d="M10.0813 3.7242C10.8849 2.16438 13.1151 2.16438 13.9187 3.7242V3.7242C14.4016 4.66147 15.4909 5.1127 16.4951 4.79139V4.79139C18.1663 4.25668 19.7433 5.83365 19.2086 7.50485V7.50485C18.8873 8.50905 19.3385 9.59842 20.2758 10.0813V10.0813C21.8356 10.8849 21.8356 13.1151 20.2758 13.9187V13.9187C19.3385 14.4016 18.8873 15.491 19.2086 16.4951V16.4951C19.7433 18.1663 18.1663 19.7433 16.4951 19.2086V19.2086C15.491 18.8873 14.4016 19.3385 13.9187 20.2758V20.2758C13.1151 21.8356 10.8849 21.8356 10.0813 20.2758V20.2758C9.59842 19.3385 8.50905 18.8873 7.50485 19.2086V19.2086C5.83365 19.7433 4.25668 18.1663 4.79139 16.4951V16.4951C5.1127 15.491 4.66147 14.4016 3.7242 13.9187V13.9187C2.16438 13.1151 2.16438 10.8849 3.7242 10.0813V10.0813C4.66147 9.59842 5.1127 8.50905 4.79139 7.50485V7.50485C4.25668 5.83365 5.83365 4.25668 7.50485 4.79139V4.79139C8.50905 5.1127 9.59842 4.66147 10.0813 3.7242V3.7242Z" fill="currentColor" />
                         <path d="M14.8563 9.1903C15.0606 8.94984 15.3771 8.9385 15.6175 9.14289C15.858 9.34728 15.8229 9.66433 15.6185 9.9048L11.863 14.6558C11.6554 14.9001 11.2876 14.9258 11.048 14.7128L8.47656 12.4271C8.24068 12.2174 8.21944 11.8563 8.42911 11.6204C8.63877 11.3845 8.99996 11.3633 9.23583 11.5729L11.3706 13.4705L14.8563 9.1903Z" fill="white" />
@@ -453,152 +482,6 @@
       </div>
     </div>
 
-    <hr>
-
-    <h3 class="text-center text-primary">Historial de depreciacion del activo</h3>
-
-    <form [formGroup]="depreciacionForm">
-      <div class="row mt-5">
-        <div class="col-md-6">
-          <div class="form-group">
-            <label for="descripcion">FECHA INICIO</label>
-            <input type="date" class="form-control" [value]="valorFechaIni" formControlName="depreFechaIni">
-            <input type="hidden" formControlName="depreActivoId">
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="form-group">
-            <label for="descripcion">VALOR UFV</label>
-            <input type="number" class="form-control" formControlName="depreUfvIni">
-          </div>
-        </div>
-      </div>
-      <div class="row mt-5">
-        <div class="col-md-6">
-          <div class="form-group">
-            <label for="descripcion">FECHA FIN</label>
-            <input type="date" class="form-control" formControlName="depreFechaFin" [max]="depreValorMaxFechaFin" (change)="sacaUfv()">
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="form-group">
-            <label for="descripcion">VALOR UFV</label>
-            <input type="number" class="form-control" formControlName="depreUfvFin">
-          </div>
-        </div>
-      </div>
-      <div class="row mt-3">
-        <div class="col-md-12">
-          <button class="btn btn-sm w-100 btn-warning" (click)="calcularDeprePersonalizado()">CALCULAR DEPRESIACION</button>
-        </div>
-      </div>
-    </form>
-
-    <!-- <div class="row mt-5">
-      <div class="col-md-6">
-        <div class="form-group">
-          <label for="descripcion">Fecha</label>
-          <input type="date" class="form-control" [value]="defaultDate" [max]="fechaMin" id="fechaValor">
-        </div>
-      </div>
-      <div class="col-md-6">
-        <button class="btn btn-warning w-100 btn-sm mt-6" (click)="calcularDepre()">CALCULAR DEPRE</button>
-      </div>
-    </div> -->
-
-    <div class="table-responsive mt-3">
-      <table class="table align-middle gs-0 gy-4">
-          <thead>
-              <tr class="fw-bold text-muted bg-light">
-                  <th class="ps-4 rounded-start">Año</th>
-                  <th class="min-w-125px">fecha</th>
-                  <th class="min-w-125px">UFV inicial</th>
-                  <th class="min-w-125px">UFV Final</th>
-                  <th class="min-w-80px">Meses</th>
-                  <th class="min-w-80px">Precio</th>
-                  <th class="min-w-80px">Cost Actualizado</th>
-                  <th class="min-w-80px">Valor Neto</th>
-              </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>{{ DepGes }}</td>
-              <td><a class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">17/04/2023</a></td>
-              <td><a class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">{{ ufvIni }}</a></td>
-              <td><a class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">{{ ufvFin }}</a></td>
-              <td><a class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">{{ cantMes }}</a></td>
-              <td><a class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">{{ precio }}</a></td>
-              <td><a class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">{{ costoActual }}</a></td>
-              <td><a class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">{{ ValorNeto }}</a></td>
-            </tr>
-            <tr>
-              <td>{{ PERDepGes }}</td>
-              <td><a class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">17/04/2023</a></td>
-              <td><a class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">{{ PERufvIni }}</a></td>
-              <td><a class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">{{ PERufvFin }}</a></td>
-              <td><a class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">{{ PERcantMes }}</a></td>
-              <td><a class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">{{ PERprecio }}</a></td>
-              <td><a class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">{{ PERcostoActual }}</a></td>
-              <td><a class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">{{ PERValorNeto }}</a></td>
-            </tr>
-          </tbody>
-      </table>
-    </div>
-
-    <hr>
-    <h3 class="text-center text-primary">Historial de asignacion</h3>
-
-    <div class="row">
-      <div class="col-md-12">
-        <button class="btn btn-info w-100 btn-sm" (click)="abreModalAsignacion(modalAsignacion)" *ngIf="ultimoActivoMov?.estado == '0'">ASIGNAR</button>
-        <button class="btn btn-dark w-100 btn-sm" (click)="liberarActivo(content)" *ngIf="ultimoActivoMov?.estado == '1'">LIBERAR</button>
-      </div>
-    </div>
-    <div class="table-responsive">
-      <table class="table align-middle gs-0 gy-4">
-          <thead>
-              <tr class="fw-bold text-muted bg-light">
-                  <th class="min-w-125px">fecha</th>
-                  <th class="min-w-125px">Personal</th>
-                  <th class="min-w-125px">Ubicacion Esp</th>
-                  <th class="min-w-125px">Ubicacion Grl</th>
-                  <th class="min-w-125px">Estado</th>
-              </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let mov of listMovimientos">
-              <td>
-                {{ mov.fecha | date:'dd/M/yyyy' }}
-              </td>
-              <td>
-                {{ mov.des }} {{ mov.des1 }} {{ mov.des2 }}
-              </td>
-              <td>
-                {{ mov.ubiAct }}
-              </td>
-              <td>
-                {{ mov.ubicG }}
-              </td>
-              <td>
-                <span class="badge badge-light-success fw-dold" *ngIf="mov.estado === '0'">LIBRE</span>
-                <span class="badge badge-light-danger fw-dold" *ngIf="mov.estado === '1'">ASIGNADO</span>
-              </td>
-            </tr>
-              <!-- <tr>
-                <td>2021</td>
-                <td><a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">31/02/2021</a></td>
-                <td><a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">Joel Flores Quispe</a></td>
-                <td><a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">Recibido</a></td>
-              </tr>
-              <tr>
-                  <td>2022</td>
-                  <td><a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">12/06/2022</a></td>
-                  <td><a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">Luis Rodrigo Mayta</a></td>
-                  <td><a href="#" class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">Recibido</a></td>
-              </tr> -->
-          </tbody>
-      </table>
-    </div>
     <!-- <ul class="nav nav-stretch nav-line-tabs nav-line-tabs-2x border-transparent fs-5 fw-bold">
       <li class="nav-item mt-2">
         <a class="nav-link text-active-primary ms-0 me-10 py-5 active" href="../../demo1/dist/pages/user-profile/overview.html">Overview</a>
@@ -619,5 +502,182 @@
         <a class="nav-link text-active-primary ms-0 me-10 py-5" href="../../demo1/dist/pages/user-profile/activity.html">Activity</a>
       </li>
     </ul> -->
+    <hr>
+    <div class="row">
+      <div class="col-md-4">
+        <button #btnDepre class="btn btn-light-primary w-100 btn-sm" value="btnDepre" (click)="visualizar(btnDepre)" >Depreciacion</button>
+      </div>
+      <div class="col-md-4">
+        <button #btnmovimiento class="btn btn-light-primary w-100 btn-sm" value="btnmovimiento" (click)="visualizar(btnmovimiento)" >Movimientos</button>
+      </div>
+      <div class="col-md-4">
+        <button #btnmodificacion class="btn btn-light-primary w-100 btn-sm" value="btnmodificacion" (click)="visualizar(btnmodificacion)" >Refacciones</button>
+      </div>
+    </div>
+
+    <div class="row" *ngIf="contenidoDepre">
+      <div class="col-md-12">
+        <hr>
+        <h3 class="text-center text-primary">Historial de depreciacion del activo</h3>
+        <form [formGroup]="depreciacionForm">
+          <div class="row mt-5">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="descripcion">FECHA INICIO</label>
+                <input type="date" class="form-control" [value]="valorFechaIni" formControlName="depreFechaIni">
+                <input type="hidden" formControlName="depreActivoId">
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="descripcion">VALOR UFV</label>
+                <input type="number" class="form-control" formControlName="depreUfvIni">
+              </div>
+            </div>
+          </div>
+          <div class="row mt-5">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="descripcion">FECHA FIN</label>
+                <input type="date" class="form-control" formControlName="depreFechaFin" [max]="depreValorMaxFechaFin" (change)="sacaUfv()">
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="descripcion">VALOR UFV</label>
+                <input type="number" class="form-control" formControlName="depreUfvFin">
+              </div>
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-md-12">
+              <button class="btn btn-sm w-100 btn-warning" (click)="calcularDeprePersonalizado()">CALCULAR DEPRESIACION</button>
+            </div>
+          </div>
+        </form>
+        <!-- <div class="row mt-5">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="descripcion">Fecha</label>
+              <input type="date" class="form-control" [value]="defaultDate" [max]="fechaMin" id="fechaValor">
+            </div>
+          </div>
+          <div class="col-md-6">
+            <button class="btn btn-warning w-100 btn-sm mt-6" (click)="calcularDepre()">CALCULAR DEPRE</button>
+          </div>
+        </div> -->
+        <div class="table-responsive mt-3">
+          <table class="table align-middle gs-0 gy-4">
+              <thead>
+                  <tr class="fw-bold text-muted bg-light">
+                      <th class="ps-4 rounded-start">Año</th>
+                      <th class="min-w-125px">fecha</th>
+                      <th class="min-w-125px">UFV inicial</th>
+                      <th class="min-w-125px">UFV Final</th>
+                      <th class="min-w-80px">Meses</th>
+                      <th class="min-w-80px">Precio</th>
+                      <th class="min-w-80px">Cost Actualizado</th>
+                      <th class="min-w-80px">Valor Neto</th>
+                  </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>{{ DepGes }}</td>
+                  <td><a class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">17/04/2023</a></td>
+                  <td><a class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">{{ ufvIni }}</a></td>
+                  <td><a class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">{{ ufvFin }}</a></td>
+                  <td><a class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">{{ cantMes }}</a></td>
+                  <td><a class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">{{ precio }}</a></td>
+                  <td><a class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">{{ costoActual }}</a></td>
+                  <td><a class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">{{ ValorNeto }}</a></td>
+                </tr>
+                <tr>
+                  <td>{{ PERDepGes }}</td>
+                  <td><a class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">17/04/2023</a></td>
+                  <td><a class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">{{ PERufvIni }}</a></td>
+                  <td><a class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">{{ PERufvFin }}</a></td>
+                  <td><a class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">{{ PERcantMes }}</a></td>
+                  <td><a class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">{{ PERprecio }}</a></td>
+                  <td><a class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">{{ PERcostoActual }}</a></td>
+                  <td><a class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">{{ PERValorNeto }}</a></td>
+                </tr>
+              </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="row" *ngIf="contenidoMovimiento">
+      <div class="col-md-12">
+        <hr>
+        <h3 class="text-center text-primary">Historial de asignacion</h3>
+        <div class="row">
+          <div class="col-md-12">
+            <button class="btn btn-info w-100 btn-sm" (click)="abreModalAsignacion(modalAsignacion)" *ngIf="!ultimoActivoMov?.estado">ASIGNAR</button>
+            <button class="btn btn-info w-100 btn-sm" (click)="abreModalAsignacion(modalAsignacion)" *ngIf="ultimoActivoMov?.estado == '0'">ASIGNAR</button>
+            <button class="btn btn-dark w-100 btn-sm" (click)="liberarActivo(content)" *ngIf="ultimoActivoMov?.estado == '1'">LIBERAR</button>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table class="table align-middle gs-0 gy-4">
+              <thead>
+                  <tr class="fw-bold text-muted bg-light">
+                      <th class="min-w-125px">fecha</th>
+                      <th class="min-w-125px">Personal</th>
+                      <th class="min-w-125px">Ubicacion Esp</th>
+                      <th class="min-w-125px">Ubicacion Grl</th>
+                      <th class="min-w-125px">Estado</th>
+                  </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let mov of listMovimientos">
+                  <td>
+                    {{ mov.fecha | date:'dd/M/yyyy' }}
+                  </td>
+                  <td>
+                    {{ mov.des }} {{ mov.des1 }} {{ mov.des2 }}
+                  </td>
+                  <td>
+                    {{ mov.ubiAct }}
+                  </td>
+                  <td>
+                    {{ mov.ubicG }}
+                  </td>
+                  <td>
+                    <span class="badge badge-light-danger fw-dold" *ngIf="mov.estado === '0'">LEBERADO</span>
+                    <span class="badge badge-light-success fw-dold" *ngIf="mov.estado === '1'">ASIGNADO</span>
+                  </td>
+                </tr>
+              </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="row" *ngIf="contenidoModificacion">
+      <div class="col-md-12">
+        <hr>
+        <h3 class="text-center text-primary">Historial de refacciones</h3>
+        <div class="row">
+          <div class="col-md-12">
+            <button class="btn w-100 btn-info btn-sm" (click)="abreModalModificacion(modalModificacion)">Nueva refaccion</button>
+          </div>
+          <div class="table-responsive">
+            <table class="table align-middle gs-0 gy-4">
+                <thead>
+                    <tr class="fw-bold text-muted bg-light">
+                        <th class="min-w-125px">Descripcion</th>
+                        <th class="min-w-125px">Fecha</th>
+                    </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let refaccion of listadoRefacciones">
+                    <td>{{ refaccion.descripcion }}</td>
+                    <td>{{ refaccion.fecha }}</td>
+                  </tr>
+                </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

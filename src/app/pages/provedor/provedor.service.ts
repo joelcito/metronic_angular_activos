@@ -23,4 +23,8 @@ export class ProvedorService {
   getProvedor(codprovedor:String){
     return this.http.get<any>(`${this.urlEndPointExterno}/getProvedor/${codprovedor}`);
   }
+
+  guardarProvedor(json:any){
+    return this.http.post<any>(`${this.urlEndPointExterno}/guardarProvedor/`,json , { headers: this.httpHeaders})
+  }
 }

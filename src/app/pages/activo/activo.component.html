@@ -10,10 +10,11 @@
         <div class="col-md-4">
           <label for="dateOfBirth">CODIGO DE ACTIVO</label>
           <input type="text" class="form-control" [(ngModel)]="activo.codigo" formControlName="codigo">
+          <div *ngIf="activoForm.get('codigo')?.invalid">
+            <small *ngIf="activoForm.get('codigo')?.errors?.required" class="text-danger"><i class="fa fa-exclamation-circle text-danger"></i> La codigo es requerido</small>
+          </div>
         </div>
         <div class="col-md-4">
-          <!-- <label for="dateOfBirth">CODIGO DE ALTERNO DEL ACTIVO</label>
-          <input type="text" class="form-control" readonly [(ngModel)]="activo.codigoalterno" formControlName="codigoalterno"> -->
         </div>
         <div class="col-md-4">
           <div class="d-flex align-items-center mt-7 justify-content-center">
@@ -38,6 +39,9 @@
               <option value="">SELECCIONE</option>
               <option value="{{ provedor.cod }}" *ngFor="let provedor of provedores">{{ provedor.des }}</option>
             </select>
+            <!-- <div *ngIf="activoForm.get('provedor')?.invalid">
+              <small *ngIf="activoForm.get('provedor')?.errors?.required" class="text-danger"><i class="fa fa-exclamation-circle text-danger"></i> La proveedor es requerido</small>
+            </div> -->
           </div>
         </div>
         <div class="col-md-4">
@@ -60,14 +64,23 @@
             <option value="">Seleccione</option>
             <option [ngValue]="regional" *ngFor="let regional of regionales">{{ regional.idregional }} | {{ regional.nombre }}</option>
           </select>
+          <div *ngIf="activoForm.get('regional')?.invalid">
+            <small *ngIf="activoForm.get('regional')?.errors?.required" class="text-danger"><i class="fa fa-exclamation-circle text-danger"></i> La regional es requerido</small>
+          </div> 
         </div>
         <div class="col-md-3">
           <label for="dateOfBirth">Fecha de Compra</label>
           <input type="date" class="form-control me-2" [(ngModel)]="activo.fechacompra" formControlName="fechacompra" (change)="sacaUfv()" [max]="maxValFecha">
+          <div *ngIf="activoForm.get('fechacompra')?.invalid">
+            <small *ngIf="activoForm.get('fechacompra')?.errors?.required" class="text-danger"><i class="fa fa-exclamation-circle text-danger"></i> La fechacompra es requerido</small>
+          </div>
         </div>
         <div class="col-md-3">
           <label for="dateOfBirth">UFV de compra</label>
           <input type="number" class="form-control me-2" [(ngModel)]="activo.ufvcompra" formControlName="ufvcompra">
+          <div *ngIf="activoForm.get('ufvcompra')?.invalid">
+            <small *ngIf="activoForm.get('ufvcompra')?.errors?.required" class="text-danger"><i class="fa fa-exclamation-circle text-danger"></i> La ufvcompra es requerido</small>
+          </div>
         </div>
         <div class="col-md-3">
           <label for="codigo">ESTADO</label>
@@ -80,12 +93,18 @@
             <option value="DON">DONACION</option>
             <option value="TRA">TRANSFERENCIA</option>
           </select>
+          <div *ngIf="activoForm.get('estado')?.invalid">
+            <small *ngIf="activoForm.get('estado')?.errors?.required" class="text-danger"><i class="fa fa-exclamation-circle text-danger"></i> El estado es requerido</small>
+          </div>
         </div>
       </div>
       <div class="row mt-5">
         <div class="col-md-12">
-          <label for="dateOfBirth">Descripcion</label>
+          <label for="required dateOfBirth">Descripcion</label>
           <textarea cols="30" rows="2" style="box-shadow: 0px 0px 5px #2c90b5;" class="form-control" [(ngModel)]="activo.descripcion" formControlName="descripcion" (keyup)="toUppercaseDes()"></textarea>
+          <div *ngIf="activoForm.get('descripcion')?.invalid">
+            <small *ngIf="activoForm.get('descripcion')?.errors?.required" class="text-danger"><i class="fa fa-exclamation-circle text-danger"></i> La descripcion es requerido</small>
+          </div>
         </div>
       </div>
 
@@ -264,6 +283,7 @@
               <th class="min-w-150px">CODIGO</th>
               <th>DESCRIPCION</th>
               <th>ESTADO</th>
+              <th>ESTADO</th>
               <th>FECHA COMPRA</th>
               <th>VIGENCIA</th>
               <th>REGIONAL</th>
@@ -282,6 +302,7 @@
                 <span class="badge badge-light-primary fw-dold" *ngIf="actPer.estado == 'DON'">DONACION</span>
                 <span class="badge badge-light-dark fw-white" *ngIf="actPer.estado == 'TRA'">TRANSFERENCIA</span>
               </td>
+              <td>{{ actPer.num2 }}</td>
               <td>{{ actPer.fechacompra | date:'dd/M/yyyy' }}</td>
               <td>
                 <div class="d-flex align-items-center justify-content-center" *ngIf="actPer.estado_vigencia== '1'">

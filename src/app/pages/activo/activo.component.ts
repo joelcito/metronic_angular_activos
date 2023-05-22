@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ChangeDetectorRef, Input, ElementRef } from '@angular/core';
 import { ModalDismissReasons, NgbDatepickerModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { NgForm, FormGroup, FormControl } from '@angular/forms';
+import { NgForm, FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { Activo } from './activo';
 import { Grupo } from '../grupos/grupo';
@@ -85,27 +85,51 @@ export class ActivoComponent implements OnInit {
   @Input() caracteristica:Caracteristica = new Caracteristica();
 
   activoForm = new FormGroup({
-    descripcion: new FormControl(''),
-    incorporacion: new FormControl(''),
-    grupo: new FormControl(''),
-    subgrupo: new FormControl(''),
-    codigo: new FormControl(''),
-    regimen: new FormControl(''),
-    regional: new FormControl(''),
-    unidadmanejo: new FormControl(''),
-    eficiencia: new FormControl(''),
-    formainicial:new FormControl(''),
-    estadoregistro:new FormControl(''),
-    fechacompra:new FormControl(''),
-    precio:new FormControl(''),
-    ufvcompra:new FormControl(''),
-    porcentaje_depreciacion:new FormControl(''),
-    vida_util:new FormControl(''),
-    placa:new FormControl(''),
-    estado:new FormControl(''),
-    codigoalterno:new FormControl(''),
-    provedor:new FormControl(''),
-    factura:new FormControl(''),
+    // descripcion:              new FormControl('', [Validators.required]),
+    // incorporacion:            new FormControl('', [Validators.required]),
+    // grupo:                    new FormControl('', [Validators.required]),
+    // subgrupo:                 new FormControl('', [Validators.required]),
+    // codigo:                   new FormControl('', [Validators.required]),
+    // regimen:                  new FormControl('', [Validators.required]),
+    // regional:                 new FormControl('', [Validators.required]),
+    // unidadmanejo:             new FormControl('', [Validators.required]),
+    // eficiencia:               new FormControl('', [Validators.required]),
+    // formainicial:             new FormControl('', [Validators.required]),
+    // estadoregistro:           new FormControl('', [Validators.required]),
+    // fechacompra:              new FormControl('', [Validators.required]),
+    // precio:                   new FormControl('', [Validators.required]),
+    // ufvcompra:                new FormControl('', [Validators.required]),
+    // porcentaje_depreciacion:  new FormControl('', [Validators.required]),
+    // vida_util:                new FormControl('', [Validators.required]),
+    // placa:                    new FormControl('', [Validators.required]),
+    // estado:                   new FormControl('', [Validators.required]),
+    // codigoalterno:            new FormControl('', [Validators.required]),
+    // provedor:                 new FormControl('', [Validators.required]),
+    // factura:                  new FormControl('', [Validators.required]),
+
+
+    
+    descripcion:              new FormControl(''),
+    incorporacion:            new FormControl(''),
+    grupo:                    new FormControl(''),
+    subgrupo:                 new FormControl(''),
+    codigo:                   new FormControl(''),
+    regimen:                  new FormControl(''),
+    regional:                 new FormControl(''),
+    unidadmanejo:             new FormControl(''),
+    eficiencia:               new FormControl(''),
+    formainicial:             new FormControl(''),
+    estadoregistro:           new FormControl(''),
+    fechacompra:              new FormControl(''),
+    precio:                   new FormControl(''),
+    ufvcompra:                new FormControl(''),
+    porcentaje_depreciacion:  new FormControl(''),
+    vida_util:                new FormControl(''),
+    placa:                    new FormControl(''),
+    estado:                   new FormControl(''),
+    codigoalterno:            new FormControl(''),
+    provedor:                 new FormControl(''),
+    factura:                  new FormControl(''),
     // componentes:new FormControl([]),
   });
 
@@ -154,6 +178,7 @@ export class ActivoComponent implements OnInit {
   listaActivosPersonalizado(){
     this.activoService.listarParsonalizado().subscribe(resul => {
       this.activosPer = resul
+      console.log(resul)
       this.chdr.detectChanges()
     })
   }
@@ -285,38 +310,46 @@ export class ActivoComponent implements OnInit {
 
   createActivo(){
 
-    console.log(this.activo)
-
-    this.activoService.create(this.activo).subscribe(resul => {
-
-      let datos:String = "";
-
-      for (let index = 0; index < this.estados.length; index++) {
-        const element = this.estados[index];
-        datos = datos + this.idsComponentes[index].toString()+"┬"+(<HTMLInputElement>document.querySelector('#'+element)).value;
-
-        if(index < (this.estados.length)-1){
-          datos = datos + "┴";
-        }else{
-          datos = datos+"┴"+resul.idactivo ;
+    if(this.activoForm.valid){
+      this.activoService.create(this.activo).subscribe(resul => {
+        let datos:String = "";
+        for (let index = 0; index < this.estados.length; index++) {
+          const element = this.estados[index];
+          datos = datos + this.idsComponentes[index].toString()+"┬"+(<HTMLInputElement>document.querySelector('#'+element)).value;
+          if(index < (this.estados.length)-1){
+            datos = datos + "┴";
+          }else{
+            datos = datos+"┴"+resul.idactivo ;
+          }
         }
-      }
+        this.caracteristicaService.agregaJson(datos).subscribe(result => {
+          
+        })
+        this.listaActivosPersonalizado()
+        swal.fire({
+          icon: 'success',
+          title: 'Exito!',
+          text: 'Se gurado con exito el Activo',
+          timer: 1500
+        })
 
-      this.caracteristicaService.agregaJson(datos).subscribe(result => {
-      })
+      });
+    }else{
 
-      this.listaActivosPersonalizado()
-
-      //this.listaActivos();
+      // console.log(this.activoForm, this.activoForm.get('descripcion'))
+      console.log(this.activoForm.get('descripcion'))
+      console.log(this.activoForm.get('descripcion')?.invalid)
+      console.log(this.activoForm.get('descripcion')?.touched)
+      console.log(this.activoForm.get('descripcion')?.errors)
+      console.log(this.activoForm.get('descripcion')?.errors?.required)
 
       swal.fire({
-        icon: 'success',
-        title: 'Exito!',
-        text: 'Se gurado con exito el Activo',
+        icon: 'error',
+        title: 'Error!',
+        text: 'Algo fallo',
         timer: 1500
       })
-
-    });
+    }
   }
 
   eliminarActivo(activo:Activo){
@@ -373,7 +406,6 @@ export class ActivoComponent implements OnInit {
   }
 
   buscarActivo(codActivo:String, descripcionActivo:String, estadoVigencia:String){
-    console.log(codActivo,descripcionActivo,estadoVigencia)
      this.activoService.buscarActivo(codActivo,descripcionActivo,estadoVigencia).subscribe(res => {
       this.activosPer = res
       this.chdr.detectChanges()

@@ -51,6 +51,7 @@ export class DetalleComponent implements OnInit {
   listadoCargos   : any[];
   listadoUbiEsp   : any[];
   listadoreparticiones   : any[];
+  listadoRefacciones   : any[];
 
   idGrupo         :String = '0';
   idSubGrupo      :String = '0';
@@ -85,6 +86,10 @@ export class DetalleComponent implements OnInit {
   depreValorMaxFechaFin:String;
 
   buscaCedulaAsignacion:boolean = false;
+
+  contenidoDepre:boolean = false;
+  contenidoMovimiento:boolean = false;
+  contenidoModificacion:boolean = false;
 
   depreciacionForm = new FormGroup({
     depreActivoId: new FormControl(''),
@@ -125,6 +130,11 @@ export class DetalleComponent implements OnInit {
     ultimoMov: new FormControl(''),
     estadoregistro: new FormControl(''),
     tipo: new FormControl('ASI'),
+  });
+
+  formularioModificacion = new FormGroup({
+    descripcion: new FormControl(''),
+    activo: new FormControl(''),
   });
 
 
@@ -184,7 +194,7 @@ export class DetalleComponent implements OnInit {
       if(id){
         this.activoService.getActivo(id.toString()).subscribe(activo => {
           this.activo = activo;
-          console.log(activo)
+          // console.log(activo)
           if(activo.grupo){
             this.idGrupo = activo.grupo.idgrupo;
             let idgrupoB = activo.grupo.idgrupo.toString();
@@ -219,7 +229,7 @@ export class DetalleComponent implements OnInit {
           }
           if(activo.unidadmanejo){
 
-            console.log(activo.unidadmanejo.idunidadmanejo)
+            // console.log(activo.unidadmanejo.idunidadmanejo)
             this.idunidadmanejo = activo.unidadmanejo.idunidadmanejo;
           }
 
@@ -287,6 +297,13 @@ export class DetalleComponent implements OnInit {
   listaRegional(){
     this.regionalService.getRegionales().subscribe(resul=>{
       this.regionales = resul;
+      this.chdr.detectChanges();
+    })
+  }
+
+  listaRefacciones(activo:string){
+    this.activoService.getRefaccionesByIdActivo(activo).subscribe(result => {
+      this.listadoRefacciones = result
       this.chdr.detectChanges();
     })
   }
@@ -360,17 +377,17 @@ export class DetalleComponent implements OnInit {
     this.formularioLibreacion.get('activo')?.setValue(String(this.activo.idactivo));
     this.formularioLibreacion.get('estadoregistro')?.setValue(String(this.activo.estadoregistro));
     if(this.ultimoActivoMov){
-      console.log(this.ultimoActivoMov);
+        // console.log(this.ultimoActivoMov);
       this.formularioLibreacion.get('ultimoMov')?.setValue(JSON.stringify(this.ultimoActivoMov));
     }
     this.activoService.getPersonaByCi(this.ultimoActivoMov.ci).subscribe(resul => {
       this.formularioLibreacion.get('cedula')?.setValue(String(resul.ci));
       this.formularioLibreacion.get('nombre')?.setValue(String(resul.des.trim())+" "+String(resul.des1.trim())+" "+String(resul.des2.trim()));
-      console.log(resul)
+      // console.log(resul)
     })
 
     this.activoService.getReparticiones().subscribe(result => {
-      console.log(result)
+      // console.log(result)
     })
 
     this.modalService.open(content, { size: 'lg' }).result.then(
@@ -454,7 +471,7 @@ export class DetalleComponent implements OnInit {
     this.formularioAsignacion.get('activo')?.setValue(String(this.activo.idactivo));
     this.formularioAsignacion.get('estadoregistro')?.setValue(String(this.activo.estadoregistro));
     if(this.ultimoActivoMov){
-      console.log(this.ultimoActivoMov);
+      // console.log(this.ultimoActivoMov);
       this.formularioAsignacion.get('ultimoMov')?.setValue(JSON.stringify(this.ultimoActivoMov));
     }
 
@@ -495,6 +512,69 @@ export class DetalleComponent implements OnInit {
       }
 
       console.log(this.buscaCedulaAsignacion)
+    })
+  }
+
+  visualizar(value:any){
+    let btn = value.value
+    if(btn === 'btnDepre'){
+      this.contenidoDepre = true; 
+      this.contenidoMovimiento = false; 
+      this.contenidoModificacion = false; 
+    }else if(btn === 'btnmovimiento'){
+      this.contenidoMovimiento = true; 
+      this.contenidoDepre = false; 
+      this.contenidoModificacion = false; 
+    }else if(btn === 'btnmodificacion'){
+      let activo = (this.activo.idactivo).toString();
+      this.listaRefacciones(activo)
+      this.contenidoModificacion = true;
+      this.contenidoMovimiento = false; 
+      this.contenidoDepre = false; 
+    }
+  }
+
+  abreModalModificacion(modalModificacion:any){
+    this.formularioModificacion.get('activo')?.setValue(String(this.activo.idactivo));
+    this.modalService.open(modalModificacion, { size: 'lg' }).result.then(
+      (result) => {
+        if(result==='guardar'){
+          console.log("se guardara");
+        }else{
+          console.log("no guardara");
+        }
+        console.log("haber")
+      },
+      (reason)=>{
+        console.log(reason)
+      }
+    );
+  }
+
+  guardarModificacion(){
+    let json = this.formularioModificacion.value
+    this.activoService.guardaRefaccion(json).subscribe(resul => {
+      if(resul.estado === "success"){
+        let activo = (this.activo.idactivo).toString();
+        this.listaRefacciones(activo)
+        swal.fire({
+          icon: 'success',
+          title: 'Exito!',
+          text: 'Se regristro la refaccion con exito.',
+          timer: 2000
+        })
+        setTimeout(() => {
+          this.modalService.dismissAll('modalModificacion')
+        }, 2500);
+        this.formularioModificacion.get('descripcion')?.setValue('');
+      }else{
+        swal.fire({
+          icon: 'error',
+          title: 'Error!',
+          text: 'Algo paso con en registro',
+          timer: 1000
+        })
+      }
     })
   }
 }

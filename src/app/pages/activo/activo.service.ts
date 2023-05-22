@@ -92,5 +92,13 @@ export class ActivoService {
   getReparticiones(){
     return this.http.get<any[]>(`${this.urlEndPointExterno}/getReparticiones`)
   }
+
+  guardaRefaccion(json:any){
+    return this.http.post<any>(`${this.urlEndPointExterno}/guardaRefaccion`,json,{headers: this.httpHeaders});
+  }
+
+  getRefaccionesByIdActivo(codactivo:string){
+    return this.http.get<any[]>(`${this.urlEndPointExterno}/getRefaccionesByIdActivo/${codactivo}`);
+  }
   
 }

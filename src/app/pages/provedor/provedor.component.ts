@@ -68,7 +68,7 @@ export class ProvedorComponent implements OnInit {
     );
 	}
   guardar(){
-
+    console.log(this.provedorForm.value)
   }
 
   listaProvedor(){
