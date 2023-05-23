@@ -108,7 +108,7 @@ export class ActivoComponent implements OnInit {
     // factura:                  new FormControl('', [Validators.required]),
 
 
-    
+
     descripcion:              new FormControl(''),
     incorporacion:            new FormControl(''),
     grupo:                    new FormControl(''),
@@ -165,7 +165,7 @@ export class ActivoComponent implements OnInit {
     this.maxValFecha = new Date().toISOString().substring(0,10)
 
     this.listadoPrvedores()
-    
+
   }
 
   listaActivos(){
@@ -323,7 +323,7 @@ export class ActivoComponent implements OnInit {
           }
         }
         this.caracteristicaService.agregaJson(datos).subscribe(result => {
-          
+
         })
         this.listaActivosPersonalizado()
         swal.fire({
@@ -434,5 +434,9 @@ export class ActivoComponent implements OnInit {
     // console.log(this.activo.codprovedor)
     const nitprovedor = document.getElementById('nitprovedor') as HTMLInputElement;
     nitprovedor.value = this.activo.codprovedor.toString();
+  }
+
+  verificaEstado(item:string){
+    return item.trim();
   }
 }

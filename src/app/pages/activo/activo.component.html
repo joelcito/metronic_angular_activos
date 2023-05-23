@@ -66,7 +66,7 @@
           </select>
           <div *ngIf="activoForm.get('regional')?.invalid">
             <small *ngIf="activoForm.get('regional')?.errors?.required" class="text-danger"><i class="fa fa-exclamation-circle text-danger"></i> La regional es requerido</small>
-          </div> 
+          </div>
         </div>
         <div class="col-md-3">
           <label for="dateOfBirth">Fecha de Compra</label>
@@ -302,7 +302,19 @@
                 <span class="badge badge-light-primary fw-dold" *ngIf="actPer.estado == 'DON'">DONACION</span>
                 <span class="badge badge-light-dark fw-white" *ngIf="actPer.estado == 'TRA'">TRANSFERENCIA</span>
               </td>
-              <td>{{ actPer.num2 }}</td>
+              <td>
+                <span class="badge badge-light-dark fw-dold" *ngIf="actPer.cod === 0">ACTUALIZAR</span>
+                <span class="badge badge-light-success fw-dold" *ngIf="actPer.cod === 1">VIGENTE</span>
+                <span class="badge badge-light-danger fw-dold" *ngIf="actPer.cod === 2">PERDIDA</span>
+                <span class="badge badge-light-warning fw-dold" *ngIf="actPer.cod === 4">ALTERACION</span>
+                <span class="badge badge-light-warning fw-dold" *ngIf="actPer.cod === 5">OBSOLECENCIA</span>
+                <span class="badge badge-light-danger fw-dold" *ngIf="actPer.cod === 11">BAJA POR TRANSFERENCIA</span>
+                <span class="badge badge-light-danger fw-dold" *ngIf="actPer.cod === 13">BAJA</span>
+                <span class="badge badge-light-danger fw-dold" *ngIf="actPer.cod === 14">BAJA POR ERROR</span>
+                <span class="badge badge-light-info fw-dold" *ngIf="actPer.cod === 14">TRANSFERENCIA</span>
+
+                {{ actPer.cod }}
+              </td>
               <td>{{ actPer.fechacompra | date:'dd/M/yyyy' }}</td>
               <td>
                 <div class="d-flex align-items-center justify-content-center" *ngIf="actPer.estado_vigencia== '1'">
