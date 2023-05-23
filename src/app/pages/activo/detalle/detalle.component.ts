@@ -2,7 +2,7 @@ import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { formatDate,DatePipe } from '@angular/common';
 // import { map } from 'rxjs/operators';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ModalDismissReasons, NgbDatepickerModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import swal from 'sweetalert2';
@@ -117,18 +117,18 @@ export class DetalleComponent implements OnInit {
   });
 
   formularioAsignacion = new FormGroup({
-    fecha: new FormControl(''),
-    cargo: new FormControl(''),
-    reparticion: new FormControl(''),
-    ubicacion: new FormControl(''),
-    descgeneral: new FormControl(''),
-    destino: new FormControl(''),
-    observacion: new FormControl(''),
-    nombre: new FormControl(''),
-    cedula: new FormControl(''),
-    activo: new FormControl(''),
-    ultimoMov: new FormControl(''),
-    estadoregistro: new FormControl(''),
+    fecha: new FormControl('', Validators.required),
+    cargo: new FormControl('', Validators.required),
+    reparticion: new FormControl('', Validators.required),
+    ubicacion: new FormControl('', Validators.required),
+    descgeneral: new FormControl('', Validators.required),
+    destino: new FormControl('', Validators.required),
+    observacion: new FormControl('', Validators.required),
+    nombre: new FormControl('', Validators.required),
+    cedula: new FormControl('', Validators.required),
+    activo: new FormControl('', Validators.required),
+    ultimoMov: new FormControl('', Validators.required),
+    estadoregistro: new FormControl('', Validators.required),
     tipo: new FormControl('ASI'),
   });
 
@@ -182,7 +182,7 @@ export class DetalleComponent implements OnInit {
 
   sacaUltimoMovActivo(id:String){
     this.activoService.getUltimoMovActivo(id).subscribe(result => {
-      console.log(result)
+      // console.log(result)
       this.ultimoActivoMov = result;
       this.chdr.detectChanges();
     })
@@ -308,6 +308,12 @@ export class DetalleComponent implements OnInit {
     })
   }
 
+  listaReparticiones(){
+    this.activoService.getReparticiones().subscribe(resul=>{
+      this.listadoreparticiones = resul
+    })
+  }
+
   onChangeDate(value:any) {
   }
 
@@ -377,7 +383,7 @@ export class DetalleComponent implements OnInit {
     this.formularioLibreacion.get('activo')?.setValue(String(this.activo.idactivo));
     this.formularioLibreacion.get('estadoregistro')?.setValue(String(this.activo.estadoregistro));
     if(this.ultimoActivoMov){
-        // console.log(this.ultimoActivoMov);
+      console.log(this.ultimoActivoMov);
       this.formularioLibreacion.get('ultimoMov')?.setValue(JSON.stringify(this.ultimoActivoMov));
     }
     this.activoService.getPersonaByCi(this.ultimoActivoMov.ci).subscribe(resul => {
@@ -389,6 +395,8 @@ export class DetalleComponent implements OnInit {
     this.activoService.getReparticiones().subscribe(result => {
       // console.log(result)
     })
+
+    this.listaReparticiones();
 
     this.modalService.open(content, { size: 'lg' }).result.then(
       (result) => {
@@ -406,7 +414,7 @@ export class DetalleComponent implements OnInit {
   }
 
   guardarLiberacion(){
-    let json = this.formularioLibreacion.value; 
+    let json = this.formularioLibreacion.value;
     this.activoService.guardaLiberacionActivo(json).subscribe(resul => {
       if(resul.estado === "success"){
         this.listaMovimientos(resul.cod);
@@ -430,34 +438,55 @@ export class DetalleComponent implements OnInit {
       }
     })
   }
-  
+
   guardarAsignacion(){
-    let json = this.formularioAsignacion.value; 
+    let json = this.formularioAsignacion.value;
 
-    console.log(json)
+    let camposVacios:any = [];
 
-    this.activoService.guardaLiberacionActivo(json).subscribe(resul => {
-      if(resul.estado === "success"){
-        this.listaMovimientos(resul.cod);
-        this.sacaUltimoMovActivo(resul.cod);
-        swal.fire({
-          icon: 'success',
-          title: 'Exito!',
-          text: 'Se '+resul.mensaje+' con exito el activo',
-          timer: 2000
-        })
-        setTimeout(() => {
-          this.modalService.dismissAll('content')
-        }, 2500);
-      }else{
-        swal.fire({
-          icon: 'error',
-          title: 'Error!',
-          text: 'Algo paso con la liberacion',
-          timer: 1000
-        })
+    // Recorrer los controles del formulario
+    Object.keys(this.formularioAsignacion.controls).forEach(key => {
+      if (this.formularioAsignacion.get(key)?.value === '' || this.formularioAsignacion.get(key)?.value === null) {
+        camposVacios.push(key);
       }
-    })
+    });
+
+    if (camposVacios.length === 0) {
+      this.activoService.guardaLiberacionActivo(json).subscribe(resul => {
+        if(resul.estado === "success"){
+          this.listaMovimientos(resul.cod);
+          this.sacaUltimoMovActivo(resul.cod);
+          swal.fire({
+            icon: 'success',
+            title: 'Exito!',
+            text: 'Se '+resul.mensaje+' con exito el activo',
+            timer: 2000
+          })
+          setTimeout(() => {
+            this.modalService.dismissAll('content')
+          }, 2500);
+        }else{
+          swal.fire({
+            icon: 'error',
+            title: 'Error!',
+            text: 'Algo paso con la liberacion',
+            timer: 1000
+          })
+        }
+      })
+    } else {
+      // Campos vacíos encontrados, realizar acciones correspondientes
+      console.log('Campos vacíos:', camposVacios);
+    }
+
+    // console.log(json)
+    // if(this.formularioAsignacion.valid){
+    //   console.log("si")
+    // }else{
+    //   console.log("no", this.formularioAsignacion.controls)
+    // }
+
+
   }
 
   abreModalAsignacion(modalAsignacion:any){
@@ -474,6 +503,8 @@ export class DetalleComponent implements OnInit {
       // console.log(this.ultimoActivoMov);
       this.formularioAsignacion.get('ultimoMov')?.setValue(JSON.stringify(this.ultimoActivoMov));
     }
+
+    this.listaReparticiones();
 
     // this.activoService.getPersonaByCi(this.ultimoActivoMov.ci).subscribe(resul => {
     //   this.formularioAsignacion.get('cedula')?.setValue(String(resul.ci));
@@ -518,19 +549,19 @@ export class DetalleComponent implements OnInit {
   visualizar(value:any){
     let btn = value.value
     if(btn === 'btnDepre'){
-      this.contenidoDepre = true; 
-      this.contenidoMovimiento = false; 
-      this.contenidoModificacion = false; 
+      this.contenidoDepre = true;
+      this.contenidoMovimiento = false;
+      this.contenidoModificacion = false;
     }else if(btn === 'btnmovimiento'){
-      this.contenidoMovimiento = true; 
-      this.contenidoDepre = false; 
-      this.contenidoModificacion = false; 
+      this.contenidoMovimiento = true;
+      this.contenidoDepre = false;
+      this.contenidoModificacion = false;
     }else if(btn === 'btnmodificacion'){
       let activo = (this.activo.idactivo).toString();
       this.listaRefacciones(activo)
       this.contenidoModificacion = true;
-      this.contenidoMovimiento = false; 
-      this.contenidoDepre = false; 
+      this.contenidoMovimiento = false;
+      this.contenidoDepre = false;
     }
   }
 

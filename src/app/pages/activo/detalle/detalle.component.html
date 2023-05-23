@@ -18,7 +18,7 @@
           <label for="descripcion">Nombre</label>
           <input type="text" class="form-control" formControlName="nombre" readonly>
         </div>
-      </div>      
+      </div>
       <div class="row mt-5">
         <div class="col-md-3">
           <label for="descripcion">Fecha</label>
@@ -35,6 +35,7 @@
           <label for="descripcion">Reparticion</label>
           <select class="form-control" formControlName="reparticion">
             <option value="">SELECCIONE</option>
+            <option value="{{ reparticion.cod }}" *ngFor="let reparticion of listadoreparticiones">{{ reparticion.des }}</option>
           </select>
         </div>
         <div class="col-md-3">
@@ -90,6 +91,9 @@
           <input type="hidden" formControlName="tipo">
           <small class="text-danger" *ngIf="buscaCedulaAsignacion">No se encontro la cedula</small>
         </div>
+        <div *ngIf="formularioAsignacion?.get('nombre')?.invalid && formularioAsignacion?.get('nombre')?.touched">
+          <div *ngIf="formularioAsignacion?.get('nombre')?.errors?.required">El nombre es requerido.</div>
+        </div>
         <div class="col-md-1 mt-7">
           <button class="btn btn-icon btn-sm btn-success" (click)="buscarPersona()"><i class="fa fa-search"></i></button>
         </div>
@@ -97,7 +101,7 @@
           <label for="descripcion">Nombre</label>
           <input type="text" class="form-control" formControlName="nombre" readonly>
         </div>
-      </div>      
+      </div>
       <div class="row mt-5">
         <div class="col-md-3">
           <label for="descripcion">Fecha</label>
@@ -114,6 +118,7 @@
           <label for="descripcion">Reparticion</label>
           <select class="form-control" formControlName="reparticion">
             <option value="">SELECCIONE</option>
+            <option value="{{ reparticion.cod }}" *ngFor="let reparticion of listadoreparticiones">{{ reparticion.des }}</option>
           </select>
         </div>
         <div class="col-md-3">
@@ -159,7 +164,7 @@
 		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
 	</div>
 	<div class="modal-body">
-    <form [formGroup]="formularioModificacion">    
+    <form [formGroup]="formularioModificacion">
       <div class="row mt-5">
         <div class="col-md-12">
           <label for="descripcion">Descripcion</label>
@@ -441,7 +446,7 @@
         </div>
       </div>
     </div>
-    
+
     <div class="row mt-3">
       <div class="col" *ngFor="let caracteristica of caracteristicas">
         <div class="form-group">
@@ -452,7 +457,7 @@
     </div>
     <!-- <div class="row">
       <div class="col-md-4">
-        
+
       </div>
       <div class="col-md-4">
         <div class="form-group">
@@ -643,7 +648,7 @@
                     {{ mov.ubicG }}
                   </td>
                   <td>
-                    <span class="badge badge-light-danger fw-dold" *ngIf="mov.estado === '0'">LEBERADO</span>
+                    <span class="badge badge-light-danger fw-dold" *ngIf="mov.estado === '0'">LIBERADO</span>
                     <span class="badge badge-light-success fw-dold" *ngIf="mov.estado === '1'">ASIGNADO</span>
                   </td>
                 </tr>

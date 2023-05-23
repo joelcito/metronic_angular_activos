@@ -52,11 +52,12 @@ export class ActivoService {
     return this.http.get<any[]>(this.urlEndPoint+"/listadoPer")
   }
 
-  buscarActivo(idactivo:String, descripcion:String, buscarActivo:String){
+  buscarActivo(idactivo:String, descripcion:String,estadoActivo:String, estadoVigencia:String){
     const datos = {
       variable1: idactivo,
       variable2: descripcion,
-      variable3: buscarActivo
+      variable3: estadoActivo,
+      variable4: estadoVigencia
     };
     return this.http.post<any[]>(this.urlEndPoint+"/buscaActivo",datos,{headers: this.httpHeaders})
   }
@@ -88,7 +89,7 @@ export class ActivoService {
   getPersonaByCi(ci:String){
     return this.http.get<any>(`${this.urlEndPointExterno}/getPersonaByCi/${ci}`)
   }
-  
+
   getReparticiones(){
     return this.http.get<any[]>(`${this.urlEndPointExterno}/getReparticiones`)
   }
@@ -100,5 +101,5 @@ export class ActivoService {
   getRefaccionesByIdActivo(codactivo:string){
     return this.http.get<any[]>(`${this.urlEndPointExterno}/getRefaccionesByIdActivo/${codactivo}`);
   }
-  
+
 }
