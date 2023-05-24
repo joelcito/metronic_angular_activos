@@ -1,4 +1,4 @@
-<!-- aqui el modal -->
+<!-- aqui el modal liberacion -->
 <ng-template #content let-modal>
 	<div class="modal-header modal-lg">
 		<h3 class="modal-title" id="modal-basic-title">FORMULARIO DE <span class="text-info"> ( LIBERACION ) </span></h3>
@@ -9,20 +9,23 @@
       <div class="row mt-5">
         <div class="col-md-6">
           <label for="descripcion">Cedula</label>
-          <input type="text" class="form-control" formControlName="cedula" readonly>
+          <input type="text" class="form-control" formControlName="cedula">
           <input type="hidden" formControlName="activo">
           <input type="hidden" formControlName="ultimoMov">
           <input type="hidden" formControlName="estadoregistro">
         </div>
         <div class="col-md-6">
           <label for="descripcion">Nombre</label>
-          <input type="text" class="form-control" formControlName="nombre" readonly>
+          <input type="text" class="form-control" formControlName="nombre">
         </div>
       </div>
       <div class="row mt-5">
         <div class="col-md-3">
           <label for="descripcion">Fecha</label>
           <input type="date" class="form-control" formControlName="fecha">
+          <div *ngIf="formularioLibreacion.get('fecha')?.invalid">
+            <small *ngIf="formularioLibreacion.get('fecha')?.errors?.required" class="text-danger"><i class="fa fa-exclamation-circle text-danger"></i> La fecha es requerido</small>
+          </div>
         </div>
         <div class="col-md-3">
           <label for="descripcion">Cargo</label>
@@ -42,7 +45,7 @@
           <label for="descripcion">Ubicacion</label>
           <select class="form-control"  formControlName="ubicacion">
             <option value="">SELECCIONE</option>
-            <option value="{{ ubi.cod }}" *ngFor="let ubi of listadoUbiEsp">{{ ubi.des }}</option>
+            <option value="{{ ubi.cod.trim() }}" *ngFor="let ubi of listadoUbiEsp">{{ ubi.des }}</option>
           </select>
         </div>
       </div>
@@ -71,9 +74,9 @@
 		<!-- <button type="button" class="btn btn-success w-100" (click)="modal.close('guardar')">Guardar</button> -->
 	</div>
 </ng-template>
-<!-- end del modal -->
+<!-- end del modal liberacion-->
 
-<!-- aqui el modal -->
+<!-- aqui el modal asignacion-->
 <ng-template #modalAsignacion let-modal>
 	<div class="modal-header modal-lg">
 		<h3 class="modal-title" id="modal-basic-title">FORMULARIO DE <span class="text-info"> ( ASIGNACION ) </span></h3>
@@ -90,9 +93,9 @@
           <input type="hidden" formControlName="estadoregistro">
           <input type="hidden" formControlName="tipo">
           <small class="text-danger" *ngIf="buscaCedulaAsignacion">No se encontro la cedula</small>
-        </div>
-        <div *ngIf="formularioAsignacion?.get('nombre')?.invalid && formularioAsignacion?.get('nombre')?.touched">
-          <div *ngIf="formularioAsignacion?.get('nombre')?.errors?.required">El nombre es requerido.</div>
+          <div *ngIf="formularioAsignacion.get('cedula')?.invalid">
+            <small *ngIf="formularioAsignacion.get('cedula')?.errors?.required" class="text-danger"><i class="fa fa-exclamation-circle text-danger"></i> La cedula es requerido</small>
+          </div>
         </div>
         <div class="col-md-1 mt-7">
           <button class="btn btn-icon btn-sm btn-success" (click)="buscarPersona()"><i class="fa fa-search"></i></button>
@@ -100,12 +103,18 @@
         <div class="col-md-7">
           <label for="descripcion">Nombre</label>
           <input type="text" class="form-control" formControlName="nombre" readonly>
+          <div *ngIf="formularioAsignacion.get('nombre')?.invalid">
+            <small *ngIf="formularioAsignacion.get('nombre')?.errors?.required" class="text-danger"><i class="fa fa-exclamation-circle text-danger"></i> La nombre es requerido</small>
+          </div>
         </div>
       </div>
       <div class="row mt-5">
         <div class="col-md-3">
           <label for="descripcion">Fecha</label>
           <input type="date" class="form-control" formControlName="fecha">
+          <div *ngIf="formularioAsignacion.get('fecha')?.invalid">
+            <small *ngIf="formularioAsignacion.get('fecha')?.errors?.required" class="text-danger"><i class="fa fa-exclamation-circle text-danger"></i> La fecha es requerido</small>
+          </div>
         </div>
         <div class="col-md-3">
           <label for="descripcion">Cargo</label>
@@ -113,6 +122,9 @@
             <option value="">SELECCIONE</option>
             <option value="{{ cargo.cod }}" *ngFor="let cargo of listadoCargos">{{ cargo.des }}</option>
           </select>
+          <div *ngIf="formularioAsignacion.get('cargo')?.invalid">
+            <small *ngIf="formularioAsignacion.get('cargo')?.errors?.required" class="text-danger"><i class="fa fa-exclamation-circle text-danger"></i> El cargo es requerido</small>
+          </div>
         </div>
         <div class="col-md-3">
           <label for="descripcion">Reparticion</label>
@@ -120,6 +132,9 @@
             <option value="">SELECCIONE</option>
             <option value="{{ reparticion.cod }}" *ngFor="let reparticion of listadoreparticiones">{{ reparticion.des }}</option>
           </select>
+          <div *ngIf="formularioAsignacion.get('reparticion')?.invalid">
+            <small *ngIf="formularioAsignacion.get('reparticion')?.errors?.required" class="text-danger"><i class="fa fa-exclamation-circle text-danger"></i> La reparticion es requerido</small>
+          </div>
         </div>
         <div class="col-md-3">
           <label for="descripcion">Ubicacion</label>
@@ -127,6 +142,9 @@
             <option value="">SELECCIONE</option>
             <option value="{{ ubi.cod }}" *ngFor="let ubi of listadoUbiEsp">{{ ubi.des }}</option>
           </select>
+          <div *ngIf="formularioAsignacion.get('ubicacion')?.invalid">
+            <small *ngIf="formularioAsignacion.get('ubicacion')?.errors?.required" class="text-danger"><i class="fa fa-exclamation-circle text-danger"></i> La ubicacion es requerido</small>
+          </div>
         </div>
       </div>
       <div class="row mt-5">
@@ -154,7 +172,7 @@
 		<!-- <button type="button" class="btn btn-success w-100" (click)="modal.close('guardar')">Guardar</button> -->
 	</div>
 </ng-template>
-<!-- end del modal -->
+<!-- end del modal asignacion-->
 
 
 <!-- aqui el modal MODIFICACION -->
@@ -169,6 +187,9 @@
         <div class="col-md-12">
           <label for="descripcion">Descripcion</label>
           <textarea class="form-control" cols="30" rows="5" formControlName="descripcion"></textarea>
+          <div *ngIf="formularioModificacion.get('descripcion')?.invalid">
+            <small *ngIf="formularioModificacion.get('descripcion')?.errors?.required" class="text-danger"><i class="fa fa-exclamation-circle text-danger"></i> La descripcion es requerido</small>
+          </div>
           <input type="hidden" formControlName="activo">
         </div>
       </div>

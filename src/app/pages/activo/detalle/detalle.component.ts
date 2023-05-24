@@ -101,15 +101,15 @@ export class DetalleComponent implements OnInit {
 
 
   formularioLibreacion = new FormGroup({
-    fecha: new FormControl(''),
-    cargo: new FormControl(''),
-    reparticion: new FormControl(''),
-    ubicacion: new FormControl(''),
+    fecha: new FormControl('', [Validators.required]),
+    cargo: new FormControl('', [Validators.required]),
+    reparticion: new FormControl('', [Validators.required]),
+    ubicacion: new FormControl('', [Validators.required]),
     descgeneral: new FormControl(''),
     destino: new FormControl(''),
     observacion: new FormControl(''),
-    nombre: new FormControl(''),
-    cedula: new FormControl(''),
+    nombre: new FormControl('', [Validators.required]),
+    cedula: new FormControl('', [Validators.required]),
     activo: new FormControl(''),
     ultimoMov: new FormControl(''),
     estadoregistro: new FormControl(''),
@@ -121,9 +121,9 @@ export class DetalleComponent implements OnInit {
     cargo: new FormControl('', Validators.required),
     reparticion: new FormControl('', Validators.required),
     ubicacion: new FormControl('', Validators.required),
-    descgeneral: new FormControl('', Validators.required),
-    destino: new FormControl('', Validators.required),
-    observacion: new FormControl('', Validators.required),
+    descgeneral: new FormControl(''),
+    destino: new FormControl(''),
+    observacion: new FormControl(''),
     nombre: new FormControl('', Validators.required),
     cedula: new FormControl('', Validators.required),
     activo: new FormControl('', Validators.required),
@@ -133,8 +133,8 @@ export class DetalleComponent implements OnInit {
   });
 
   formularioModificacion = new FormGroup({
-    descripcion: new FormControl(''),
-    activo: new FormControl(''),
+    descripcion: new FormControl('', [Validators.required]),
+    activo: new FormControl('', [Validators.required]),
   });
 
 
@@ -171,11 +171,22 @@ export class DetalleComponent implements OnInit {
     this.depreValorMaxFechaFin = new Date().toISOString().substring(0,10)
 
     this.listaProvedores();
+
+    this.listaCargos();
+    this.listadoUbiEspecifica();
+    this.listaReparticiones();
   }
 
   listaMovimientos(id:String){
     this.activoService.listaMovimientosActivoById(id).subscribe(resul => {
       this.listMovimientos = resul
+      this.chdr.detectChanges();
+    })
+  }
+
+  listaProvedores(){
+    this.provedorService.getProvedoresTodo().subscribe(resul =>{
+      this.provedores = resul;
       this.chdr.detectChanges();
     })
   }
@@ -337,6 +348,19 @@ export class DetalleComponent implements OnInit {
     })
   }
 
+  listaCargos(){
+    this.activoService.getCargos().subscribe(result =>{
+      this.listadoCargos = result;
+    })
+  }
+
+  listadoUbiEspecifica(){
+    this.activoService.getUbiEsp().subscribe(result =>{
+      this.listadoUbiEsp = result;
+      this.chdr.detectChanges();
+    })
+  }
+
   calcularDeprePersonalizado(){
     let json =  JSON.stringify(this.depreciacionForm.value);
     this.activoService.calculaDepreModificable(json).subscribe(resul => {
@@ -366,37 +390,30 @@ export class DetalleComponent implements OnInit {
     }
   }
 
-  listaProvedores(){
-    this.provedorService.getProvedoresTodo().subscribe(resul =>{
-      this.provedores = resul;
-      this.chdr.detectChanges();
-    })
-  }
-
   liberarActivo(content:any){
-    this.activoService.getCargos().subscribe(result =>{
-      this.listadoCargos = result;
-    })
-    this.activoService.getUbiEsp().subscribe(result =>{
-      this.listadoUbiEsp = result;
-    })
+
     this.formularioLibreacion.get('activo')?.setValue(String(this.activo.idactivo));
     this.formularioLibreacion.get('estadoregistro')?.setValue(String(this.activo.estadoregistro));
+
     if(this.ultimoActivoMov){
-      console.log(this.ultimoActivoMov);
       this.formularioLibreacion.get('ultimoMov')?.setValue(JSON.stringify(this.ultimoActivoMov));
+      this.formularioLibreacion.get('reparticion')?.patchValue(this.ultimoActivoMov.codrepart)
+      this.formularioLibreacion.get('cargo')?.patchValue(this.ultimoActivoMov.codcargoresp)
+      this.formularioLibreacion.get('ubicacion')?.patchValue(this.ultimoActivoMov.codubic.trim())
+
+      
     }
+
     this.activoService.getPersonaByCi(this.ultimoActivoMov.ci).subscribe(resul => {
       this.formularioLibreacion.get('cedula')?.setValue(String(resul.ci));
       this.formularioLibreacion.get('nombre')?.setValue(String(resul.des.trim())+" "+String(resul.des1.trim())+" "+String(resul.des2.trim()));
-      // console.log(resul)
     })
 
-    this.activoService.getReparticiones().subscribe(result => {
-      // console.log(result)
-    })
-
-    this.listaReparticiones();
+    this.formularioLibreacion.get('reparticion')?.disable();
+    this.formularioLibreacion.get('cargo')?.disable();
+    this.formularioLibreacion.get('ubicacion')?.disable();
+    this.formularioLibreacion.get('cedula')?.disable();
+    this.formularioLibreacion.get('nombre')?.disable();
 
     this.modalService.open(content, { size: 'lg' }).result.then(
       (result) => {
@@ -414,39 +431,63 @@ export class DetalleComponent implements OnInit {
   }
 
   guardarLiberacion(){
-    let json = this.formularioLibreacion.value;
-    this.activoService.guardaLiberacionActivo(json).subscribe(resul => {
-      if(resul.estado === "success"){
-        this.listaMovimientos(resul.cod);
-        this.sacaUltimoMovActivo(resul.cod);
-        swal.fire({
-          icon: 'success',
-          title: 'Exito!',
-          text: 'Se '+resul.mensaje+' con exito el activo',
-          timer: 2000
-        })
-        setTimeout(() => {
-          this.modalService.dismissAll('content')
-        }, 2500);
-      }else{
-        swal.fire({
-          icon: 'error',
-          title: 'Error!',
-          text: 'Algo paso con la liberacion',
-          timer: 1000
-        })
+    let camposVacios:any = [];
+    // Recorrer los controles del formulario
+    Object.keys(this.formularioLibreacion.controls).forEach(key => {
+      if(this.formularioLibreacion.get(key)?.errors?.required){
+      //   if (this.formularioLibreacion.get(key)?.value === '' || this.formularioLibreacion.get(key)?.value === null) {
+      //   camposVacios.push(key);
+      // }
+        camposVacios.push(key);
       }
-    })
+      
+    });
+
+    if (camposVacios.length === 0) {
+      this.formularioLibreacion.get('reparticion')?.enable();
+      this.formularioLibreacion.get('cargo')?.enable();
+      this.formularioLibreacion.get('ubicacion')?.enable();
+      this.formularioLibreacion.get('cedula')?.enable();
+      this.formularioLibreacion.get('nombre')?.enable();
+      let json = this.formularioLibreacion.value;
+      this.activoService.guardaLiberacionActivo(json).subscribe(resul => {
+        if(resul.estado === "success"){
+          this.listaMovimientos(resul.cod);
+          this.sacaUltimoMovActivo(resul.cod);
+          swal.fire({
+            icon: 'success',
+            title: 'Exito!',
+            text: 'Se '+resul.mensaje+' con exito el activo',
+            timer: 2000
+          })
+          setTimeout(() => {
+            this.modalService.dismissAll('content')
+          }, 2500);
+        }else{
+          swal.fire({
+            icon: 'error',
+            title: 'Error!',
+            text: 'Algo paso con la liberacion',
+            timer: 1000
+          })
+        }
+      })
+    } else {
+      swal.fire({
+        icon: 'error',
+        title: 'Error!',
+        html:'Los siguientes campos deben llenarse: <span class="text-danger">'+camposVacios+'</span>',
+      })
+    }
   }
 
   guardarAsignacion(){
     let json = this.formularioAsignacion.value;
-
     let camposVacios:any = [];
-
     // Recorrer los controles del formulario
     Object.keys(this.formularioAsignacion.controls).forEach(key => {
-      if (this.formularioAsignacion.get(key)?.value === '' || this.formularioAsignacion.get(key)?.value === null) {
+      // if (this.formularioAsignacion.get(key)?.value === '' || this.formularioAsignacion.get(key)?.value === null) {
+      if(this.formularioAsignacion.get(key)?.errors?.required){
         camposVacios.push(key);
       }
     });
@@ -475,28 +516,22 @@ export class DetalleComponent implements OnInit {
         }
       })
     } else {
-      // Campos vacíos encontrados, realizar acciones correspondientes
-      console.log('Campos vacíos:', camposVacios);
+      swal.fire({
+        icon: 'error',
+        title: 'Error!',
+        html:'Los siguientes campos deben llenarse: <span class="text-danger">'+camposVacios+'</span>',
+      })
     }
-
-    // console.log(json)
-    // if(this.formularioAsignacion.valid){
-    //   console.log("si")
-    // }else{
-    //   console.log("no", this.formularioAsignacion.controls)
-    // }
-
-
   }
 
   abreModalAsignacion(modalAsignacion:any){
 
-    this.activoService.getCargos().subscribe(result =>{
-      this.listadoCargos = result;
-    })
-    this.activoService.getUbiEsp().subscribe(result =>{
-      this.listadoUbiEsp = result;
-    })
+    // this.activoService.getCargos().subscribe(result =>{
+    //   this.listadoCargos = result;
+    // })
+    // this.activoService.getUbiEsp().subscribe(result =>{
+    //   this.listadoUbiEsp = result;
+    // })
     this.formularioAsignacion.get('activo')?.setValue(String(this.activo.idactivo));
     this.formularioAsignacion.get('estadoregistro')?.setValue(String(this.activo.estadoregistro));
     if(this.ultimoActivoMov){
@@ -504,7 +539,7 @@ export class DetalleComponent implements OnInit {
       this.formularioAsignacion.get('ultimoMov')?.setValue(JSON.stringify(this.ultimoActivoMov));
     }
 
-    this.listaReparticiones();
+    // this.listaReparticiones();
 
     // this.activoService.getPersonaByCi(this.ultimoActivoMov.ci).subscribe(resul => {
     //   this.formularioAsignacion.get('cedula')?.setValue(String(resul.ci));
@@ -583,29 +618,43 @@ export class DetalleComponent implements OnInit {
   }
 
   guardarModificacion(){
-    let json = this.formularioModificacion.value
-    this.activoService.guardaRefaccion(json).subscribe(resul => {
-      if(resul.estado === "success"){
-        let activo = (this.activo.idactivo).toString();
-        this.listaRefacciones(activo)
-        swal.fire({
-          icon: 'success',
-          title: 'Exito!',
-          text: 'Se regristro la refaccion con exito.',
-          timer: 2000
-        })
-        setTimeout(() => {
-          this.modalService.dismissAll('modalModificacion')
-        }, 2500);
-        this.formularioModificacion.get('descripcion')?.setValue('');
-      }else{
-        swal.fire({
-          icon: 'error',
-          title: 'Error!',
-          text: 'Algo paso con en registro',
-          timer: 1000
-        })
-      }
-    })
+    let camposVacios:any = [];
+    Object.keys(this.formularioModificacion.controls).forEach(key => {
+      if(this.formularioModificacion.get(key)?.errors?.required)
+        camposVacios.push(key);
+    });
+
+    if (camposVacios.length === 0) {
+      let json = this.formularioModificacion.value
+      this.activoService.guardaRefaccion(json).subscribe(resul => {
+        if(resul.estado === "success"){
+          let activo = (this.activo.idactivo).toString();
+          this.listaRefacciones(activo)
+          swal.fire({
+            icon: 'success',
+            title: 'Exito!',
+            text: 'Se regristro la refaccion con exito.',
+            timer: 2000
+          })
+          setTimeout(() => {
+            this.modalService.dismissAll('modalModificacion')
+          }, 2500);
+          this.formularioModificacion.get('descripcion')?.setValue('');
+        }else{
+          swal.fire({
+            icon: 'error',
+            title: 'Error!',
+            text: 'Algo paso con en registro',
+            timer: 1000
+          })
+        }
+      })
+    } else {
+      swal.fire({
+        icon: 'error',
+        title: 'Error!',
+        html:'Los siguientes campos deben llenarse: <span class="text-danger">'+camposVacios+'</span>',
+      })
+    }
   }
 }
