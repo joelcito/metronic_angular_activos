@@ -432,7 +432,6 @@ export class DetalleComponent implements OnInit {
 
   guardarLiberacion(){
     let camposVacios:any = [];
-    // Recorrer los controles del formulario
     Object.keys(this.formularioLibreacion.controls).forEach(key => {
       if(this.formularioLibreacion.get(key)?.errors?.required){
       //   if (this.formularioLibreacion.get(key)?.value === '' || this.formularioLibreacion.get(key)?.value === null) {
