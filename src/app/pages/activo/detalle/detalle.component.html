@@ -362,7 +362,11 @@
           </select>
       </div>
       <div class="col-md-4">
-
+        <label for="codigo">Incorporacion</label>
+        <select class="form-control" name="unidadmanejo">
+          <option [ngValue]="undefined">Seleccione la unidad</option>
+          <option [selected]="incorporacion.idincorporacion === idincorpracion" [ngValue]="incorporacion" *ngFor="let incorporacion of incorporaciones">{{ incorporacion.descripcion }}</option>
+        </select>
       </div>
     </div>
     <div class="row mt-5">

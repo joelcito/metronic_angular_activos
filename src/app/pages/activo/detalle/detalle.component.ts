@@ -53,12 +53,13 @@ export class DetalleComponent implements OnInit {
   listadoreparticiones   : any[];
   listadoRefacciones   : any[];
 
-  idGrupo         :String = '0';
-  idSubGrupo      :String = '0';
-  idregimen       :String = '0';
-  idregional      :String = '0';
-  idunidadmanejo  :String = '0';
-  idcodprovedor   :String = '';
+  idGrupo          :String = '0';
+  idSubGrupo       :String = '0';
+  idregimen        :String = '0';
+  idregional       :String = '0';
+  idunidadmanejo   :String = '0';
+  idcodprovedor    :String = '';
+  idincorpracion   :String = '';
 
   // myObject: any;
 
@@ -175,6 +176,7 @@ export class DetalleComponent implements OnInit {
     this.listaCargos();
     this.listadoUbiEspecifica();
     this.listaReparticiones();
+    this.listaIncorporacion()
   }
 
   listaMovimientos(id:String){
@@ -205,7 +207,7 @@ export class DetalleComponent implements OnInit {
       if(id){
         this.activoService.getActivo(id.toString()).subscribe(activo => {
           this.activo = activo;
-          // console.log(activo)
+          console.log(activo)
           if(activo.grupo){
             this.idGrupo = activo.grupo.idgrupo;
             let idgrupoB = activo.grupo.idgrupo.toString();
@@ -239,8 +241,6 @@ export class DetalleComponent implements OnInit {
             this.idregional = activo.regional.idregional
           }
           if(activo.unidadmanejo){
-
-            // console.log(activo.unidadmanejo.idunidadmanejo)
             this.idunidadmanejo = activo.unidadmanejo.idunidadmanejo;
           }
 
@@ -251,6 +251,10 @@ export class DetalleComponent implements OnInit {
               const nitprovedor = document.getElementById('nitprovedor') as HTMLInputElement;
               nitprovedor.value = resul.cod.toString();
             })
+          }
+
+          if(activo.incorporacion){
+            this.idincorpracion = activo.incorporacion.idincorporacion
           }
 
           this.chdr.detectChanges();

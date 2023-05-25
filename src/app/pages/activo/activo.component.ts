@@ -109,11 +109,14 @@ export class ActivoComponent implements OnInit {
 
 
 
+    codigo:                   new FormControl(''),
+    codigocorelativo:         new FormControl(''),
+    codregion:                new FormControl(''),
+    correlativo:              new FormControl(''),
     descripcion:              new FormControl(''),
     incorporacion:            new FormControl(''),
     grupo:                    new FormControl(''),
     subgrupo:                 new FormControl(''),
-    codigo:                   new FormControl(''),
     regimen:                  new FormControl(''),
     regional:                 new FormControl(''),
     unidadmanejo:             new FormControl(''),
@@ -178,7 +181,7 @@ export class ActivoComponent implements OnInit {
   listaActivosPersonalizado(){
     this.activoService.listarParsonalizado().subscribe(resul => {
       this.activosPer = resul
-      console.log(resul)
+      // console.log(resul)
       this.chdr.detectChanges()
     })
   }
@@ -267,8 +270,7 @@ export class ActivoComponent implements OnInit {
 
     // this.activoForm.get('codigo')?.setValue(String('COS-10-123'));
     // this.activo.codigo = "COS-10-123";
-
-
+    
     this.modalService.open(content, { size: 'xl' }).result.then(
       (result) => {
         if(result==='guardar'){
@@ -311,6 +313,14 @@ export class ActivoComponent implements OnInit {
   createActivo(){
 
     if(this.activoForm.valid){
+      let codregion       = this.activoForm.value.codregion;
+      let codcorrelativo  = this.activoForm.value.codigocorelativo;
+
+      // console.log(codregion,codcorrelativo);
+      let newCod = String(codregion)+String(codcorrelativo);
+      this.activo.codigo = newCod;
+      // console.log(newCod)
+
       this.activoService.create(this.activo).subscribe(resul => {
         let datos:String = "";
         for (let index = 0; index < this.estados.length; index++) {
@@ -337,11 +347,11 @@ export class ActivoComponent implements OnInit {
     }else{
 
       // console.log(this.activoForm, this.activoForm.get('descripcion'))
-      console.log(this.activoForm.get('descripcion'))
-      console.log(this.activoForm.get('descripcion')?.invalid)
-      console.log(this.activoForm.get('descripcion')?.touched)
-      console.log(this.activoForm.get('descripcion')?.errors)
-      console.log(this.activoForm.get('descripcion')?.errors?.required)
+      // console.log(this.activoForm.get('descripcion'))
+      // console.log(this.activoForm.get('descripcion')?.invalid)
+      // console.log(this.activoForm.get('descripcion')?.touched)
+      // console.log(this.activoForm.get('descripcion')?.errors)
+      // console.log(this.activoForm.get('descripcion')?.errors?.required)
 
       swal.fire({
         icon: 'error',
@@ -384,10 +394,16 @@ export class ActivoComponent implements OnInit {
   }
 
   generaCodRegional(){
-    let dato = JSON.parse(JSON.stringify(this.activoForm.value.regional)).idregional;
-    this.codRegional = dato;
-    let nueCodNew = String("COS-"+dato+"-"+this.codRegimen+"-"+this.codGrupo+"-151");
-    this.activoForm.get('codigoalterno')?.setValue(nueCodNew);
+    // let dato = JSON.parse(JSON.stringify(this.activoForm.value.regional)).idregional;
+    // this.codRegional = dato;
+    let codRegional = (this.activo.regional.idregional).toString()
+    let nueCodNew = String("COS-"+codRegional+"-");
+    this.activoForm.get('codregion')?.setValue(nueCodNew);
+
+    this.activoService.getActivoMaximoByIdRegional(codRegional).subscribe(result => {
+      // console.log(result)
+      this.activoForm.get('codigocorelativo')?.setValue(result.siguiente)
+    })
   }
 
   sacaUfv(){

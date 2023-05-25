@@ -7,9 +7,14 @@
 	<div class="modal-body" style="background-color: rgb(191, 222, 231);">
     <form [formGroup]="activoForm" (ngSubmit)="createActivo()">
       <div class="row mt-5">
-        <div class="col-md-4">
-          <label for="dateOfBirth">CODIGO DE ACTIVO</label>
-          <input type="text" class="form-control" [(ngModel)]="activo.codigo" formControlName="codigo">
+        <div class="col-md-2">
+          <label for="dateOfBirth">CODIGO DE REGION</label>
+          <input type="text" class="form-control" formControlName="codregion" readonly>
+        </div>
+        <div class="col-md-2">
+          <label for="dateOfBirth">NUMERO CORRELATIVO</label>
+          <input type="text" class="form-control" formControlName="codigocorelativo">
+          <!-- <input type="text" class="form-control" [(ngModel)]="activo.codigo" formControlName="codigo"> -->
           <div *ngIf="activoForm.get('codigo')?.invalid">
             <small *ngIf="activoForm.get('codigo')?.errors?.required" class="text-danger"><i class="fa fa-exclamation-circle text-danger"></i> La codigo es requerido</small>
           </div>
@@ -145,8 +150,13 @@
         <div class="col-md-3">
           <label for="dateOfBirth">Incorporacion</label>
           <select class="form-control me-2" [(ngModel)]="activo.incorporacion" formControlName="incorporacion">
-            <option value="">Seleccione</option>
-            <option [ngValue]="incorporacion" *ngFor="let incorporacion of incorporaciones">{{ incorporacion.nombre }}</option>
+            <ng-container *ngFor="let incorporacion of incorporaciones">
+              <ng-container *ngIf="incorporacion.idincorporacion !== '99'">
+                <option [ngValue]="incorporacion">{{ incorporacion.nombre }}</option>
+              </ng-container>
+            </ng-container>
+            <!-- <option value="">Seleccione</option>
+            <option [ngValue]="incorporacion" *ngFor="let incorporacion of incorporaciones" >{{ incorporacion.nombre }}</option> -->
           </select>
         </div>
       </div>

@@ -102,4 +102,8 @@ export class ActivoService {
     return this.http.get<any[]>(`${this.urlEndPointExterno}/getRefaccionesByIdActivo/${codactivo}`);
   }
 
+  getActivoMaximoByIdRegional(idregional:string){
+    return this.http.get<any>(`${this.urlEndPoint}/getActivoMaximoByIdRegional/${idregional}`);
+  }
+
 }
