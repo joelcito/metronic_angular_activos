@@ -4,6 +4,9 @@ import { ModalDismissReasons, NgbDatepickerModule, NgbModal } from '@ng-bootstra
 import { FormGroup, FormControl } from '@angular/forms';
 import { ProvedorService } from './provedor.service';
 
+import swal from 'sweetalert2';
+
+
 
 
 @Component({
@@ -73,6 +76,24 @@ export class ProvedorComponent implements OnInit {
     let json = this.provedorForm.value
     this.provedorService.guardarProvedor(json).subscribe(result => {
       console.log(result)
+      if(result.estado === 'success'){
+        swal.fire({
+          title:'Guardado!',
+          text: 'Se guardo el proveedor.',
+          icon:'success',
+          timer:1500
+        })
+        setTimeout(() => {
+          this.modalService.dismissAll('content')
+        }, 2500);
+      }else if(result.estado === 'error_cod'){
+        swal.fire({
+          title:'Error!',
+          text: 'El nit ya existe.',
+          icon:'warning',
+          timer:2500
+        })
+      }
     })
   }
 
