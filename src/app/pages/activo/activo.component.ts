@@ -136,6 +136,16 @@ export class ActivoComponent implements OnInit {
     // componentes:new FormControl([]),
   });
 
+  formularioBaja = new FormGroup({
+    activo:       new FormControl('', Validators.required),
+    codigo:       new FormControl('', Validators.required),
+    descripcion:  new FormControl('', Validators.required),
+    fecha:        new FormControl('', Validators.required),
+    docRespaldo:  new FormControl('', Validators.required),
+    observacion:  new FormControl('', Validators.required),
+    ultimoMov:  new FormControl(''),
+  });
+
   public codigoInput = new FormControl('');
 
   constructor(
@@ -454,5 +464,104 @@ export class ActivoComponent implements OnInit {
 
   verificaEstado(item:string){
     return item.trim();
+  }
+
+  abreModalBaja(modalBaja:any, idactivo:string){
+    this.activoService.getActivo(idactivo).subscribe(result => {
+      this.formularioBaja.get('codigo')?.setValue(String(result.codigo));
+      this.formularioBaja.get('activo')?.setValue(String(result.idactivo));
+      this.formularioBaja.get('descripcion')?.setValue(String(result.descripcion));
+      this.formularioBaja.get('codigo')?.disable();
+      this.formularioBaja.get('activo')?.disable();
+      this.formularioBaja.get('descripcion')?.disable();
+      this.activoService.getUltimoMovActivo(idactivo).subscribe(result => {
+        this.formularioBaja.get('ultimoMov')?.setValue(JSON.stringify(result));
+      })
+      this.modalService.open(modalBaja, { size: 'lg' }).result.then(
+        (result) => {
+          if(result==='guardar'){
+            console.log("se guardara");
+          }else{
+            console.log("no guardara");
+          }
+          console.log("haber")
+        },
+        (reason)=>{
+          console.log(reason)
+        }
+      );
+    })
+
+  }
+
+  guardarBaja(){
+
+    swal.fire({
+      title: 'Esta seguro de dar de baja el activo?',
+      text: "No podra revertir eso!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, dar de baja!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        console.log(this.formularioBaja.value)
+        let camposVacios:any = [];
+        Object.keys(this.formularioBaja.controls).forEach(key => {
+          if(this.formularioBaja.get(key)?.errors?.required)
+            camposVacios.push(key);
+        });
+        if (camposVacios.length === 0) {
+
+          this.formularioBaja.get('codigo')?.enable();
+          this.formularioBaja.get('activo')?.enable();
+          this.formularioBaja.get('descripcion')?.enable();
+
+          let json = this.formularioBaja.value;
+
+          this.activoService.guardaBajaActivo(json).subscribe(resul => {
+
+            console.log(resul)
+          //   if(resul.estado === "success"){
+          //     this.listaMovimientos(resul.cod);
+          //     this.sacaUltimoMovActivo(resul.cod);
+          //     swal.fire({
+          //       icon: 'success',
+          //       title: 'Exito!',
+          //       text: 'Se '+resul.mensaje+' con exito el activo',
+          //       timer: 2000
+          //     })
+          //     setTimeout(() => {
+          //       this.modalService.dismissAll('content')
+          //     }, 2500);
+          //   }else{
+          //     swal.fire({
+          //       icon: 'error',
+          //       title: 'Error!',
+          //       text: 'Algo paso con la liberacion',
+          //       timer: 1000
+          //     })
+          //   }
+          })
+        } else {
+
+          swal.fire({
+            icon: 'error',
+            title: 'Error!',
+            html:'Los siguientes campos deben llenarse: <span class="text-danger">'+camposVacios+'</span>',
+          })
+
+        }
+
+        // swal.fire(
+        //   'Deleted!',
+        //   'Your file has been deleted.',
+        //   'success'
+        // )
+      }
+    })
+
+  
   }
 }

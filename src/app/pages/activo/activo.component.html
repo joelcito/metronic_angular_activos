@@ -1,3 +1,66 @@
+<!-- aqui el modal BAJA -->
+<ng-template #modalBaja let-modal>
+	<div class="modal-header modal-lg">
+		<h3 class="modal-title" id="modal-basic-title">FORMULARIO DE <span class="text-danger"> ( BAJA DE UN ACTIVO ) </span></h3>
+		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+	</div>
+	<div class="modal-body">
+    <form [formGroup]="formularioBaja">
+      <div class="row mt-5">
+        <div class="col-md-6">
+          <label for="descripcion">Codigo</label>
+          <input type="text" class="form-control" formControlName="activo">
+          <input type="hidden" formControlName="ultimoMov">
+        </div>
+        <div class="col-md-6">
+          <label for="descripcion">Placa</label>
+          <input type="text" class="form-control" formControlName="codigo">
+        </div>
+      </div>
+      <div class="row mt-5">
+        <div class="col-md-12">
+          <label for="descripcion">Nombre</label>
+          <textarea cols="30" rows="3" formControlName="descripcion" class="form-control"></textarea>
+        </div>
+      </div>
+      <div class="row mt-5">
+        <div class="col-md-3">
+          <label for="descripcion">Fecha de baja</label>
+          <input type="date" class="form-control" formControlName="fecha">
+          <div *ngIf="formularioBaja.get('fecha')?.invalid">
+            <small *ngIf="formularioBaja.get('fecha')?.errors?.required" class="text-danger"><i class="fa fa-exclamation-circle text-danger"></i> La fecha de baja es requerido</small>
+          </div>
+        </div>
+        <div class="col-md-9">
+          <label for="descripcion">Documento de respaldo</label>
+          <input type="text" class="form-control" formControlName="docRespaldo">
+          <div *ngIf="formularioBaja.get('docRespaldo')?.invalid">
+            <small *ngIf="formularioBaja.get('docRespaldo')?.errors?.required" class="text-danger"><i class="fa fa-exclamation-circle text-danger"></i> El documento es requerido</small>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <label for="descripcion">Observacion</label>
+          <input type="text" class="form-control" formControlName="observacion">
+          <div *ngIf="formularioBaja.get('observacion')?.invalid">
+            <small *ngIf="formularioBaja.get('observacion')?.errors?.required" class="text-danger"><i class="fa fa-exclamation-circle text-danger"></i> La observacion es requerido</small>
+          </div>
+        </div>
+      </div>
+      <div class="row mt-5">
+        <div class="col-md-12">
+          <button class="btn btn-success w-100" (click)="guardarBaja()">Guardar</button>
+        </div>
+      </div>
+    </form>
+	</div>
+	<div class="modal-footer">
+		<!-- <button type="button" class="btn btn-success w-100" (click)="modal.close('guardar')">Guardar</button> -->
+	</div>
+</ng-template>
+<!-- end del modal BAJA-->
+
 <!-- aqui el modal -->
 <ng-template #content let-modal>
 	<div class="modal-header modal-lg">
@@ -366,6 +429,7 @@
               </td>
               <td class="text-end">
                 <button class="btn btn-info btn-icon btn-sm me-1" [routerLink]="['/activo/detalle', actPer.idactivo]" ><i class="fas fa-eye"></i></button>
+                <button class="btn btn-danger btn-icon btn-sm me-1" (click)="abreModalBaja(modalBaja, actPer.idactivo)"><i class="fa fa-arrow-down" aria-hidden="true"></i></button>
               </td>
             </tr>
           </tbody>

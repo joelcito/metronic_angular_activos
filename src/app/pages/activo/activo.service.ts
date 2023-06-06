@@ -106,4 +106,8 @@ export class ActivoService {
     return this.http.get<any>(`${this.urlEndPoint}/getActivoMaximoByIdRegional/${idregional}`);
   }
 
+  guardaBajaActivo(json:any){
+    return this.http.post<any>(`${this.urlEndPointExterno}/guardaBajaActivo`,json,{headers: this.httpHeaders});
+  }
+
 }
