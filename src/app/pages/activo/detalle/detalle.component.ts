@@ -92,6 +92,8 @@ export class DetalleComponent implements OnInit {
   contenidoMovimiento:boolean = false;
   contenidoModificacion:boolean = false;
 
+  selectedImage: File;
+
   depreciacionForm = new FormGroup({
     depreActivoId: new FormControl(''),
     depreFechaIni: new FormControl(''),
@@ -659,5 +661,31 @@ export class DetalleComponent implements OnInit {
         html:'Los siguientes campos deben llenarse: <span class="text-danger">'+camposVacios+'</span>',
       })
     }
+  }
+
+  onFileSelected(event: any){
+    this.selectedImage = event.target.files[0];
+  }
+
+  uploadImage(){
+    this.activoService.uploadImage(this.selectedImage).subscribe(result => {
+      // console.log("se subuio los archivos del todo")
+      console.log(result)
+    })
+
+    this.activoService.getImageActivo("2.png").subscribe(result => {
+      console.log(result)
+    })
+    // this.activoService.uploadImage(this.selectedImage)
+    //   .subscribe(
+    //     response => {
+    //       // Manejar la respuesta del backend después de la carga exitosa
+    //       console.log('Imagen subida con éxito', response);
+    //     },
+    //     error => {
+    //       // Manejar errores durante la carga de la imagen
+    //       console.error('Error al subir la imagen', error);
+    //     }
+    //   );
   }
 }

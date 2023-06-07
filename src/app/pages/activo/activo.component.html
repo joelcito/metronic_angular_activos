@@ -50,7 +50,9 @@
       </div>
       <div class="row mt-5">
         <div class="col-md-12">
-          <button class="btn btn-success w-100" (click)="guardarBaja()">Guardar</button>
+          <div *ngIf="botonBaja">
+            <button class="btn btn-success w-100" (click)="guardarBaja()">Guardar</button>
+          </div>
         </div>
       </div>
     </form>

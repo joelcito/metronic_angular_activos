@@ -110,4 +110,15 @@ export class ActivoService {
     return this.http.post<any>(`${this.urlEndPointExterno}/guardaBajaActivo`,json,{headers: this.httpHeaders});
   }
 
+  uploadImage(image: File){
+    const formData = new FormData();
+    formData.append('image', image);
+
+    return this.http.post(`${this.urlEndPoint}/uploadImage`, formData);
+  }
+
+  getImageActivo(image:String){
+    return this.http.get<any>(`${this.urlEndPoint}/images/${image}`);
+  }
+
 }

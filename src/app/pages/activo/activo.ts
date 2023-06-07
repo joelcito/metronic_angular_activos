@@ -52,4 +52,6 @@ export class Activo {
     ubicacion_general:String ='';
     ubicacion_especifica:String ='';
     fecha:String ='';
+    fechabaja:String ='';
+    estadoactivo:number;
   }

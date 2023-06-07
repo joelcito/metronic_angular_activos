@@ -38,42 +38,42 @@ export class ActivoComponent implements OnInit {
   model: any;
   @ViewChild('form', { static: true }) form: NgForm;
 
-  configLoading: boolean = false;
-  resetLoading: boolean = false;
-  tabla: boolean = false;
+  configLoading: boolean  = false;
+  resetLoading: boolean   = false;
+  tabla: boolean          = false;
+  botonBaja:boolean       = true;
+  componentesView:Boolean = false;
 
   // activos1: any = [];
-  activos: Activo[];
-  grupos: Grupo[];
-  subGrupos: SubGrupo[];
-  subGruposBuscados: SubGrupo[];
-  componentes: Componente[];
-  componentesView:Boolean = false;
-  incorporaciones:Incorporacion[];
-  unidadManejos:UnidadManejo[];
-  regimenes:Regimen[];
-  regionales:Regional[];
+  activos:                Activo[];
+  grupos:                 Grupo[];
+  subGrupos:              SubGrupo[];
+  subGruposBuscados:      SubGrupo[];
+  componentes:            Componente[];
+  incorporaciones:        Incorporacion[];
+  unidadManejos:          UnidadManejo[];
+  regimenes:              Regimen[];
+  regionales:             Regional[];
 
-  idsComponentes:String[] = [];
+  jsonComponente = [];
 
-  valorComponente:String = "";
+  idsComponentes:String[]   = [];
+  estados:String[]          = [];
+  estadosValores:String[]   = [];
+
+  valorComponente:String    = "";
+  codRegional:String        = "";
+  codRegimen:String         = "";
+  codGrupo:String           = "";
+  codCorrelativo:String     = "";
 
   componente = {};
-  jsonComponente = [];
-  estados:String[] = [];
-  estadosValores:String[] = [];
 
   closeResult = '';
 
-  data:any = [];
-
-  codRegional:String = "";
-  codRegimen:String = "";
-  codGrupo:String = "";
-  codCorrelativo:String = "";
-
   maxValFecha:String;
-
+  
+  data:any          = [];
 
   activosPer: any[] = [];
   provedores: any[] = [];
@@ -474,8 +474,51 @@ export class ActivoComponent implements OnInit {
       this.formularioBaja.get('codigo')?.disable();
       this.formularioBaja.get('activo')?.disable();
       this.formularioBaja.get('descripcion')?.disable();
+      if(result.estadoactivo === 13){
+        this.botonBaja = false;
+        if(result.fechabaja!=null){
+          this.formularioBaja.get('fecha')?.setValue(result.fechabaja.substring(0,10))
+          // this.formularioBaja.get('fecha')?.setValue("2023-06-06")
+          // console.log(result, result.fechabaja, result.fechabaja.substring(0,10))
+        }
+        this.formularioBaja.get('docRespaldo')?.disable()
+        this.formularioBaja.get('observacion')?.disable()
+        this.formularioBaja.get('fecha')?.disable()
+      }else{
+        this.botonBaja = true
+        this.formularioBaja.get('docRespaldo')?.enable()
+        this.formularioBaja.get('observacion')?.enable()
+        this.formularioBaja.get('fecha')?.enable()
+        this.formularioBaja.get('docRespaldo')?.setValue('')
+        this.formularioBaja.get('observacion')?.setValue('')
+        this.formularioBaja.get('fecha')?.setValue('')
+      }
       this.activoService.getUltimoMovActivo(idactivo).subscribe(result => {
-        this.formularioBaja.get('ultimoMov')?.setValue(JSON.stringify(result));
+        const jsonString = JSON.stringify(result);
+        this.formularioBaja.get('ultimoMov')?.setValue(jsonString);
+        const jsonObject = JSON.parse(jsonString);
+
+        if (Object.keys(jsonObject).length === 0) {
+          console.log('El objeto está vacío');
+        } else {
+          if (jsonObject.hasOwnProperty('tipotr')) {
+            if(jsonObject.tipotr === "BAJ"){
+              // this.formularioBaja.get('fecha')?.setValue(String(jsonObject.fecha))
+              this.formularioBaja.get('docRespaldo')?.setValue(String(jsonObject.refe1.trim()))
+              this.formularioBaja.get('observacion')?.setValue(String(jsonObject.refe4.trim()))
+              // console.log("EL TIPO TR ESTA COMO BAJ")
+            }else{
+              this.formularioBaja.get('docRespaldo')?.setValue('')
+              this.formularioBaja.get('observacion')?.setValue('')
+              // this.formularioBaja.get('fecha')?.setValue('')
+              // console.log("EL TIPO TR NO ESTA COMO BAJ")
+              // console.log(jsonObject)
+            }
+            // console.log('El objeto contiene el atributo específico');
+          } else {
+            // console.log('El objeto no contiene el atributo específico');
+          }
+        }
       })
       this.modalService.open(modalBaja, { size: 'lg' }).result.then(
         (result) => {
@@ -495,7 +538,6 @@ export class ActivoComponent implements OnInit {
   }
 
   guardarBaja(){
-
     swal.fire({
       title: 'Esta seguro de dar de baja el activo?',
       text: "No podra revertir eso!",
@@ -506,59 +548,46 @@ export class ActivoComponent implements OnInit {
       confirmButtonText: 'Si, dar de baja!'
     }).then((result) => {
       if (result.isConfirmed) {
-        console.log(this.formularioBaja.value)
         let camposVacios:any = [];
         Object.keys(this.formularioBaja.controls).forEach(key => {
           if(this.formularioBaja.get(key)?.errors?.required)
             camposVacios.push(key);
         });
         if (camposVacios.length === 0) {
-
           this.formularioBaja.get('codigo')?.enable();
           this.formularioBaja.get('activo')?.enable();
           this.formularioBaja.get('descripcion')?.enable();
-
           let json = this.formularioBaja.value;
-
           this.activoService.guardaBajaActivo(json).subscribe(resul => {
+            if(resul.estado === "success"){
+              swal.fire({
+                icon: 'success',
+                title: 'Exito!',
+                text: 'Se dio de baja al activo con exito',
+                timer: 2000
+              })
 
-            console.log(resul)
-          //   if(resul.estado === "success"){
-          //     this.listaMovimientos(resul.cod);
-          //     this.sacaUltimoMovActivo(resul.cod);
-          //     swal.fire({
-          //       icon: 'success',
-          //       title: 'Exito!',
-          //       text: 'Se '+resul.mensaje+' con exito el activo',
-          //       timer: 2000
-          //     })
-          //     setTimeout(() => {
-          //       this.modalService.dismissAll('content')
-          //     }, 2500);
-          //   }else{
-          //     swal.fire({
-          //       icon: 'error',
-          //       title: 'Error!',
-          //       text: 'Algo paso con la liberacion',
-          //       timer: 1000
-          //     })
-          //   }
+              this.listaActivosPersonalizado()
+
+              setTimeout(() => {
+                this.modalService.dismissAll('modalBaja')
+              }, 2500);
+            }else{
+              swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: 'Algo paso con la baja de un activo',
+                // timer: 1000
+              })
+            }
           })
         } else {
-
           swal.fire({
             icon: 'error',
             title: 'Error!',
             html:'Los siguientes campos deben llenarse: <span class="text-danger">'+camposVacios+'</span>',
           })
-
         }
-
-        // swal.fire(
-        //   'Deleted!',
-        //   'Your file has been deleted.',
-        //   'success'
-        // )
       }
     })
 

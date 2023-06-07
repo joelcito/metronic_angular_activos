@@ -174,7 +174,6 @@
 </ng-template>
 <!-- end del modal asignacion-->
 
-
 <!-- aqui el modal MODIFICACION -->
 <ng-template #modalModificacion let-modal>
 	<div class="modal-header modal-lg">
@@ -211,12 +210,18 @@
     <div class="d-flex flex-wrap flex-sm-nowrap">
       <div class="me-7 mb-4">
         <div class="symbol symbol-100px symbol-lg-160px symbol-fixed position-relative">
-          <img src="" alt="" width="400px" height="">
+          <img src="" alt="Aqui la imagen" width="400px" height="">
+        </div>
+        <div>
+          <input type="file" (change)="onFileSelected($event)" accept="image/*" class="form-control">
+        </div>
+        <div>
+          <button class="btn btn-sm btn-secondary w-100" (click)="uploadImage()">Subir imagen</button>
         </div>
       </div>
 
       <div class="flex-grow-1">
-        <div class="row mt-5">
+        <div class="row mt-10">
           <div class="col-md-3">
             <div class="form-group">
               <label for="descripcion">Codigo</label>
@@ -294,7 +299,7 @@
             </div>
           </div>
         </div>
-        <div class="row mt-5">
+        <div class="row mt-10">
           <div class="col-md-3">
             <div class="form-group">
               <label for="descripcion">Regional</label>
