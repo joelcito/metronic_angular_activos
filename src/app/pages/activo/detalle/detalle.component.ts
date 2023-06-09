@@ -29,6 +29,8 @@ import { Regimen } from '../../regimen/regimen';
 import { Regional } from '../../regional/regional';
 import { Caracteristica } from '../../caracteristica/caracteristica';
 
+import { URL_GLOBAL } from 'src/app/config';
+
 @Component({
   selector: 'app-detalle',
   templateUrl: './detalle.component.html',
@@ -60,6 +62,7 @@ export class DetalleComponent implements OnInit {
   idunidadmanejo   :String = '0';
   idcodprovedor    :String = '';
   idincorpracion   :String = '';
+  rutaImagen       :String = "";
 
   // myObject: any;
 
@@ -257,6 +260,10 @@ export class DetalleComponent implements OnInit {
 
           if(activo.incorporacion){
             this.idincorpracion = activo.incorporacion.idincorporacion
+          }
+
+          if(activo.foto){
+            this.ponerFoto(activo.foto.toString())
           }
 
           this.chdr.detectChanges();
@@ -668,24 +675,15 @@ export class DetalleComponent implements OnInit {
   }
 
   uploadImage(){
-    this.activoService.uploadImage(this.selectedImage).subscribe(result => {
-      // console.log("se subuio los archivos del todo")
+    this.activoService.uploadImage(this.selectedImage, this.activo.idactivo.toString()).subscribe(result => {
       console.log(result)
+      console.log(result.activo.foto)
+      this.ponerFoto(result.activo.foto)
     })
+  }
 
-    this.activoService.getImageActivo("2.png").subscribe(result => {
-      console.log(result)
-    })
-    // this.activoService.uploadImage(this.selectedImage)
-    //   .subscribe(
-    //     response => {
-    //       // Manejar la respuesta del backend después de la carga exitosa
-    //       console.log('Imagen subida con éxito', response);
-    //     },
-    //     error => {
-    //       // Manejar errores durante la carga de la imagen
-    //       console.error('Error al subir la imagen', error);
-    //     }
-    //   );
+  ponerFoto(nombreFoto:string){
+    this.rutaImagen = URL_GLOBAL+"/activo/images/"+nombreFoto
+    this.chdr.detectChanges();
   }
 }

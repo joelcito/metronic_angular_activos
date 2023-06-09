@@ -54,4 +54,5 @@ export class Activo {
     fecha:String ='';
     fechabaja:String ='';
     estadoactivo:number;
+    foto:String;
   }

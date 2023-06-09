@@ -207,20 +207,20 @@
 
 <div class="card mb-5 mb-xxl-8">
   <div class="card-body pt-9 pb-0">
-    <div class="d-flex flex-wrap flex-sm-nowrap">
-      <div class="me-7 mb-4">
-        <div class="symbol symbol-100px symbol-lg-160px symbol-fixed position-relative">
-          <img src="" alt="Aqui la imagen" width="400px" height="">
-        </div>
-        <div>
-          <input type="file" (change)="onFileSelected($event)" accept="image/*" class="form-control">
-        </div>
-        <div>
-          <button class="btn btn-sm btn-secondary w-100" (click)="uploadImage()">Subir imagen</button>
-        </div>
-      </div>
 
-      <div class="flex-grow-1">
+    <div class="row">
+      <div class="col-md-4">
+          <div style="width: 425px; height: 250px;">
+            <img [src]="rutaImagen" alt="Imagen" height="250px" width="100%">
+          </div>
+          <div class="mt-3">
+            <input type="file" (change)="onFileSelected($event)" accept="image/*" class="form-control bg-white">
+          </div>
+          <div class="mt-2">
+            <button class="btn btn-sm btn-secondary w-100" (click)="uploadImage()">Subir imagen</button>
+          </div>
+      </div>
+      <div class="col-md-8">
         <div class="row mt-10">
           <div class="col-md-3">
             <div class="form-group">
@@ -328,17 +328,17 @@
             </div>
           </div>
         </div>
-      </div>
-    </div>
-
-    <div class="row mt-5">
-      <div class="col-md-12">
-        <div class="form-group">
-          <label for="descripcion">Descripcion</label>
-          <textarea name="descripcion" cols="30" rows="5" [(ngModel)]="activo.descripcion" class="form-control"></textarea>
+        <div class="row mt-5">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="descripcion">Descripcion</label>
+              <textarea name="descripcion" cols="30" rows="5" [(ngModel)]="activo.descripcion" class="form-control"></textarea>
+            </div>
+          </div>
         </div>
       </div>
     </div>
+
     <div class="row mt-5">
       <div class="col-md-4">
         <div class="form-group">
@@ -485,58 +485,11 @@
         </div>
       </div>
     </div>
-    <!-- <div class="row">
-      <div class="col-md-4">
-
-      </div>
-      <div class="col-md-4">
-        <div class="form-group">
-          <label for="codigo">Forma inicial</label>
-          <select class="form-control" name="formainicial">
-            <option [ngValue]="undefined">Seleccione</option>
-            <option [selected]="activo.formainicial === 'Nuevo'" value="Nuevo">Inc. Transferencia</option>
-            <option [selected]="activo.formainicial === 'Bueno'" value="Bueno">Incorporado</option>
-          </select>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="form-group">
-          <label for="codigo">Estado de registro</label>
-          <select class="form-control" name="estadoregistro">
-            <option [ngValue]="undefined">Seleccione</option>
-            <option [selected]="activo.estadoregistro === 'Nuevo'" value="Nuevo">Anulado</option>
-            <option [selected]="activo.estadoregistro === 'Bueno'" value="Bueno">Aprobado</option>
-          </select>
-        </div>
-      </div>
-    </div> -->
-
     <div class="row mt-3" *ngIf="activo.estadoregistro != 'APR'">
       <div class="col-md-12">
         <button class="btn btn-success w-100">Editar Activo</button>
       </div>
     </div>
-
-    <!-- <ul class="nav nav-stretch nav-line-tabs nav-line-tabs-2x border-transparent fs-5 fw-bold">
-      <li class="nav-item mt-2">
-        <a class="nav-link text-active-primary ms-0 me-10 py-5 active" href="../../demo1/dist/pages/user-profile/overview.html">Overview</a>
-      </li>
-      <li class="nav-item mt-2">
-        <a class="nav-link text-active-primary ms-0 me-10 py-5" href="../../demo1/dist/pages/user-profile/projects.html">Projects</a>
-      </li>
-      <li class="nav-item mt-2">
-        <a class="nav-link text-active-primary ms-0 me-10 py-5" href="../../demo1/dist/pages/user-profile/campaigns.html">Campaigns</a>
-      </li>
-      <li class="nav-item mt-2">
-        <a class="nav-link text-active-primary ms-0 me-10 py-5" href="../../demo1/dist/pages/user-profile/documents.html">Documents</a>
-      </li>
-      <li class="nav-item mt-2">
-        <a class="nav-link text-active-primary ms-0 me-10 py-5" href="../../demo1/dist/pages/user-profile/followers.html">Followers</a>
-      </li>
-      <li class="nav-item mt-2">
-        <a class="nav-link text-active-primary ms-0 me-10 py-5" href="../../demo1/dist/pages/user-profile/activity.html">Activity</a>
-      </li>
-    </ul> -->
     <hr>
     <div class="row">
       <div class="col-md-4">
