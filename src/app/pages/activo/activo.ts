@@ -8,14 +8,20 @@ export class Activo {
 
     idactivo:String = '';
     descripcion:string = '';
-    incorporacion:Incorporacion = new Incorporacion();
-    grupo:Grupo = new Grupo();
-    subgrupo:SubGrupo = new SubGrupo();
+    // incorporacion:Incorporacion = new Incorporacion();
+    incorporacion:Incorporacion;
+    // grupo:Grupo = new Grupo();
+    grupo:Grupo;
+    // subgrupo:SubGrupo = new SubGrupo();
+    subgrupo:SubGrupo;
     codigo:string = '';
     codigoalterno:string = '';
-    regimen:Regimen = new Regimen();
-    regional:Regional = new Regional();
-    unidadmanejo:UnidadManejo = new UnidadManejo();
+    // regimen:Regimen = new Regimen();
+    regimen:Regimen;
+    // regional:Regional = new Regional();
+    regional:Regional;
+    // unidadmanejo:UnidadManejo = new UnidadManejo();
+    unidadmanejo:UnidadManejo;
     eficiencia:string = '';
     formainicial:String = '';
     estadoregistro:String = '';

@@ -12,7 +12,7 @@ const Routing: Routes = [
       import('./builder/builder.module').then((m) => m.BuilderModule),
   },
 
-  // de aqui comienza lo de joel
+  // *************************** de aqui comienza lo de joel ***************************
   {
     path: 'activo',
     loadChildren: () =>
@@ -68,7 +68,12 @@ const Routing: Routes = [
     loadChildren: () =>
     import('./provedor/provedor.module').then((m) => m.ProvedorModule),
   },
-  // aqui termina de joel
+  {
+    path: 'reporte',
+    loadChildren: () =>
+    import('./reporte/reporte.module').then((m) => m.ReporteModule),
+  },
+  // *************************** aqui termina de joel ***************************
 
   {
     path: 'crafted/pages/profile',
@@ -118,11 +123,11 @@ const Routing: Routes = [
   // },
 
   // de aqui comienza lo de joel
-  {
-    path: 'activo',
-    loadChildren: () =>
-      import('./activo/activo.module').then((m) => m.ActivoModule),
-  },
+  // {
+  //   path: 'activo',
+  //   loadChildren: () =>
+  //     import('./activo/activo.module').then((m) => m.ActivoModule),
+  // },
   // aqui termina de joel
 ];
 

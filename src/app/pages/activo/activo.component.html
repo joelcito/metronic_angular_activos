@@ -75,13 +75,15 @@
         <div class="col-md-2">
           <label for="dateOfBirth">CODIGO DE REGION</label>
           <input type="text" class="form-control" formControlName="codregion" readonly>
+          <div *ngIf="activoForm.get('codregion')?.invalid">
+            <small *ngIf="activoForm.get('codregion')?.errors?.required" class="text-danger"><i class="fa fa-exclamation-circle text-danger"></i> La codigo es requerido</small>
+          </div>
         </div>
         <div class="col-md-2">
           <label for="dateOfBirth">NUMERO CORRELATIVO</label>
-          <input type="text" class="form-control" formControlName="codigocorelativo">
-          <!-- <input type="text" class="form-control" [(ngModel)]="activo.codigo" formControlName="codigo"> -->
-          <div *ngIf="activoForm.get('codigo')?.invalid">
-            <small *ngIf="activoForm.get('codigo')?.errors?.required" class="text-danger"><i class="fa fa-exclamation-circle text-danger"></i> La codigo es requerido</small>
+          <input type="number" class="form-control" formControlName="codigocorelativo">
+          <div *ngIf="activoForm.get('codigocorelativo')?.invalid">
+            <small *ngIf="activoForm.get('codigocorelativo')?.errors?.required" class="text-danger"><i class="fa fa-exclamation-circle text-danger"></i> El correlativo es requerido</small>
           </div>
         </div>
         <div class="col-md-4">
@@ -104,14 +106,10 @@
         <div class="col-md-4">
           <div class="form-group">
             <label for="descripcion">Proveedor</label>
-
             <select class="form-control" #provedor formControlName="provedor" [(ngModel)]="activo.codprovedor" (change)="obtienDatosProvedor()">
               <option value="">SELECCIONE</option>
               <option value="{{ provedor.cod }}" *ngFor="let provedor of provedores">{{ provedor.des }}</option>
             </select>
-            <!-- <div *ngIf="activoForm.get('provedor')?.invalid">
-              <small *ngIf="activoForm.get('provedor')?.errors?.required" class="text-danger"><i class="fa fa-exclamation-circle text-danger"></i> La proveedor es requerido</small>
-            </div> -->
           </div>
         </div>
         <div class="col-md-4">
@@ -130,8 +128,10 @@
       <div class="row mt-5">
         <div class="col-md-3">
           <label for="dateOfBirth">Regional</label>
-          <select class="form-control me-2" [(ngModel)]="activo.regional" formControlName="regional" (change)="generaCodRegional()">
-            <option value="">Seleccione</option>
+          <!-- <select class="form-control me-2" formControlName="regional" [(ngModel)]="activo.regional" (change)="generaCodRegional()" [compareWith]="compareRegionales"> -->
+          <select class="form-control me-2" formControlName="regional" [(ngModel)]="activo.regional" (change)="generaCodRegional()">
+            <option value="">SELECCIONE</option>
+            <!-- <option [ngValue]="undefined">SELECCIONE</option> -->
             <option [ngValue]="regional" *ngFor="let regional of regionales">{{ regional.idregional }} | {{ regional.nombre }}</option>
           </select>
           <div *ngIf="activoForm.get('regional')?.invalid">
@@ -197,32 +197,43 @@
             <option value="E">E | Malo</option>
             <option value="F">F | Para Baja</option>
           </select>
+          <div *ngIf="activoForm.get('eficiencia')?.invalid">
+            <small *ngIf="activoForm.get('eficiencia')?.errors?.required" class="text-danger"><i class="fa fa-exclamation-circle text-danger"></i> El estado del activo es requerido</small>
+          </div>
         </div>
         <div class="col-md-3">
           <label for="dateOfBirth">Regimen</label>
           <select class="form-control me-2" [(ngModel)]="activo.regimen" formControlName="regimen" (change)="generaCodRegimen()">
-            <option value="">Seleccione</option>
+            <option value="">SELECCIONE</option>
             <option [ngValue]="regimen" *ngFor="let regimen of regimenes">{{ regimen.nombre }}</option>
           </select>
+          <div *ngIf="activoForm.get('regimen')?.invalid">
+            <small *ngIf="activoForm.get('regimen')?.errors?.required" class="text-danger"><i class="fa fa-exclamation-circle text-danger"></i> El regimen es requerido</small>
+          </div>
         </div>
         <div class="col-md-3">
           <label for="dateOfBirth">Unidad de manejo</label>
           <select class="form-control me-2" [(ngModel)]="activo.unidadmanejo" formControlName="unidadmanejo">
-            <option value="">Seleccione</option>
+            <option value="">SELECCIONE</option>
             <option [ngValue]="uniManejo" *ngFor="let uniManejo of unidadManejos">{{ uniManejo.idunidadmanejo }} | {{ uniManejo.descripcion }}</option>
           </select>
+          <div *ngIf="activoForm.get('unidadmanejo')?.invalid">
+            <small *ngIf="activoForm.get('unidadmanejo')?.errors?.required" class="text-danger"><i class="fa fa-exclamation-circle text-danger"></i> La unidad de manejo es requerido</small>
+          </div>
         </div>
         <div class="col-md-3">
           <label for="dateOfBirth">Incorporacion</label>
           <select class="form-control me-2" [(ngModel)]="activo.incorporacion" formControlName="incorporacion">
+            <option value="">SELECCIONE</option>
             <ng-container *ngFor="let incorporacion of incorporaciones">
               <ng-container *ngIf="incorporacion.idincorporacion !== '99'">
                 <option [ngValue]="incorporacion">{{ incorporacion.nombre }}</option>
               </ng-container>
             </ng-container>
-            <!-- <option value="">Seleccione</option>
-            <option [ngValue]="incorporacion" *ngFor="let incorporacion of incorporaciones" >{{ incorporacion.nombre }}</option> -->
           </select>
+          <div *ngIf="activoForm.get('incorporacion')?.invalid">
+            <small *ngIf="activoForm.get('incorporacion')?.errors?.required" class="text-danger"><i class="fa fa-exclamation-circle text-danger"></i> La incorporacion es requerido</small>
+          </div>
         </div>
       </div>
       <div class="row mt-5">
@@ -234,14 +245,23 @@
                 <option value="">Seleecione</option>
                 <option [ngValue]="grupo" *ngFor="let grupo of grupos">{{ grupo.descripcion }}</option>
               </select>
+              <div *ngIf="activoForm.get('grupo')?.invalid">
+                <small *ngIf="activoForm.get('grupo')?.errors?.required" class="text-danger"><i class="fa fa-exclamation-circle text-danger"></i> El grupo es requerido</small>
+              </div>
             </div>
             <div class="col-md-3">
               <label for="dateOfBirth">Tasa de depreciacion</label>
               <input type="number" class="form-control me-2" [(ngModel)]="activo.porcentaje_depreciacion" formControlName="porcentaje_depreciacion" readonly>
+              <div *ngIf="activoForm.get('porcentaje_depreciacion')?.invalid">
+                <small *ngIf="activoForm.get('porcentaje_depreciacion')?.errors?.required" class="text-danger"><i class="fa fa-exclamation-circle text-danger"></i> La tasa de depreciacion es requerido</small>
+              </div>
             </div>
             <div class="col-md-2">
               <label for="dateOfBirth">Vida Util</label>
               <input type="number" class="form-control me-2" [(ngModel)]="activo.vida_util" formControlName="vida_util" readonly>
+              <div *ngIf="activoForm.get('vida_util')?.invalid">
+                <small *ngIf="activoForm.get('vida_util')?.errors?.required" class="text-danger"><i class="fa fa-exclamation-circle text-danger"></i> La vida util es requerido</small>
+              </div>
             </div>
           </div>
         </div>
@@ -251,6 +271,9 @@
             <option value="">Seleccione</option>
             <option [ngValue]="subgrupo" *ngFor="let subgrupo of subGruposBuscados">{{ subgrupo.descripcion }}</option>
           </select>
+          <div *ngIf="activoForm.get('subgrupo')?.invalid">
+            <small *ngIf="activoForm.get('subgrupo')?.errors?.required" class="text-danger"><i class="fa fa-exclamation-circle text-danger"></i> El sub grupo es requerido</small>
+          </div>
         </div>
       </div>
       <div class="row mt-5">
@@ -259,10 +282,16 @@
             <div class="col-md-3">
               <label for="dateOfBirth">Cuenta Contable</label>
               <input type="text" class="form-control" id="cuentaContableId" readonly>
+              <div *ngIf="activoForm.get('cuentaContableId')?.invalid">
+                <small *ngIf="activoForm.get('cuentaContableId')?.errors?.required" class="text-danger"><i class="fa fa-exclamation-circle text-danger"></i> La cuenta contable es requerido</small>
+              </div>
             </div>
             <div class="col-md-9">
               <label for="dateOfBirth">Descripcion</label>
               <input type="text" class="form-control" id="cuentaContableDescripcion" readonly>
+              <div *ngIf="activoForm.get('cuentaContableDescripcion')?.invalid">
+                <small *ngIf="activoForm.get('cuentaContableDescripcion')?.errors?.required" class="text-danger"><i class="fa fa-exclamation-circle text-danger"></i> El estado del activo es requerido</small>
+              </div>
             </div>
           </div>
         </div>
@@ -271,10 +300,16 @@
             <div class="col-md-3">
               <label for="dateOfBirth">Partida Presup</label>
               <input type="text" class="form-control" id="partidaContableId" readonly>
+              <div *ngIf="activoForm.get('partidaContableId')?.invalid">
+                <small *ngIf="activoForm.get('partidaContableId')?.errors?.required" class="text-danger"><i class="fa fa-exclamation-circle text-danger"></i> El estado del activo es requerido</small>
+              </div>
             </div>
             <div class="col-md-9">
               <label for="dateOfBirth">Descripcion</label>
               <input type="text" class="form-control" id="partidaContableDescipcion" readonly>
+              <div *ngIf="activoForm.get('partidaContableDescipcion')?.invalid">
+                <small *ngIf="activoForm.get('partidaContableDescipcion')?.errors?.required" class="text-danger"><i class="fa fa-exclamation-circle text-danger"></i> El estado del activo es requerido</small>
+              </div>
             </div>
           </div>
         </div>
@@ -282,7 +317,10 @@
       <div class="row mt-5">
         <div class="col-md-4">
           <label for="dateOfBirth">Valor de Compra</label>
-          <input type="number" class="form-control me-2" [(ngModel)]="activo.precio" formControlName="precio">
+          <input type="number" class="form-control me-2" [(ngModel)]="activo.precio" formControlName="precio" min="1">
+          <div *ngIf="activoForm.get('precio')?.invalid">
+            <small *ngIf="activoForm.get('precio')?.errors?.required" class="text-danger"><i class="fa fa-exclamation-circle text-danger"></i> El estado del activo es requerido</small>
+          </div>
         </div>
         <div class="col-md-4">
 

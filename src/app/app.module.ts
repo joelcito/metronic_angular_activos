@@ -26,6 +26,7 @@ import { UfvComponent } from './pages/ufv/ufv.component';
 
 // import { LocalizedString } from '@angular/compiler';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+// import { ReporteComponent } from './pages/reporte/reporte/reporte.component';
 // #fake-end#
 
 // import { ActivoModule } from './pages/activo/activo.module';
@@ -52,6 +53,7 @@ function appInitializer(authService: AuthService) {
                   // PartidaComponent,
                   TransaccionComponent,
                   UfvComponent,
+                  // ReporteComponent,
                   ],
   // declarations: [AppComponent, GrupoComponent],
   imports: [

@@ -79,61 +79,33 @@ export class ActivoComponent implements OnInit {
   provedores: any[] = [];
 
 
-  @Input() ActivoDevuelto:Activo = new Activo();
-
   @Input() activo: Activo = new Activo();
-  @Input() caracteristica:Caracteristica = new Caracteristica();
 
   activoForm = new FormGroup({
-    // descripcion:              new FormControl('', [Validators.required]),
-    // incorporacion:            new FormControl('', [Validators.required]),
-    // grupo:                    new FormControl('', [Validators.required]),
-    // subgrupo:                 new FormControl('', [Validators.required]),
-    // codigo:                   new FormControl('', [Validators.required]),
-    // regimen:                  new FormControl('', [Validators.required]),
-    // regional:                 new FormControl('', [Validators.required]),
-    // unidadmanejo:             new FormControl('', [Validators.required]),
-    // eficiencia:               new FormControl('', [Validators.required]),
+    // codigo:                    FormControl('', [Validators.required]),
+    codigocorelativo:         new FormControl('', [Validators.required]),
+    codregion:                new FormControl('', [Validators.required]),
+    // correlativo:              new FormControl('', [Validators.required]),
+    descripcion:              new FormControl('', [Validators.required]),
+    incorporacion:            new FormControl('', [Validators.required]),
+    grupo:                    new FormControl('', [Validators.required]),
+    subgrupo:                 new FormControl('', [Validators.required]),
+    regimen:                  new FormControl('', [Validators.required]),
+    regional:                 new FormControl('', [Validators.required]),
+    unidadmanejo:             new FormControl('', [Validators.required]),
+    eficiencia:               new FormControl('', [Validators.required]),
     // formainicial:             new FormControl('', [Validators.required]),
     // estadoregistro:           new FormControl('', [Validators.required]),
-    // fechacompra:              new FormControl('', [Validators.required]),
-    // precio:                   new FormControl('', [Validators.required]),
-    // ufvcompra:                new FormControl('', [Validators.required]),
-    // porcentaje_depreciacion:  new FormControl('', [Validators.required]),
-    // vida_util:                new FormControl('', [Validators.required]),
+    fechacompra:              new FormControl('', [Validators.required]),
+    precio:                   new FormControl('', [Validators.required]),
+    ufvcompra:                new FormControl('', [Validators.required]),
+    porcentaje_depreciacion:  new FormControl('', [Validators.required]),
+    vida_util:                new FormControl('', [Validators.required]),
     // placa:                    new FormControl('', [Validators.required]),
-    // estado:                   new FormControl('', [Validators.required]),
-    // codigoalterno:            new FormControl('', [Validators.required]),
-    // provedor:                 new FormControl('', [Validators.required]),
-    // factura:                  new FormControl('', [Validators.required]),
-
-
-
-    codigo:                   new FormControl(''),
-    codigocorelativo:         new FormControl(''),
-    codregion:                new FormControl(''),
-    correlativo:              new FormControl(''),
-    descripcion:              new FormControl(''),
-    incorporacion:            new FormControl(''),
-    grupo:                    new FormControl(''),
-    subgrupo:                 new FormControl(''),
-    regimen:                  new FormControl(''),
-    regional:                 new FormControl(''),
-    unidadmanejo:             new FormControl(''),
-    eficiencia:               new FormControl(''),
-    formainicial:             new FormControl(''),
-    estadoregistro:           new FormControl(''),
-    fechacompra:              new FormControl(''),
-    precio:                   new FormControl(''),
-    ufvcompra:                new FormControl(''),
-    porcentaje_depreciacion:  new FormControl(''),
-    vida_util:                new FormControl(''),
-    placa:                    new FormControl(''),
-    estado:                   new FormControl(''),
-    codigoalterno:            new FormControl(''),
+    estado:                   new FormControl('', [Validators.required]),
+    codigoalterno:            new FormControl('', [Validators.required]),
     provedor:                 new FormControl(''),
     factura:                  new FormControl(''),
-    // componentes:new FormControl([]),
   });
 
   formularioBaja = new FormGroup({
@@ -143,10 +115,8 @@ export class ActivoComponent implements OnInit {
     fecha:        new FormControl('', Validators.required),
     docRespaldo:  new FormControl('', Validators.required),
     observacion:  new FormControl('', Validators.required),
-    ultimoMov:  new FormControl(''),
+    ultimoMov:    new FormControl(''),
   });
-
-  public codigoInput = new FormControl('');
 
   constructor(
     private activoService: ActivoService,
@@ -161,7 +131,6 @@ export class ActivoComponent implements OnInit {
     private regionalService:RegionalService,
     private caracteristicaService:CaracteristicaService,
     private ufvService:UfvService
-
   ){
   }
 
@@ -322,15 +291,16 @@ export class ActivoComponent implements OnInit {
 
   createActivo(){
 
-    if(this.activoForm.valid){
+    let camposVacios:any = [];
+    Object.keys(this.activoForm.controls).forEach(key => {
+      if(this.activoForm.get(key)?.errors?.required)
+        camposVacios.push("<br>"+key);
+    });
+    if (camposVacios.length === 0) {
       let codregion       = this.activoForm.value.codregion;
       let codcorrelativo  = this.activoForm.value.codigocorelativo;
-
-      // console.log(codregion,codcorrelativo);
       let newCod = String(codregion)+String(codcorrelativo);
       this.activo.codigo = newCod;
-      // console.log(newCod)
-
       this.activoService.create(this.activo).subscribe(resul => {
         let datos:String = "";
         for (let index = 0; index < this.estados.length; index++) {
@@ -352,22 +322,15 @@ export class ActivoComponent implements OnInit {
           text: 'Se gurado con exito el Activo',
           timer: 1500
         })
-
+        setTimeout(() => {
+          this.modalService.dismissAll('content')
+        }, 2500);
       });
     }else{
-
-      // console.log(this.activoForm, this.activoForm.get('descripcion'))
-      // console.log(this.activoForm.get('descripcion'))
-      // console.log(this.activoForm.get('descripcion')?.invalid)
-      // console.log(this.activoForm.get('descripcion')?.touched)
-      // console.log(this.activoForm.get('descripcion')?.errors)
-      // console.log(this.activoForm.get('descripcion')?.errors?.required)
-
       swal.fire({
         icon: 'error',
         title: 'Error!',
-        text: 'Algo fallo',
-        timer: 1500
+        html:'Los siguientes campos deben llenarse: <span class="text-danger">'+camposVacios+'</span>',
       })
     }
   }
@@ -589,8 +552,13 @@ export class ActivoComponent implements OnInit {
           })
         }
       }
-    })
-
-  
+    }) 
   }
+
+  // compareRegionales(r1: Regional, r2: Regional): boolean {
+  //   if(r1 === undefined && r2 === undefined)
+  //     return false;
+
+  //   return (r1 == null || r2 === null)? false : (r1.idregional === r2.idregional)
+  // }
 }
