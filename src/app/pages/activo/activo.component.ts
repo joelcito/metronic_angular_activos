@@ -26,6 +26,13 @@ import { UfvService } from '../ufv/ufv.service';
 import swal from 'sweetalert2';
 import { map } from 'rxjs';
 
+// import * as jsPDF from 'jspdf';
+// import * as html2canvas from 'html2canvas';
+
+// import jsPDF from 'jspdf'
+// import autoTable from 'jspdf-autotable'
+
+
 @Component({
   selector: 'app-activo',
   // standalone: true,
@@ -147,6 +154,8 @@ export class ActivoComponent implements OnInit {
     this.maxValFecha = new Date().toISOString().substring(0,10)
 
     this.listadoPrvedores()
+
+    // this.genera()
 
   }
 
@@ -554,6 +563,359 @@ export class ActivoComponent implements OnInit {
       }
     }) 
   }
+
+  // genera(){
+  //   const doc = new jsPDF({
+  //     orientation: "landscape",
+  //     unit:"px",
+  //     format:"letter"
+  //   })
+
+  //     // It can parse html:
+  //     // <table id="my-table"><!-- ... --></table>
+  //     // autoTable(doc, { html: '#my-table' })
+
+  //     // Or use javascript directly:
+  //     autoTable(doc, {
+  //       head: [['Name', 'Email', 'Country']],
+  //       body: [
+  //         ['David', 'david@example.com', 'Sweden'],
+  //         ['Castille', 'castille@example.com', 'Spain'],
+          
+  //         ['David', 'david@example.com', 'Sweden'],
+  //         ['Castille', 'castille@example.com', 'Spain'],
+  //         ['David', 'david@example.com', 'Sweden'],
+  //         ['Castille', 'castille@example.com', 'Spain'],
+  //         ['David', 'david@example.com', 'Sweden'],
+  //         ['Castille', 'castille@example.com', 'Spain'],
+  //         ['David', 'david@example.com', 'Sweden'],
+  //         ['Castille', 'castille@example.com', 'Spain'],
+  //         ['David', 'david@example.com', 'Sweden'],
+  //         ['Castille', 'castille@example.com', 'Spain'],
+  //         ['David', 'david@example.com', 'Sweden'],
+  //         ['Castille', 'castille@example.com', 'Spain'],
+  //         ['David', 'david@example.com', 'Sweden'],
+  //         ['Castille', 'castille@example.com', 'Spain'],
+          
+  //         ['David', 'david@example.com', 'Sweden'],
+  //         ['Castille', 'castille@example.com', 'Spain'],
+          
+  //         ['David', 'david@example.com', 'Sweden'],
+  //         ['Castille', 'castille@example.com', 'Spain'],
+  //         ['David', 'david@example.com', 'Sweden'],
+  //         ['Castille', 'castille@example.com', 'Spain'],
+  //         ['David', 'david@example.com', 'Sweden'],
+  //         ['Castille', 'castille@example.com', 'Spain'],
+  //         ['David', 'david@example.com', 'Sweden'],
+  //         ['Castille', 'castille@example.com', 'Spain'],
+  //         ['David', 'david@example.com', 'Sweden'],
+  //         ['Castille', 'castille@example.com', 'Spain'],
+  //         ['David', 'david@example.com', 'Sweden'],
+  //         ['Castille', 'castille@example.com', 'Spain'],
+  //         ['David', 'david@example.com', 'Sweden'],
+  //         ['Castille', 'castille@example.com', 'Spain'],
+  //         ['David', 'david@example.com', 'Sweden'],
+  //         ['Castille', 'castille@example.com', 'Spain'],
+          
+  //         ['David', 'david@example.com', 'Sweden'],
+  //         ['Castille', 'castille@example.com', 'Spain'],
+  //         ['David', 'david@example.com', 'Sweden'],
+  //         ['Castille', 'castille@example.com', 'Spain'],
+  //         ['David', 'david@example.com', 'Sweden'],
+  //         ['Castille', 'castille@example.com', 'Spain'],
+  //         ['David', 'david@example.com', 'Sweden'],
+  //         ['Castille', 'castille@example.com', 'Spain'],
+  //         ['David', 'david@example.com', 'Sweden'],
+  //         ['Castille', 'castille@example.com', 'Spain'],
+  //         ['David', 'david@example.com', 'Sweden'],
+  //         ['Castille', 'castille@example.com', 'Spain'],
+  //         ['David', 'david@example.com', 'Sweden'],
+  //         ['Castille', 'castille@example.com', 'Spain'],
+  //         ['David', 'david@example.com', 'Sweden'],
+  //         ['Castille', 'castille@example.com', 'Spain'],
+          
+  //         ['David', 'david@example.com', 'Sweden'],
+  //         ['Castille', 'castille@example.com', 'Spain'],
+  //         ['David', 'david@example.com', 'Sweden'],
+  //         ['Castille', 'castille@example.com', 'Spain'],
+  //         ['David', 'david@example.com', 'Sweden'],
+  //         ['Castille', 'castille@example.com', 'Spain'],
+  //         ['David', 'david@example.com', 'Sweden'],
+  //         ['Castille', 'castille@example.com', 'Spain'],
+  //         ['David', 'david@example.com', 'Sweden'],
+  //         ['Castille', 'castille@example.com', 'Spain'],
+  //         ['David', 'david@example.com', 'Sweden'],
+  //         ['Castille', 'castille@example.com', 'Spain'],
+  //         ['David', 'david@example.com', 'Sweden'],
+  //         ['Castille', 'castille@example.com', 'Spain'],
+  //         ['David', 'david@example.com', 'Sweden'],
+  //         ['Castille', 'castille@example.com', 'Spain'],
+          
+  //         ['David', 'david@example.com', 'Sweden'],
+  //         ['Castille', 'castille@example.com', 'Spain'],
+  //         ['David', 'david@example.com', 'Sweden'],
+  //         ['Castille', 'castille@example.com', 'Spain'],
+  //         ['David', 'david@example.com', 'Sweden'],
+  //         ['Castille', 'castille@example.com', 'Spain'],
+  //         ['David', 'david@example.com', 'Sweden'],
+  //         ['Castille', 'castille@example.com', 'Spain'],
+  //         ['David', 'david@example.com', 'Sweden'],
+  //         ['Castille', 'castille@example.com', 'Spain'],
+  //         ['David', 'david@example.com', 'Sweden'],
+  //         ['Castille', 'castille@example.com', 'Spain'],
+  //         ['David', 'david@example.com', 'Sweden'],
+  //         ['Castille', 'castille@example.com', 'Spain'],
+  //         ['David', 'david@example.com', 'Sweden'],
+  //         ['Castille', 'castille@example.com', 'Spain'],
+          
+  //         ['David', 'david@example.com', 'Sweden'],
+  //         ['Castille', 'castille@example.com', 'Spain'],
+  //         ['David', 'david@example.com', 'Sweden'],
+  //         ['Castille', 'castille@example.com', 'Spain'],
+  //         ['David', 'david@example.com', 'Sweden'],
+  //         ['Castille', 'castille@example.com', 'Spain'],
+  //         ['David', 'david@example.com', 'Sweden'],
+  //         ['Castille', 'castille@example.com', 'Spain'],
+  //         ['David', 'david@example.com', 'Sweden'],
+  //         ['Castille', 'castille@example.com', 'Spain'],
+  //         ['David', 'david@example.com', 'Sweden'],
+  //         ['Castille', 'castille@example.com', 'Spain'],
+  //         ['David', 'david@example.com', 'Sweden'],
+  //         ['Castille', 'castille@example.com', 'Spain'],
+  //         ['David', 'david@example.com', 'Sweden'],
+  //         ['Castille', 'castille@example.com', 'Spain'],
+          
+  //         ['David', 'david@example.com', 'Sweden'],
+  //         ['Castille', 'castille@example.com', 'Spain'],
+  //         ['David', 'david@example.com', 'Sweden'],
+  //         ['Castille', 'castille@example.com', 'Spain'],
+  //         ['David', 'david@example.com', 'Sweden'],
+  //         ['Castille', 'castille@example.com', 'Spain'],
+  //         ['David', 'david@example.com', 'Sweden'],
+  //         ['Castille', 'castille@example.com', 'Spain'],
+  //         ['David', 'david@example.com', 'Sweden'],
+  //         ['Castille', 'castille@example.com', 'Spain'],
+  //         ['David', 'david@example.com', 'Sweden'],
+  //         ['Castille', 'castille@example.com', 'Spain'],
+  //         ['David', 'david@example.com', 'Sweden'],
+  //         ['Castille', 'castille@example.com', 'Spain'],
+  //         ['David', 'david@example.com', 'Sweden'],
+  //         ['Castille', 'castille@example.com', 'Spain'],
+          
+  //         ['David', 'david@example.com', 'Sweden'],
+  //         ['Castille', 'castille@example.com', 'Spain'],
+  //         ['David', 'david@example.com', 'Sweden'],
+  //         ['Castille', 'castille@example.com', 'Spain'],
+  //         ['David', 'david@example.com', 'Sweden'],
+  //         ['Castille', 'castille@example.com', 'Spain'],
+  //         ['David', 'david@example.com', 'Sweden'],
+  //         ['Castille', 'castille@example.com', 'Spain'],
+  //         ['David', 'david@example.com', 'Sweden'],
+  //         ['Castille', 'castille@example.com', 'Spain'],
+  //         ['David', 'david@example.com', 'Sweden'],
+  //         ['Castille', 'castille@example.com', 'Spain'],
+  //         ['David', 'david@example.com', 'Sweden'],
+  //         ['Castille', 'castille@example.com', 'Spain'],
+  //         ['David', 'david@example.com', 'Sweden'],
+  //         ['Castille', 'castille@example.com', 'Spain'],
+          
+  //         ['David', 'david@example.com', 'Sweden'],
+  //         ['Castille', 'castille@example.com', 'Spain'],
+  //         ['David', 'david@example.com', 'Sweden'],
+  //         ['Castille', 'castille@example.com', 'Spain'],
+  //         ['David', 'david@example.com', 'Sweden'],
+  //         ['Castille', 'castille@example.com', 'Spain'],
+  //         ['David', 'david@example.com', 'Sweden'],
+  //         ['Castille', 'castille@example.com', 'Spain'],
+  //         ['David', 'david@example.com', 'Sweden'],
+  //         ['Castille', 'castille@example.com', 'Spain'],
+  //         ['David', 'david@example.com', 'Sweden'],
+  //         ['Castille', 'castille@example.com', 'Spain'],
+  //         ['David', 'david@example.com', 'Sweden'],
+  //         ['Castille', 'castille@example.com', 'Spain'],
+  //         // ...
+  //       ],
+  //     })
+
+  //     // autoTable(doc, {
+  //     //   head: [['Name', 'Email', 'Country']],
+  //     //   body: [
+  //     //     ['David', 'david@example.com', 'Sweden'],
+  //     //     ['Castille', 'castille@example.com', 'Spain'],
+          
+  //     //     ['David', 'david@example.com', 'Sweden'],
+  //     //     ['Castille', 'castille@example.com', 'Spain'],
+  //     //     ['David', 'david@example.com', 'Sweden'],
+  //     //     ['Castille', 'castille@example.com', 'Spain'],
+  //     //     ['David', 'david@example.com', 'Sweden'],
+  //     //     ['Castille', 'castille@example.com', 'Spain'],
+  //     //     ['David', 'david@example.com', 'Sweden'],
+  //     //     ['Castille', 'castille@example.com', 'Spain'],
+  //     //     ['David', 'david@example.com', 'Sweden'],
+  //     //     ['Castille', 'castille@example.com', 'Spain'],
+  //     //     ['David', 'david@example.com', 'Sweden'],
+  //     //     ['Castille', 'castille@example.com', 'Spain'],
+  //     //     ['David', 'david@example.com', 'Sweden'],
+  //     //     ['Castille', 'castille@example.com', 'Spain'],
+          
+  //     //     ['David', 'david@example.com', 'Sweden'],
+  //     //     ['Castille', 'castille@example.com', 'Spain'],
+          
+  //     //     ['David', 'david@example.com', 'Sweden'],
+  //     //     ['Castille', 'castille@example.com', 'Spain'],
+  //     //     ['David', 'david@example.com', 'Sweden'],
+  //     //     ['Castille', 'castille@example.com', 'Spain'],
+  //     //     ['David', 'david@example.com', 'Sweden'],
+  //     //     ['Castille', 'castille@example.com', 'Spain'],
+  //     //     ['David', 'david@example.com', 'Sweden'],
+  //     //     ['Castille', 'castille@example.com', 'Spain'],
+  //     //     ['David', 'david@example.com', 'Sweden'],
+  //     //     ['Castille', 'castille@example.com', 'Spain'],
+  //     //     ['David', 'david@example.com', 'Sweden'],
+  //     //     ['Castille', 'castille@example.com', 'Spain'],
+  //     //     ['David', 'david@example.com', 'Sweden'],
+  //     //     ['Castille', 'castille@example.com', 'Spain'],
+  //     //     ['David', 'david@example.com', 'Sweden'],
+  //     //     ['Castille', 'castille@example.com', 'Spain'],
+          
+  //     //     ['David', 'david@example.com', 'Sweden'],
+  //     //     ['Castille', 'castille@example.com', 'Spain'],
+  //     //     ['David', 'david@example.com', 'Sweden'],
+  //     //     ['Castille', 'castille@example.com', 'Spain'],
+  //     //     ['David', 'david@example.com', 'Sweden'],
+  //     //     ['Castille', 'castille@example.com', 'Spain'],
+  //     //     ['David', 'david@example.com', 'Sweden'],
+  //     //     ['Castille', 'castille@example.com', 'Spain'],
+  //     //     ['David', 'david@example.com', 'Sweden'],
+  //     //     ['Castille', 'castille@example.com', 'Spain'],
+  //     //     ['David', 'david@example.com', 'Sweden'],
+  //     //     ['Castille', 'castille@example.com', 'Spain'],
+  //     //     ['David', 'david@example.com', 'Sweden'],
+  //     //     ['Castille', 'castille@example.com', 'Spain'],
+  //     //     ['David', 'david@example.com', 'Sweden'],
+  //     //     ['Castille', 'castille@example.com', 'Spain'],
+          
+  //     //     ['David', 'david@example.com', 'Sweden'],
+  //     //     ['Castille', 'castille@example.com', 'Spain'],
+  //     //     ['David', 'david@example.com', 'Sweden'],
+  //     //     ['Castille', 'castille@example.com', 'Spain'],
+  //     //     ['David', 'david@example.com', 'Sweden'],
+  //     //     ['Castille', 'castille@example.com', 'Spain'],
+  //     //     ['David', 'david@example.com', 'Sweden'],
+  //     //     ['Castille', 'castille@example.com', 'Spain'],
+  //     //     ['David', 'david@example.com', 'Sweden'],
+  //     //     ['Castille', 'castille@example.com', 'Spain'],
+  //     //     ['David', 'david@example.com', 'Sweden'],
+  //     //     ['Castille', 'castille@example.com', 'Spain'],
+  //     //     ['David', 'david@example.com', 'Sweden'],
+  //     //     ['Castille', 'castille@example.com', 'Spain'],
+  //     //     ['David', 'david@example.com', 'Sweden'],
+  //     //     ['Castille', 'castille@example.com', 'Spain'],
+          
+  //     //     ['David', 'david@example.com', 'Sweden'],
+  //     //     ['Castille', 'castille@example.com', 'Spain'],
+  //     //     ['David', 'david@example.com', 'Sweden'],
+  //     //     ['Castille', 'castille@example.com', 'Spain'],
+  //     //     ['David', 'david@example.com', 'Sweden'],
+  //     //     ['Castille', 'castille@example.com', 'Spain'],
+  //     //     ['David', 'david@example.com', 'Sweden'],
+  //     //     ['Castille', 'castille@example.com', 'Spain'],
+  //     //     ['David', 'david@example.com', 'Sweden'],
+  //     //     ['Castille', 'castille@example.com', 'Spain'],
+  //     //     ['David', 'david@example.com', 'Sweden'],
+  //     //     ['Castille', 'castille@example.com', 'Spain'],
+  //     //     ['David', 'david@example.com', 'Sweden'],
+  //     //     ['Castille', 'castille@example.com', 'Spain'],
+  //     //     ['David', 'david@example.com', 'Sweden'],
+  //     //     ['Castille', 'castille@example.com', 'Spain'],
+          
+  //     //     ['David', 'david@example.com', 'Sweden'],
+  //     //     ['Castille', 'castille@example.com', 'Spain'],
+  //     //     ['David', 'david@example.com', 'Sweden'],
+  //     //     ['Castille', 'castille@example.com', 'Spain'],
+  //     //     ['David', 'david@example.com', 'Sweden'],
+  //     //     ['Castille', 'castille@example.com', 'Spain'],
+  //     //     ['David', 'david@example.com', 'Sweden'],
+  //     //     ['Castille', 'castille@example.com', 'Spain'],
+  //     //     ['David', 'david@example.com', 'Sweden'],
+  //     //     ['Castille', 'castille@example.com', 'Spain'],
+  //     //     ['David', 'david@example.com', 'Sweden'],
+  //     //     ['Castille', 'castille@example.com', 'Spain'],
+  //     //     ['David', 'david@example.com', 'Sweden'],
+  //     //     ['Castille', 'castille@example.com', 'Spain'],
+  //     //     ['David', 'david@example.com', 'Sweden'],
+  //     //     ['Castille', 'castille@example.com', 'Spain'],
+          
+  //     //     ['David', 'david@example.com', 'Sweden'],
+  //     //     ['Castille', 'castille@example.com', 'Spain'],
+  //     //     ['David', 'david@example.com', 'Sweden'],
+  //     //     ['Castille', 'castille@example.com', 'Spain'],
+  //     //     ['David', 'david@example.com', 'Sweden'],
+  //     //     ['Castille', 'castille@example.com', 'Spain'],
+  //     //     ['David', 'david@example.com', 'Sweden'],
+  //     //     ['Castille', 'castille@example.com', 'Spain'],
+  //     //     ['David', 'david@example.com', 'Sweden'],
+  //     //     ['Castille', 'castille@example.com', 'Spain'],
+  //     //     ['David', 'david@example.com', 'Sweden'],
+  //     //     ['Castille', 'castille@example.com', 'Spain'],
+  //     //     ['David', 'david@example.com', 'Sweden'],
+  //     //     ['Castille', 'castille@example.com', 'Spain'],
+  //     //     ['David', 'david@example.com', 'Sweden'],
+  //     //     ['Castille', 'castille@example.com', 'Spain'],
+          
+  //     //     ['David', 'david@example.com', 'Sweden'],
+  //     //     ['Castille', 'castille@example.com', 'Spain'],
+  //     //     ['David', 'david@example.com', 'Sweden'],
+  //     //     ['Castille', 'castille@example.com', 'Spain'],
+  //     //     ['David', 'david@example.com', 'Sweden'],
+  //     //     ['Castille', 'castille@example.com', 'Spain'],
+  //     //     ['David', 'david@example.com', 'Sweden'],
+  //     //     ['Castille', 'castille@example.com', 'Spain'],
+  //     //     ['David', 'david@example.com', 'Sweden'],
+  //     //     ['Castille', 'castille@example.com', 'Spain'],
+  //     //     ['David', 'david@example.com', 'Sweden'],
+  //     //     ['Castille', 'castille@example.com', 'Spain'],
+  //     //     ['David', 'david@example.com', 'Sweden'],
+  //     //     ['Castille', 'castille@example.com', 'Spain'],
+  //     //     ['David', 'david@example.com', 'Sweden'],
+  //     //     ['Castille', 'castille@example.com', 'Spain'],
+          
+  //     //     ['David', 'david@example.com', 'Sweden'],
+  //     //     ['Castille', 'castille@example.com', 'Spain'],
+  //     //     ['David', 'david@example.com', 'Sweden'],
+  //     //     ['Castille', 'castille@example.com', 'Spain'],
+  //     //     ['David', 'david@example.com', 'Sweden'],
+  //     //     ['Castille', 'castille@example.com', 'Spain'],
+  //     //     ['David', 'david@example.com', 'Sweden'],
+  //     //     ['Castille', 'castille@example.com', 'Spain'],
+  //     //     ['David', 'david@example.com', 'Sweden'],
+  //     //     ['Castille', 'castille@example.com', 'Spain'],
+  //     //     ['David', 'david@example.com', 'Sweden'],
+  //     //     ['Castille', 'castille@example.com', 'Spain'],
+  //     //     ['David', 'david@example.com', 'Sweden'],
+  //     //     ['Castille', 'castille@example.com', 'Spain'],
+  //     //     // ...
+  //     //   ],
+  //     // })
+
+  //     doc.save('table.pdf')
+  // }
+
+   
+  // generarPDF(){
+  //   html2canvas(document.getElementById('contenido'), {
+  //     // Opciones
+  //     allowTaint: true,
+  //     useCORS: false,
+  //     // Calidad del PDF
+  //     scale: 1
+  //   }).then(function(canvas) {
+  //   var img = canvas.toDataURL("image/png");
+  //   var doc = new jsPDF();
+  //   doc.addImage(img,'PNG',7, 20, 195, 105);
+  //   doc.save('postres.pdf');
+  // });
+  // }
 
   // compareRegionales(r1: Regional, r2: Regional): boolean {
   //   if(r1 === undefined && r2 === undefined)

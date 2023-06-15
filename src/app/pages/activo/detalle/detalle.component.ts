@@ -31,6 +31,10 @@ import { Caracteristica } from '../../caracteristica/caracteristica';
 
 import { URL_GLOBAL } from 'src/app/config';
 
+import jsPDF from 'jspdf'
+import autoTable from 'jspdf-autotable'
+import { format } from 'date-fns';
+
 @Component({
   selector: 'app-detalle',
   templateUrl: './detalle.component.html',
@@ -685,5 +689,193 @@ export class DetalleComponent implements OnInit {
   ponerFoto(nombreFoto:string){
     this.rutaImagen = URL_GLOBAL+"/activo/images/"+nombreFoto
     this.chdr.detectChanges();
+  }
+
+  descargarPDF(){
+    const doc = new jsPDF({
+      orientation: "landscape",
+      unit:"px",
+      format:"letter"
+    })
+
+    // It can parse html:
+    // <table id="my-table"><!-- ... --></table>
+
+    // doc.addImage("assets/media/logos/logoC.png", "JPG", 120,540,220,35)
+
+    autoTable(doc,{
+      head: [[
+        {content:"MINISTERIO DE DEFENSA NACIONAL Corporacion de Seguro Social Militar La Paz Boivia",
+          styles: { 
+            halign: 'center' ,
+            fontStyle: 'bold',
+            fontSize: 8,
+            valign: 'middle', //alineacion largo
+            // halign: 'left', //alineacion ancho
+            fillColor: [255, 255, 255], //color fonde de celda
+            textColor: [0, 0, 0], //texto color
+            cellWidth: 120, // Ancho del primer encabezado
+          } 
+        }, 
+        {content:"RESUMEN INVENTARIADO GENERAL DE ACTUALIZACION Y DEPRECIACION DE ACTIVOS FIJO", 
+          styles: { 
+            halign: 'center' ,
+            fontStyle: 'bold',
+            fontSize: 10,
+            valign: 'middle', //alineacion largo
+            // halign: 'center', //alineacion ancho
+            fillColor: [255, 255, 255], //color fonde de celda
+            textColor: [0, 0, 0], //texto color
+            cellWidth: 300, // Ancho del primer encabezado
+          } 
+        },
+        {content:"Fecha de Emision: "+format(new Date(), 'dd/MM/yyyy'), 
+          styles: { 
+            halign: 'right' ,
+            fontStyle: 'normal',
+            fontSize: 8,
+            valign: 'middle', //alineacion largo
+            // halign: 'right', //alineacion ancho
+            fillColor: [255, 255, 255], //color fonde de celda
+            textColor: [0, 0, 0], //texto color
+            cellWidth: 120, // Ancho del primer encabezado
+          } 
+        }
+          ]],
+      startY: 40,
+      theme: 'grid',
+      margin: {right: 50, left: 50},
+      styles: { 
+        font:"calibri",
+        overflow: 'linebreak',
+        cellPadding: 3,//espacio entre lineas
+        lineColor: [0, 0, 0], //color de borde
+        lineWidth: 0 //ancho de borde
+      },
+      // headStyles: [
+      //   { fontStyle: 'bold', fontSize: 12, valign: 'middle', fillColor: [255, 255, 255], textColor: [0, 0, 0] },
+      //   { fontStyle: 'bold', fontSize: 12, valign: 'middle', fillColor: [255, 255, 255], textColor: [0, 0, 0] },
+      //   { fontStyle: 'bold', fontSize: 12, valign: 'middle', fillColor: [255, 255, 255], textColor: [0, 0, 0] }
+      // ],
+      
+      // headStyles: {
+      //   fontStyle: 'bold',
+      //   fontSize: 12,
+      //   valign: 'middle', //alineacion largo
+      //   halign: 'left', //alineacion ancho
+      //   fillColor: [255, 255, 255], //color fonde de celda
+      //   textColor: [0, 0, 0] //texto color
+      // },
+      alternateRowStyles: {
+        fillColor: [255, 255, 255],
+      }     
+    });
+
+    // autoTable(doc,{
+    //   head: [["Fecha de Emision: "+format(new Date(), 'dd/MM/yyyy')]],
+    //   startY: 20,
+    //   theme: 'grid',
+    //   margin: {right: 50, left: 50},
+    //   styles: { 
+    //     font:"calibri",
+    //     overflow: 'linebreak',
+    //     cellPadding: 3,//espacio entre lineas
+    //     lineColor: [0, 0, 0], //color de borde
+    //     lineWidth: 0, //ancho de borde
+    //     cellWidth: 40, // Ancho del primer encabezado
+    //   },
+
+      
+    //   headStyles: {
+    //     fontStyle: 'normal',
+    //     fontSize: 9,
+    //     valign: 'middle', //alineacion largo
+    //     halign: 'right', //alineacion ancho
+    //     fillColor: [255, 255, 255], //color fonde de celda
+    //     textColor: [0, 0, 0], //texto color
+    //     cellWidth: 120, // Ancho del primer encabezado
+
+    //   },
+    //   alternateRowStyles: {
+    //     fillColor: [255, 255, 255],
+    //   }     
+    // });
+
+    // autoTable(doc,{
+    //   head: [["RESUMEN INVENTARIADO GENERAL DE ACTUALIZACION Y DEPRECIACION DE ACTIVOS FIJO"]],
+    //   startY: 180,
+    //   theme: 'grid',
+    //   margin: {right: 50, left: 50},
+    //   styles: { 
+    //     font:"calibri",
+    //     overflow: 'linebreak',
+    //     cellPadding: 3,//espacio entre lineas
+    //     lineColor: [0, 0, 0], //color de borde
+    //     lineWidth: 0, //ancho de borde
+    //     cellWidth: 120, // Ancho del primer encabezado
+
+    //   },
+    //   headStyles: {
+    //     fontStyle: 'bold',
+    //     fontSize: 10,
+    //     valign: 'middle', //alineacion largo
+    //     halign: 'center', //alineacion ancho
+    //     fillColor: [255, 255, 255], //color fonde de celda
+    //     textColor: [0, 0, 0] //texto color
+    //   },
+    //   alternateRowStyles: {
+    //     fillColor: [255, 255, 255],
+    //   }     
+    // });
+
+    // autoTable(doc,{
+    //   head
+    // })
+
+    // autoTable(doc, { html: '#my-table' })
+
+    // Or use javascript directly:
+    autoTable(doc, {
+      head: [['Codigo',
+              'Grupo Contable',
+              'Cant',
+              'Vida Util',
+              'Costo Historico', 
+              'Costo Actualizado',
+              'Deprec. Acum. Total Grupo', 
+              'Valor Neto Inicial', 
+              'Act. Gestion',
+              'Costo Tot. Actualizado',
+              'Deprec. Gestion',
+              'Act. Dep. Acum',
+              'Dep Acum.',
+              'Valor Neto'
+            ]],
+      body: [
+        [
+          this.activo.codigo,                       //  Codigo
+          'EQUIPO DE COMPUTACION',                  //  Grupo Contable
+          '1',                                      //  Cant
+          'Vida Util',                              //  Vida Util
+          'Costo Historico',                        //  Costo Historico'
+          'Costo Actualizado',                      //  Costo Actualizado
+          'Deprec. Acum. Total Grupo',              //  Deprec. Acum. Total Grupo'
+          'Valor Neto Inicial',                     //  Valor Neto Inicial'
+          'Act. Gestion',                           //  Act. Gestion
+          'Costo Tot. Actualizado',                 //  Costo Tot. Actualizado
+          'Deprec. Gestion',                        //  Deprec. Gestion
+          'Act. Dep. Acum',                         //  Act. Dep. Acum
+          'Dep Acum.',                              //  Dep Acum.
+          'Valor Neto'                              //  Valor Neto
+        ],
+        
+      ],
+    })
+
+    if(true){
+      window.open(doc.output('bloburl'), 'solicutud', 'width=1000, height=900, top=100')
+    }else{
+      doc.save('table.pdf')
+    }
   }
 }

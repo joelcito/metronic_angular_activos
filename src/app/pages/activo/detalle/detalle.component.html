@@ -538,8 +538,11 @@
             </div>
           </div>
           <div class="row mt-3">
-            <div class="col-md-12">
+            <div class="col-md-6">
               <button class="btn btn-sm w-100 btn-warning" (click)="calcularDeprePersonalizado()">CALCULAR DEPRESIACION</button>
+            </div>
+            <div class="col-md-6">
+              <button class="btn btn-sm w-100 btn-danger" (click)="descargarPDF()"><i class="fas fa-file-pdf"></i>DESCARGAR DEPRECIACION</button>
             </div>
           </div>
         </form>
@@ -555,7 +558,7 @@
           </div>
         </div> -->
         <div class="table-responsive mt-3">
-          <table class="table align-middle gs-0 gy-4">
+          <table class="table align-middle gs-0 gy-4" id="my-table">
               <thead>
                   <tr class="fw-bold text-muted bg-light">
                       <th class="ps-4 rounded-start">Año</th>
