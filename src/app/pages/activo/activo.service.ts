@@ -90,6 +90,10 @@ export class ActivoService {
     return this.http.get<any>(`${this.urlEndPointExterno}/getPersonaByCi/${ci}`)
   }
 
+  getPersonasNombre(nombre:String){
+    return this.http.post<any[]>(`${this.urlEndPointExterno}/getPersonasNombre`, nombre,{headers: this.httpHeaders})
+  }
+
   getReparticiones(){
     return this.http.get<any[]>(`${this.urlEndPointExterno}/getReparticiones`)
   }

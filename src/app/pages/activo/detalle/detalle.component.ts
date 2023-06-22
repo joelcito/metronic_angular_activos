@@ -32,8 +32,11 @@ import { Caracteristica } from '../../caracteristica/caracteristica';
 import { URL_GLOBAL } from 'src/app/config';
 
 import jsPDF from 'jspdf'
+// import {autoTable, UserOptions} from 'jspdf-autotable'
 import autoTable from 'jspdf-autotable'
+import { UserOptions } from 'jspdf-autotable';
 import { format } from 'date-fns';
+//import 'jspdf-autotable';
 
 @Component({
   selector: 'app-detalle',
@@ -58,6 +61,10 @@ export class DetalleComponent implements OnInit {
   listadoUbiEsp   : any[];
   listadoreparticiones   : any[];
   listadoRefacciones   : any[];
+  listadoDepreciaciones   : any[];
+  llavesListadoDepre   : any[];
+  listadoPersonasBuscadas   : any[];
+
 
   idGrupo          :String = '0';
   idSubGrupo       :String = '0';
@@ -98,6 +105,7 @@ export class DetalleComponent implements OnInit {
   contenidoDepre:boolean = false;
   contenidoMovimiento:boolean = false;
   contenidoModificacion:boolean = false;
+  mostraTablaBuscadosPersonas:boolean =false;
 
   selectedImage: File;
 
@@ -388,7 +396,13 @@ export class DetalleComponent implements OnInit {
       this.PERcantMes      = resul.cantMes;
       this.PERValorNeto    = resul.ValorNeto;
       this.PERcostoActual  = resul.costoActual;
+
+      this.listadoDepreciaciones = resul.depre
+      console.log(resul.depre)
+      console.log(JSON.stringify(resul.depre))
+      this.llavesListadoDepre = Object.keys(resul.depre);
       this.chdr.detectChanges();
+      // console.log(resul)
     })
   }
 
@@ -580,21 +594,38 @@ export class DetalleComponent implements OnInit {
 
   buscarPersona(){
 
+    const radioButtons = document.getElementsByName('tipo_busqeuda');
+
     var ci = String(this.formularioAsignacion.value.cedula);
+    if((radioButtons[0] as HTMLInputElement).checked){
 
-    this.activoService.getPersonaByCi(ci).subscribe(result =>{
+      this.activoService.getPersonaByCi(ci).subscribe(result =>{
+  
+        console.log(result, Object.keys(result).length)
+  
+        if(Object.keys(result).length === 0){
+          this.buscaCedulaAsignacion = true;
+        }else{
+          this.formularioAsignacion.get('nombre')?.setValue(result.des.trim()+" "+result.des1.trim()+" "+result.des2.trim());
+          this.buscaCedulaAsignacion = false;
+        }
+  
+        console.log(this.buscaCedulaAsignacion)
+      })
+    }else{
+      this.activoService.getPersonasNombre(ci).subscribe(result => {
+        this.listadoPersonasBuscadas = result
+        this.mostraTablaBuscadosPersonas = true;
+      })
+    }   
+  }
 
-      console.log(result, Object.keys(result).length)
+  seleccionar(nombre:String, ci:string){
+    // console.log(nombre, ci)
+    this.formularioAsignacion.get("cedula")?.setValue(ci.toString());
+    this.formularioAsignacion.get("nombre")?.setValue(nombre.toString());
 
-      if(Object.keys(result).length === 0){
-        this.buscaCedulaAsignacion = true;
-      }else{
-        this.formularioAsignacion.get('nombre')?.setValue(result.des.trim()+" "+result.des1.trim()+" "+result.des2.trim());
-        this.buscaCedulaAsignacion = false;
-      }
-
-      console.log(this.buscaCedulaAsignacion)
-    })
+    this.mostraTablaBuscadosPersonas = false;
   }
 
   visualizar(value:any){
@@ -705,11 +736,11 @@ export class DetalleComponent implements OnInit {
 
     autoTable(doc,{
       head: [[
-        {content:"MINISTERIO DE DEFENSA NACIONAL Corporacion de Seguro Social Militar La Paz Boivia",
+        {content:"MINISTERIO DE DEFENSA NACIONAL \n Corporacion de Seguro Social Militar \n La Paz Boivia",
           styles: { 
             halign: 'center' ,
             fontStyle: 'bold',
-            fontSize: 8,
+            fontSize: 6,
             valign: 'middle', //alineacion largo
             // halign: 'left', //alineacion ancho
             fillColor: [255, 255, 255], //color fonde de celda
@@ -721,7 +752,7 @@ export class DetalleComponent implements OnInit {
           styles: { 
             halign: 'center' ,
             fontStyle: 'bold',
-            fontSize: 10,
+            fontSize: 8,
             valign: 'middle', //alineacion largo
             // halign: 'center', //alineacion ancho
             fillColor: [255, 255, 255], //color fonde de celda
@@ -770,6 +801,459 @@ export class DetalleComponent implements OnInit {
         fillColor: [255, 255, 255],
       }     
     });
+
+    autoTable(doc,{
+      head: [[
+        {content:"GRUPO CONTABLE: "+this.activo.grupo.descripcion,
+          styles: { 
+            halign: 'center' ,
+            fontStyle: 'bold',
+            fontSize: 6,
+            valign: 'middle', //alineacion largo
+            // halign: 'left', //alineacion ancho
+            fillColor: [255, 255, 255], //color fonde de celda
+            textColor: [0, 0, 0], //texto color
+            // cellWidth: 120, // Ancho del primer encabezado
+          } 
+        }, 
+        {content:"DEL:"+12+"\nUFV: "+0.1235, 
+          styles: { 
+            halign: 'center' ,
+            fontStyle: 'bold',
+            fontSize: 8,
+            valign: 'middle', //alineacion largo
+            // halign: 'center', //alineacion ancho
+            fillColor: [255, 255, 255], //color fonde de celda
+            textColor: [0, 0, 0], //texto color
+            // cellWidth: 300, // Ancho del primer encabezado
+          } 
+        },
+        {content:"DEL:"+12+"\nUFV: "+0.1235, 
+          styles: { 
+            halign: 'center' ,
+            fontStyle: 'bold',
+            fontSize: 8,
+            valign: 'middle', //alineacion largo
+            // halign: 'center', //alineacion ancho
+            fillColor: [255, 255, 255], //color fonde de celda
+            textColor: [0, 0, 0], //texto color
+            cellWidth: 300, // Ancho del primer encabezado
+          } 
+        },
+        // {content:"Fecha de Emision: "+format(new Date(), 'dd/MM/yyyy'), 
+        //   styles: { 
+        //     halign: 'right' ,
+        //     fontStyle: 'normal',
+        //     fontSize: 8,
+        //     valign: 'middle', //alineacion largo
+        //     fillColor: [255, 255, 255], //color fonde de celda
+        //     textColor: [0, 0, 0], //texto color
+        //     cellWidth: 120, // Ancho del primer encabezado
+        //   } 
+        // }
+      ]],
+      startY: 80,
+      theme: 'grid',
+      margin: {right: 50, left: 50},
+      styles: { 
+        font:"calibri",
+        overflow: 'linebreak',
+        cellPadding: 3,//espacio entre lineas
+        lineColor: [0, 0, 0], //color de borde
+        lineWidth: 0 //ancho de borde
+      },
+      alternateRowStyles: {
+        fillColor: [255, 255, 255],
+      }     
+    });
+
+
+    // Crear la configuración de la tabla
+    // const tableConfig = {
+    //   head: [
+    //     ['Codigo', 'Depre. Acum.', 'Depre. Actual.', 'Depreciacion', 'Valor Residual', 'UFV Adq.', 'Valor Actualizado', 'Cant. Meses', 'Depreciacion Periodo', 'Valor Activo', 'Total Depre.', 'Actualizacion', 'Gestion']
+    //   ],
+    //   body: Object.values(this.listadoDepreciaciones).map(item => [
+    //     item.depre_acumulado,
+    //     item.depre_actualizacion,
+    //     item.depreciacion,
+    //     item.valor_residual,
+    //     item.ufv_Adq,
+    //     item.valor_actualizado,
+    //     item.cant_meses,
+    //     item.depreciacion_periodo,
+    //     item.valor_activo,
+    //     item.total_depre,
+    //     item.actualizacion,
+    //     item.gestion
+    //   ]),
+    //   styles: {
+    //     fontSize: 8,
+    //     cellPadding: 2,
+    //     textColor: [0, 0, 0],
+    //     lineColor: [0, 0, 0],
+    //     lineWidth: 0.1,
+    //     fontStyle: 'normal',
+    //     valign: 'middle',
+    //     halign: 'center'
+    //   }
+    // };
+
+
+
+    // Crear la configuración de estilos para el encabezado
+    // const headerStyles: UserOptions['styles'] = {
+    // const headerStyles: UserOptions['styles'] = {
+    //   fontSize: 10,
+    //   fontStyle: 'bold',
+    //   halign: 'center',
+    //   fillColor: [200, 200, 200], // Color de fondo del encabezado
+    //   textColor: [0, 0, 0], // Color de texto del encabezado
+    // };
+    // Crear la configuración de la tabla
+    const tableConfig :UserOptions= {
+      head: [[
+              'Codigo',
+              'Gestion',
+              'UFV Adq.', 
+              'Valor Activo', 
+              'Actualizacion', 
+              'Valor Actualizado', 
+              'Depre. Acum.', 
+              'Depre. Actual.', 
+              'Depreciacion', 
+              'Depreciacion Periodo', 
+              'Cant. Meses', 
+              'Total Depre.', 
+              'Valor Residual', 
+            ]],
+      body: Object.values(this.listadoDepreciaciones).map(item => [
+        this.activo.codigo,
+        item.gestion ,
+        item.ufv_Adq,
+        item.valor_activo.toFixed(2),
+        item.actualizacion.toFixed(2),
+        item.valor_actualizado.toFixed(2),
+        item.depre_acumulado.toFixed(2),
+        item.depre_actualizacion.toFixed(2),
+        item.depreciacion.toFixed(2),
+        item.depreciacion_periodo.toFixed(2),
+        item.cant_meses,
+        item.total_depre.toFixed(2),
+        (item.valor_residual === 0)? '1.00' : item.valor_residual.toFixed(2),
+      ]),
+      styles: {
+        fontSize: 8,
+        cellPadding: 2,
+        textColor: [0, 0, 0],
+        lineColor: [0, 0, 0],
+        lineWidth: 0.1,
+        fontStyle: 'normal', // Cambio "normal" a 'normal'
+        valign: 'middle',
+        halign: 'center',
+        fillColor:[ 255, 255, 255],
+      },
+      headStyles: {
+        halign: 'center' ,
+        fontStyle: 'bold',
+        fontSize: 6,
+        valign: 'middle', //alineacion largo
+        // halign: 'left', //alineacion ancho
+        fillColor: [255, 255, 255], //color fonde de celda
+        textColor: [0, 0, 0], //texto color
+      },
+    };
+
+    // doc.auto
+
+    autoTable(doc,tableConfig);
+
+    autoTable(doc,{
+      head: [[
+        {content:"ENCARGADO DE ACTIVOS FIJOS",
+          styles: { 
+            halign: 'center' ,
+            fontStyle: 'bold',
+            fontSize: 6,
+            valign: 'middle', //alineacion largo
+            // halign: 'left', //alineacion ancho
+            fillColor: [255, 255, 255], //color fonde de celda
+            textColor: [0, 0, 0], //texto color
+            // cellWidth: 120, // Ancho del primer encabezado
+          } 
+        }, 
+        {content:"JEFE DE UNIDAD", 
+          styles: { 
+            halign: 'center' ,
+            fontStyle: 'bold',
+            fontSize: 8,
+            valign: 'middle', //alineacion largo
+            // halign: 'center', //alineacion ancho
+            fillColor: [255, 255, 255], //color fonde de celda
+            textColor: [0, 0, 0], //texto color
+            // cellWidth: 300, // Ancho del primer encabezado
+          } 
+        },
+        {content:"O MAXIMO EJECUTIVO UNIDAD", 
+          styles: { 
+            halign: 'center' ,
+            fontStyle: 'bold',
+            fontSize: 8,
+            valign: 'middle', //alineacion largo
+            // halign: 'center', //alineacion ancho
+            fillColor: [255, 255, 255], //color fonde de celda
+            textColor: [0, 0, 0], //texto color
+            cellWidth: 300, // Ancho del primer encabezado
+          } 
+        },
+        // {content:"Fecha de Emision: "+format(new Date(), 'dd/MM/yyyy'), 
+        //   styles: { 
+        //     halign: 'right' ,
+        //     fontStyle: 'normal',
+        //     fontSize: 8,
+        //     valign: 'middle', //alineacion largo
+        //     fillColor: [255, 255, 255], //color fonde de celda
+        //     textColor: [0, 0, 0], //texto color
+        //     cellWidth: 120, // Ancho del primer encabezado
+        //   } 
+        // }
+      ]],
+      startY: 250,
+      theme: 'grid',
+      margin: {right: 50, left: 50},
+      styles: { 
+        font:"calibri",
+        overflow: 'linebreak',
+        cellPadding: 3,//espacio entre lineas
+        lineColor: [0, 0, 0], //color de borde
+        lineWidth: 0 //ancho de borde
+      },
+      alternateRowStyles: {
+        fillColor: [255, 255, 255],
+      }     
+    });
+
+    // doc.autoTable(tableConfig);
+
+
+    // const body = [];
+
+    // // Recorrer el objeto JSON y agregar filas al cuerpo de la tabla
+    // for (const key in this.listadoDepreciaciones) {
+    //   const item = this.listadoDepreciaciones[key];
+    //   const row = [
+    //     { text: key, style: 'cell' },
+    //     { text: item.depre_acumulado.toString(), style: 'cell' },
+    //     { text: item.depre_actualizacion.toString(), style: 'cell' },
+    //     { text: item.depreciacion.toString(), style: 'cell' },
+    //     { text: item.valor_residual.toString(), style: 'cell' },
+    //     { text: item.ufv_Adq.toString(), style: 'cell' },
+    //     { text: item.valor_actualizado.toString(), style: 'cell' },
+    //     { text: item.cant_meses.toString(), style: 'cell' },
+    //     { text: item.depreciacion_periodo.toString(), style: 'cell' },
+    //     { text: item.valor_activo.toString(), style: 'cell' },
+    //     { text: item.total_depre.toString(), style: 'cell' },
+    //     { text: item.actualizacion.toString(), style: 'cell' },
+    //     { text: item.gestion.toString(), style: 'cell' }
+    //   ];
+    //   body.push(row);
+    // }
+    
+
+
+    // // Or use javascript directly:
+    // autoTable(doc, {
+    //   head: [[ 
+    //           {content:'Codigo',
+    //             styles:{
+    //               halign: 'center' ,
+    //               fontStyle: 'bold',
+    //               fontSize: 6,
+    //               valign: 'middle', //alineacion largo
+    //               // halign: 'left', //alineacion ancho
+    //               fillColor: [255, 255, 255], //color fonde de celda
+    //               textColor: [0, 0, 0], //texto color
+    //               // cellWidth: 120, // Ancho del primer encabezado
+    //             }
+    //           },
+    //           {content:'Grupo Contable',
+    //             styles:{
+    //               halign: 'center' ,
+    //               fontStyle: 'bold',
+    //               fontSize: 6,
+    //               valign: 'middle', //alineacion largo
+    //               // halign: 'left', //alineacion ancho
+    //               fillColor: [255, 255, 255], //color fonde de celda
+    //               textColor: [0, 0, 0], //texto color
+    //               // cellWidth: 120, // Ancho del primer encabezado
+    //             }
+    //           },
+    //           {content:'Cant',
+    //             styles:{
+    //               halign: 'center' ,
+    //               fontStyle: 'bold',
+    //               fontSize: 6,
+    //               valign: 'middle', //alineacion largo
+    //               // halign: 'left', //alineacion ancho
+    //               fillColor: [255, 255, 255], //color fonde de celda
+    //               textColor: [0, 0, 0], //texto color
+    //               // cellWidth: 120, // Ancho del primer encabezado
+    //             }
+    //           },
+    //           {content:'Vida Util',
+    //             styles:{
+    //               halign: 'center' ,
+    //               fontStyle: 'bold',
+    //               fontSize: 6,
+    //               valign: 'middle', //alineacion largo
+    //               // halign: 'left', //alineacion ancho
+    //               fillColor: [255, 255, 255], //color fonde de celda
+    //               textColor: [0, 0, 0], //texto color
+    //               // cellWidth: 120, // Ancho del primer encabezado
+    //             }
+    //           },
+    //           {content:'Costo Historico',
+    //             styles:{
+    //               halign: 'center' ,
+    //               fontStyle: 'bold',
+    //               fontSize: 6,
+    //               valign: 'middle', //alineacion largo
+    //               // halign: 'left', //alineacion ancho
+    //               fillColor: [255, 255, 255], //color fonde de celda
+    //               textColor: [0, 0, 0], //texto color
+    //               // cellWidth: 120, // Ancho del primer encabezado
+    //             }
+    //           },
+    //           {content:'Costo Actualizado',
+    //             styles:{
+    //               halign: 'center' ,
+    //               fontStyle: 'bold',
+    //               fontSize: 6,
+    //               valign: 'middle', //alineacion largo
+    //               // halign: 'left', //alineacion ancho
+    //               fillColor: [255, 255, 255], //color fonde de celda
+    //               textColor: [0, 0, 0], //texto color
+    //               // cellWidth: 120, // Ancho del primer encabezado
+    //             }
+    //           },
+    //           {content:'Deprec. Acum. Total Grupo',
+    //             styles:{
+    //               halign: 'center' ,
+    //               fontStyle: 'bold',
+    //               fontSize: 6,
+    //               valign: 'middle', //alineacion largo
+    //               // halign: 'left', //alineacion ancho
+    //               fillColor: [255, 255, 255], //color fonde de celda
+    //               textColor: [0, 0, 0], //texto color
+    //               // cellWidth: 120, // Ancho del primer encabezado
+    //             }
+    //           },
+    //           {content:'Valor Neto Inicial',
+    //             styles:{
+    //               halign: 'center' ,
+    //               fontStyle: 'bold',
+    //               fontSize: 6,
+    //               valign: 'middle', //alineacion largo
+    //               // halign: 'left', //alineacion ancho
+    //               fillColor: [255, 255, 255], //color fonde de celda
+    //               textColor: [0, 0, 0], //texto color
+    //               // cellWidth: 120, // Ancho del primer encabezado
+    //             }
+    //           },
+    //           {content:'Act. Gestion',
+    //             styles:{
+    //               halign: 'center' ,
+    //               fontStyle: 'bold',
+    //               fontSize: 6,
+    //               valign: 'middle', //alineacion largo
+    //               // halign: 'left', //alineacion ancho
+    //               fillColor: [255, 255, 255], //color fonde de celda
+    //               textColor: [0, 0, 0], //texto color
+    //               // cellWidth: 120, // Ancho del primer encabezado
+    //             }
+    //           },
+    //           {content:'Costo Tot. Actualizado',
+    //             styles:{
+    //               halign: 'center' ,
+    //               fontStyle: 'bold',
+    //               fontSize: 6,
+    //               valign: 'middle', //alineacion largo
+    //               // halign: 'left', //alineacion ancho
+    //               fillColor: [255, 255, 255], //color fonde de celda
+    //               textColor: [0, 0, 0], //texto color
+    //               // cellWidth: 120, // Ancho del primer encabezado
+    //             }
+    //           },
+    //           {content:'Deprec. Gestion',
+    //             styles:{
+    //               halign: 'center' ,
+    //               fontStyle: 'bold',
+    //               fontSize: 6,
+    //               valign: 'middle', //alineacion largo
+    //               // halign: 'left', //alineacion ancho
+    //               fillColor: [255, 255, 255], //color fonde de celda
+    //               textColor: [0, 0, 0], //texto color
+    //               // cellWidth: 120, // Ancho del primer encabezado
+    //             }
+    //           },
+    //           {content:'Act. Dep. Acum',
+    //             styles:{
+    //               halign: 'center' ,
+    //               fontStyle: 'bold',
+    //               fontSize: 6,
+    //               valign: 'middle', //alineacion largo
+    //               // halign: 'left', //alineacion ancho
+    //               fillColor: [255, 255, 255], //color fonde de celda
+    //               textColor: [0, 0, 0], //texto color
+    //               // cellWidth: 120, // Ancho del primer encabezado
+    //             }
+    //           },
+    //           {content:'Dep Acum.',
+    //             styles:{
+    //               halign: 'center' ,
+    //               fontStyle: 'bold',
+    //               fontSize: 6,
+    //               valign: 'middle', //alineacion largo
+    //               // halign: 'left', //alineacion ancho
+    //               fillColor: [255, 255, 255], //color fonde de celda
+    //               textColor: [0, 0, 0], //texto color
+    //               // cellWidth: 120, // Ancho del primer encabezado
+    //             }
+    //           },
+    //           {content:'Valor Neto',
+    //             styles:{
+    //               halign: 'center' ,
+    //               fontStyle: 'bold',
+    //               fontSize: 6,
+    //               valign: 'middle', //alineacion largo
+    //               // halign: 'left', //alineacion ancho
+    //               fillColor: [255, 255, 255], //color fonde de celda
+    //               textColor: [0, 0, 0], //texto color
+    //               // cellWidth: 120, // Ancho del primer encabezado
+    //             }
+    //           },
+    //         ]],
+    //         body
+    //   // body: [
+    //   //   [
+    //   //     this.activo.codigo,                       //  Codigo
+    //   //     'EQUIPO DE COMPUTACION',                  //  Grupo Contable
+    //   //     '1',                                      //  Cant
+    //   //     'Vida Util',                              //  Vida Util
+    //   //     'Costo Historico',                        //  Costo Historico'
+    //   //     'Costo Actualizado',                      //  Costo Actualizado
+    //   //     'Deprec. Acum. Total Grupo',              //  Deprec. Acum. Total Grupo'
+    //   //     'Valor Neto Inicial',                     //  Valor Neto Inicial'
+    //   //     'Act. Gestion',                           //  Act. Gestion
+    //   //     'Costo Tot. Actualizado',                 //  Costo Tot. Actualizado
+    //   //     'Deprec. Gestion',                        //  Deprec. Gestion
+    //   //     'Act. Dep. Acum',                         //  Act. Dep. Acum
+    //   //     'Dep Acum.',                              //  Dep Acum.
+    //   //     'Valor Neto'                              //  Valor Neto
+    //   //   ],
+        
+    //   // ],
+    // })
 
     // autoTable(doc,{
     //   head: [["Fecha de Emision: "+format(new Date(), 'dd/MM/yyyy')]],
@@ -834,43 +1318,7 @@ export class DetalleComponent implements OnInit {
 
     // autoTable(doc, { html: '#my-table' })
 
-    // Or use javascript directly:
-    autoTable(doc, {
-      head: [['Codigo',
-              'Grupo Contable',
-              'Cant',
-              'Vida Util',
-              'Costo Historico', 
-              'Costo Actualizado',
-              'Deprec. Acum. Total Grupo', 
-              'Valor Neto Inicial', 
-              'Act. Gestion',
-              'Costo Tot. Actualizado',
-              'Deprec. Gestion',
-              'Act. Dep. Acum',
-              'Dep Acum.',
-              'Valor Neto'
-            ]],
-      body: [
-        [
-          this.activo.codigo,                       //  Codigo
-          'EQUIPO DE COMPUTACION',                  //  Grupo Contable
-          '1',                                      //  Cant
-          'Vida Util',                              //  Vida Util
-          'Costo Historico',                        //  Costo Historico'
-          'Costo Actualizado',                      //  Costo Actualizado
-          'Deprec. Acum. Total Grupo',              //  Deprec. Acum. Total Grupo'
-          'Valor Neto Inicial',                     //  Valor Neto Inicial'
-          'Act. Gestion',                           //  Act. Gestion
-          'Costo Tot. Actualizado',                 //  Costo Tot. Actualizado
-          'Deprec. Gestion',                        //  Deprec. Gestion
-          'Act. Dep. Acum',                         //  Act. Dep. Acum
-          'Dep Acum.',                              //  Dep Acum.
-          'Valor Neto'                              //  Valor Neto
-        ],
-        
-      ],
-    })
+    
 
     if(true){
       window.open(doc.output('bloburl'), 'solicutud', 'width=1000, height=900, top=100')

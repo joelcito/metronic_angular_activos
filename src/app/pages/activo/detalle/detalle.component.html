@@ -85,9 +85,19 @@
 	<div class="modal-body">
     <form [formGroup]="formularioAsignacion">
       <div class="row mt-5">
+        <div class="col-md-6">
+          <label for="busqueda_por_cedula">Busqueda por Cedula</label>
+          <input type="radio" name="tipo_busqeuda" value="busqueda_por_cedula" id="busqueda_por_cedula" checked>
+        </div>
+        <div class="col-md-6">
+          <label for="busqueda_por_nombre">Busqueda por Nombre</label>
+          <input type="radio" name="tipo_busqeuda" value="busqueda_por_nombre" id="busqueda_por_nombre">
+        </div>
+      </div>
+      <div class="row mt-5">
         <div class="col-md-4">
-          <label for="descripcion">Cedula</label>
-          <input type="text" class="form-control" formControlName="cedula" placeholder="Buscar por cedula...">
+          <label for="descripcion">BUSCAR</label>
+          <input type="text" class="form-control" formControlName="cedula" placeholder="Buscar por cedula o nombre...">
           <input type="hidden" formControlName="activo">
           <input type="hidden" formControlName="ultimoMov">
           <input type="hidden" formControlName="estadoregistro">
@@ -106,6 +116,28 @@
           <div *ngIf="formularioAsignacion.get('nombre')?.invalid">
             <small *ngIf="formularioAsignacion.get('nombre')?.errors?.required" class="text-danger"><i class="fa fa-exclamation-circle text-danger"></i> La nombre es requerido</small>
           </div>
+        </div>
+      </div>
+      <div class="row" *ngIf="mostraTablaBuscadosPersonas">
+        <div class="col-md-12">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Cedula</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let persona of listadoPersonasBuscadas">
+                <td>{{ persona.des+" "+persona.des1+" "+persona.des2 }}</td>
+                <td>{{ persona.ci }}</td>
+                <td>
+                  <button class="btn btn-icon btn-success btn-sm" (click)="seleccionar( persona.des+' '+persona.des1+' '+persona.des2 , persona.ci)"><i class="fa fa-check"></i></button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
       <div class="row mt-5">
@@ -561,18 +593,36 @@
           <table class="table align-middle gs-0 gy-4" id="my-table">
               <thead>
                   <tr class="fw-bold text-muted bg-light">
-                      <th class="ps-4 rounded-start">Año</th>
-                      <th class="min-w-125px">fecha</th>
-                      <th class="min-w-125px">UFV inicial</th>
-                      <th class="min-w-125px">UFV Final</th>
-                      <th class="min-w-80px">Meses</th>
-                      <th class="min-w-80px">Precio</th>
-                      <th class="min-w-80px">Cost Actualizado</th>
-                      <th class="min-w-80px">Valor Neto</th>
+                      <th class="ps-4 rounded-start">Gestion</th>
+                      <th class="min-w-125px">Ind UFV</th>
+                      <th class="min-w-125px">Valor Activo</th>
+                      <th class="min-w-125px">Actualizacion</th>
+                      <th class="min-w-80px">Valor Actualizado</th>
+                      <th class="min-w-80px">Dep. Acumulado</th>
+                      <th class="min-w-80px">Dep. Actualizacion</th>
+                      <th class="min-w-80px">Tasa Dep %</th>
+                      <th class="min-w-80px">Dep. Periodo</th>
+                      <th class="min-w-80px">Can. Meses</th>
+                      <th class="min-w-80px">Total Dep.</th>
+                      <th class="min-w-80px">Valor residual</th>
                   </tr>
               </thead>
               <tbody>
-                <tr>
+                <tr *ngFor="let key of llavesListadoDepre">
+                  <td>{{ listadoDepreciaciones[key].gestion }}</td>
+                  <td>{{ listadoDepreciaciones[key].ufv_Adq }}</td>
+                  <td>{{ listadoDepreciaciones[key].valor_activo | number:'.2' }}</td>
+                  <td>{{ listadoDepreciaciones[key].actualizacion | number:'.2' }}</td>
+                  <td>{{ listadoDepreciaciones[key].valor_actualizado | number:'.2' }}</td>
+                  <td>{{ listadoDepreciaciones[key].depre_acumulado | number:'.2' }}</td>
+                  <td>{{ listadoDepreciaciones[key].depre_actualizacion | number:'.2' }}</td>
+                  <td>{{ listadoDepreciaciones[key].depreciacion+" %" }}</td>
+                  <td>{{ listadoDepreciaciones[key].depreciacion_periodo | number:'.2' }}</td>
+                  <td>{{ listadoDepreciaciones[key].cant_meses }}</td>
+                  <td>{{ listadoDepreciaciones[key].total_depre | number:'.2' }}</td>
+                  <td>{{ listadoDepreciaciones[key].valor_residual | number:'.2' }}</td>
+                </tr>
+                <!-- <tr>
                   <td>{{ DepGes }}</td>
                   <td><a class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">17/04/2023</a></td>
                   <td><a class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">{{ ufvIni }}</a></td>
@@ -591,7 +641,7 @@
                   <td><a class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">{{ PERprecio }}</a></td>
                   <td><a class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">{{ PERcostoActual }}</a></td>
                   <td><a class="text-dark fw-bold text-hover-primary d-block mb-1 fs-6">{{ PERValorNeto }}</a></td>
-                </tr>
+                </tr> -->
               </tbody>
           </table>
         </div>

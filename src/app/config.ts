@@ -5,4 +5,4 @@
 // export const URL_GLOBAL = 'api/';
 
 // DESARROLLO A LA MAQUINA LOCAL
-export const URL_GLOBAL = 'http://localhost:9003/api';
+    export const URL_GLOBAL = 'http://localhost:9003/api';
