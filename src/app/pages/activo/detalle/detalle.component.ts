@@ -1326,4 +1326,235 @@ export class DetalleComponent implements OnInit {
       doc.save('table.pdf')
     }
   }
+
+  generaFormularioincorporacion(){
+    const doc = new jsPDF({
+      orientation: "landscape",
+      unit:"px",
+      format:"letter"
+    })
+
+    autoTable(doc,{
+      head: [[
+        {content:"MINISTERIO DE DEFENSA NACIONAL \n Corporacion de Seguro Social Militar \n La Paz Boivia",
+          styles: { 
+            halign: 'center' ,
+            fontStyle: 'bold',
+            fontSize: 6,
+            valign: 'middle', //alineacion largo
+            // halign: 'left', //alineacion ancho
+            fillColor: [255, 255, 255], //color fonde de celda
+            textColor: [0, 0, 0], //texto color
+            cellWidth: 120, // Ancho del primer encabezado
+          } 
+        }, 
+        {content:"INCORPORACIÓN DE ACTIVOS FIJOS \n No.  "+15+"/"+2023, 
+          styles: { 
+            halign: 'center' ,
+            fontStyle: 'bold',
+            fontSize: 8,
+            valign: 'middle', //alineacion largo
+            // halign: 'center', //alineacion ancho
+            fillColor: [255, 255, 255], //color fonde de celda
+            textColor: [0, 0, 0], //texto color
+            cellWidth: 300, // Ancho del primer encabezado
+          } 
+        },
+        {content:"Fecha de Emision: "+format(new Date(), 'dd/MM/yyyy'), 
+          styles: { 
+            halign: 'right' ,
+            fontStyle: 'normal',
+            fontSize: 8,
+            valign: 'middle', //alineacion largo
+            // halign: 'right', //alineacion ancho
+            fillColor: [255, 255, 255], //color fonde de celda
+            textColor: [0, 0, 0], //texto color
+            cellWidth: 120, // Ancho del primer encabezado
+          } 
+        }
+          ]],
+      startY: 40,
+      theme: 'grid',
+      margin: {right: 50, left: 50},
+      styles: { 
+        font:"calibri",
+        overflow: 'linebreak',
+        cellPadding: 3,//espacio entre lineas
+        lineColor: [0, 0, 0], //color de borde
+        lineWidth: 0 //ancho de borde
+      },
+      alternateRowStyles: {
+        fillColor: [255, 255, 255],
+      }     
+    });
+
+    autoTable(doc,{
+      head: [[
+        {content:"GRUPO CONTABLE: "+this.activo.grupo.descripcion,
+          styles: { 
+            halign: 'center' ,
+            fontStyle: 'bold',
+            fontSize: 6,
+            valign: 'middle', //alineacion largo
+            // halign: 'left', //alineacion ancho
+            fillColor: [255, 255, 255], //color fonde de celda
+            textColor: [0, 0, 0], //texto color
+            // cellWidth: 120, // Ancho del primer encabezado
+          } 
+        }, 
+        {content:"DEL:"+12+"\nUFV: "+0.1235, 
+          styles: { 
+            halign: 'center' ,
+            fontStyle: 'bold',
+            fontSize: 8,
+            valign: 'middle', //alineacion largo
+            // halign: 'center', //alineacion ancho
+            fillColor: [255, 255, 255], //color fonde de celda
+            textColor: [0, 0, 0], //texto color
+            // cellWidth: 300, // Ancho del primer encabezado
+          } 
+        },
+        {content:"DEL:"+12+"\nUFV: "+0.1235, 
+          styles: { 
+            halign: 'center' ,
+            fontStyle: 'bold',
+            fontSize: 8,
+            valign: 'middle', //alineacion largo
+            // halign: 'center', //alineacion ancho
+            fillColor: [255, 255, 255], //color fonde de celda
+            textColor: [0, 0, 0], //texto color
+            cellWidth: 300, // Ancho del primer encabezado
+          } 
+        },
+      ]],
+      startY: 80,
+      theme: 'grid',
+      margin: {right: 50, left: 50},
+      styles: { 
+        font:"calibri",
+        overflow: 'linebreak',
+        cellPadding: 3,//espacio entre lineas
+        lineColor: [0, 0, 0], //color de borde
+        lineWidth: 0 //ancho de borde
+      },
+      alternateRowStyles: {
+        fillColor: [255, 255, 255],
+      }     
+    });
+
+    // Crear la configuración de la tabla
+    // const tableConfig :UserOptions= {
+    //   head: [[
+    //           'Codigo',
+    //           'Gestion',
+    //           'UFV Adq.', 
+    //           'Valor Activo', 
+    //           'Actualizacion', 
+    //           'Valor Actualizado', 
+    //           'Depre. Acum.', 
+    //           'Depre. Actual.', 
+    //           'Depreciacion', 
+    //           'Depreciacion Periodo', 
+    //           'Cant. Meses', 
+    //           'Total Depre.', 
+    //           'Valor Residual', 
+    //         ]],
+    //   body: Object.values(this.listadoDepreciaciones).map(item => [
+    //     this.activo.codigo,
+    //     item.gestion ,
+    //     item.ufv_Adq,
+    //     item.valor_activo.toFixed(2),
+    //     item.actualizacion.toFixed(2),
+    //     item.valor_actualizado.toFixed(2),
+    //     item.depre_acumulado.toFixed(2),
+    //     item.depre_actualizacion.toFixed(2),
+    //     item.depreciacion.toFixed(2),
+    //     item.depreciacion_periodo.toFixed(2),
+    //     item.cant_meses,
+    //     item.total_depre.toFixed(2),
+    //     (item.valor_residual === 0)? '1.00' : item.valor_residual.toFixed(2),
+    //   ]),
+    //   styles: {
+    //     fontSize: 8,
+    //     cellPadding: 2,
+    //     textColor: [0, 0, 0],
+    //     lineColor: [0, 0, 0],
+    //     lineWidth: 0.1,
+    //     fontStyle: 'normal', // Cambio "normal" a 'normal'
+    //     valign: 'middle',
+    //     halign: 'center',
+    //     fillColor:[ 255, 255, 255],
+    //   },
+    //   headStyles: {
+    //     halign: 'center' ,
+    //     fontStyle: 'bold',
+    //     fontSize: 6,
+    //     valign: 'middle', //alineacion largo
+    //     // halign: 'left', //alineacion ancho
+    //     fillColor: [255, 255, 255], //color fonde de celda
+    //     textColor: [0, 0, 0], //texto color
+    //   },
+    // };
+    // autoTable(doc,tableConfig);
+
+    autoTable(doc,{
+      head: [[
+        {content:"ENCARGADO DE ACTIVOS FIJOS",
+          styles: { 
+            halign: 'center' ,
+            fontStyle: 'bold',
+            fontSize: 6,
+            valign: 'middle', //alineacion largo
+            // halign: 'left', //alineacion ancho
+            fillColor: [255, 255, 255], //color fonde de celda
+            textColor: [0, 0, 0], //texto color
+            // cellWidth: 120, // Ancho del primer encabezado
+          } 
+        }, 
+        {content:"JEFE DE UNIDAD", 
+          styles: { 
+            halign: 'center' ,
+            fontStyle: 'bold',
+            fontSize: 8,
+            valign: 'middle', //alineacion largo
+            // halign: 'center', //alineacion ancho
+            fillColor: [255, 255, 255], //color fonde de celda
+            textColor: [0, 0, 0], //texto color
+            // cellWidth: 300, // Ancho del primer encabezado
+          } 
+        },
+        {content:"O MAXIMO EJECUTIVO UNIDAD", 
+          styles: { 
+            halign: 'center' ,
+            fontStyle: 'bold',
+            fontSize: 8,
+            valign: 'middle', //alineacion largo
+            // halign: 'center', //alineacion ancho
+            fillColor: [255, 255, 255], //color fonde de celda
+            textColor: [0, 0, 0], //texto color
+            cellWidth: 300, // Ancho del primer encabezado
+          } 
+        },
+      ]],
+      startY: 250,
+      theme: 'grid',
+      margin: {right: 50, left: 50},
+      styles: { 
+        font:"calibri",
+        overflow: 'linebreak',
+        cellPadding: 3,//espacio entre lineas
+        lineColor: [0, 0, 0], //color de borde
+        lineWidth: 0 //ancho de borde
+      },
+      alternateRowStyles: {
+        fillColor: [255, 255, 255],
+      }     
+    });
+
+    if(true){
+      window.open(doc.output('bloburl'), 'solicutud', 'width=1000, height=900, top=100')
+    }else{
+      doc.save('table.pdf')
+    }
+  }
 }
