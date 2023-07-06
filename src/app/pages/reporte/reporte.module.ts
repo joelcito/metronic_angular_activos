@@ -8,7 +8,9 @@ import { ReporteComponent } from './reporte.component';
 
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    ReporteComponent
+  ],
   imports: [
     CommonModule,
     InlineSVGModule,
@@ -16,6 +18,7 @@ import { ReporteComponent } from './reporte.component';
     ReactiveFormsModule,
     RouterModule.forChild([
       {path: 'porusuario',component: ReporteComponent},
+      // {path: 'general',component: ReporteComponent},
       // {path: 'detalle/:id', component: DetalleComponent},
       // {path: 'asignacion/:id', component: AsignacionComponent}
     ]),

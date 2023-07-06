@@ -1,1 +1,203 @@
-<p>reporte works!</p>
+<!-- aqui el modal liberacion -->
+<ng-template #modalFormularioIncorporacion let-modal>
+	<div class="modal-header modal-lg">
+		<h3 class="modal-title text-center" id="modal-basic-title">REPORTE INCORPORACION DE ACTIVOS</h3>
+		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+	</div>
+	<div class="modal-body">
+    <form [formGroup]="formularioReportIncoporacion">
+      <div class="row mt-5">
+        <div class="col-md-4">
+          <label for="descripcion">Fecha Inicio</label>
+          <input type="date" class="form-control" formControlName="fechaInicio">
+        </div>
+        <div class="col-md-4">
+          <label for="descripcion">Fecha Fin</label>
+          <input type="date" class="form-control" formControlName="fechaFin">
+        </div>
+        <div class="col-md-4">
+          <label for="descripcion">Regional</label>
+          <select class="form-control" formControlName="regional">
+            <option value="{{ regional.idregional }}" *ngFor="let regional of listaRegionales">{{ regional.nombre }}</option>
+          </select>
+        </div>
+      </div>
+      <hr>
+      <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table class="table table-row-dashed table-row-gray-300 align-middle gs-0 gy-4">
+                  <thead>
+                    <tr class="fw-bolder text-muted">
+                      <th class="min-w-100px">CODIGO</th>
+                      <th class="min-w-100px">FECHA COMPRA</th>
+                      <th style="width: 100px">ESTADO</th>
+                      <th class="min-w-100px">DESCRIPCION</th>
+                      <th class="min-w-100px">FECHA ALTA</th>
+                      <th class="min-w-100px">PRECIO</th>
+                      <!-- <th class="min-w-100px text-end">Actions</th> -->
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let actPer of listaActivos">
+                        <td>{{ actPer.idactivo }}</td>
+                        <td>{{ actPer.fechacompra }}</td>
+                        <td>
+                          <span class="badge badge-light-success fw-dold" *ngIf="actPer.eficiencia === 'A'">Nuevo</span>
+                          <span class="badge badge-light-success fw-dold" *ngIf="actPer.eficiencia === 'B'">Bueno</span>
+                          <span class="badge badge-light-success fw-dold" *ngIf="actPer.eficiencia === 'C'">Regular (+)</span>
+                          <span class="badge badge-light-success fw-dold" *ngIf="actPer.eficiencia === 'D'">Regular (-9)</span>
+                          <span class="badge badge-light-success fw-dold" *ngIf="actPer.eficiencia === 'E'">Malo</span>
+                          <span class="badge badge-light-success fw-dold" *ngIf="actPer.eficiencia === 'F'">Para Baja</span>
+                        </td>
+                        <td>{{ actPer.descripcion }}</td>
+                        <td>{{ actPer.fechacreacion }}</td>
+                        <td>{{ actPer.precio }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+        </div>
+      </div>
+      <div class="row mt-6">
+        <div class="col-md-6">
+            <button class="btn btn-success btn-sm w-100" (click)="bucarReportIncoporacion()"><i class="fa fa-search"></i> Buscar</button>
+        </div>
+        <div class="col-md-6">
+            <button class="btn btn-danger btn-sm w-100"><i class="fa fa-file-pdf"></i> PDF</button>
+        </div>
+      </div>
+    </form>
+	</div>
+	<div class="modal-footer">
+		<!-- <button type="button" class="btn btn-sm btn-success w-100" (click)="modal.close('guardar')">Guardar</button> -->
+	</div>
+</ng-template>
+<!-- end del modal liberacion-->
+
+<!-- aqui el modal liberacion -->
+<ng-template #modalReportGeneral let-modal>
+	<div class="modal-header modal-lg">
+		<h3 class="modal-title text-center" id="modal-basic-title">REPORTE GENERAL ACTUALIZACION Y DEPRECIACION</h3>
+		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+	</div>
+	<div class="modal-body">
+    <form [formGroup]="formularioReportGeneral">
+      <div class="row mt-5">
+        <div class="col-md-4">
+          <label for="descripcion">Fecha Inicio</label>
+          <input type="date" class="form-control" formControlName="fechaInicio" [min]="getMinDate()" readonly>
+          <!-- <input type="" class="form-control"> -->
+        </div>
+        <div class="col-md-4">
+          <label for="descripcion">Fecha Fin</label>
+          <input type="date" class="form-control" formControlName="fechaFin" value="{{ getCurrentDate() }}">
+        </div>
+        <!-- <div class="col-md-4">
+          <label for="descripcion">Regional</label>
+          <select class="form-control" formControlName="regional">
+            <option value="{{ regional.idregional }}" *ngFor="let regional of listaRegionales">{{ regional.nombre }}</option>
+          </select>
+        </div> -->
+      </div>
+      <!-- <hr>
+      <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table class="table table-row-dashed table-row-gray-300 align-middle gs-0 gy-4">
+                  <thead>
+                    <tr class="fw-bolder text-muted">
+                      <th class="min-w-100px">CODIGO</th>
+                      <th class="min-w-100px">FECHA COMPRA</th>
+                      <th style="width: 100px">ESTADO</th>
+                      <th class="min-w-100px">DESCRIPCION</th>
+                      <th class="min-w-100px">FECHA ALTA</th>
+                      <th class="min-w-100px">PRECIO</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let actPer of listaActivos">
+                        <td>{{ actPer.idactivo }}</td>
+                        <td>{{ actPer.fechacompra }}</td>
+                        <td>
+                          <span class="badge badge-light-success fw-dold" *ngIf="actPer.eficiencia === 'A'">Nuevo</span>
+                          <span class="badge badge-light-success fw-dold" *ngIf="actPer.eficiencia === 'B'">Bueno</span>
+                          <span class="badge badge-light-success fw-dold" *ngIf="actPer.eficiencia === 'C'">Regular (+)</span>
+                          <span class="badge badge-light-success fw-dold" *ngIf="actPer.eficiencia === 'D'">Regular (-9)</span>
+                          <span class="badge badge-light-success fw-dold" *ngIf="actPer.eficiencia === 'E'">Malo</span>
+                          <span class="badge badge-light-success fw-dold" *ngIf="actPer.eficiencia === 'F'">Para Baja</span>
+                        </td>
+                        <td>{{ actPer.descripcion }}</td>
+                        <td>{{ actPer.fechacreacion }}</td>
+                        <td>{{ actPer.precio }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+        </div>
+      </div> -->
+      <div class="row mt-6">
+        <div class="col-md-12">
+            <button class="btn btn-danger btn-sm w-100" [disabled]="cargandoReporteGeneral" (click)="bucarReportGeneral()"><i class="fa fa-file-pdf"></i> PDF</button>
+            <div *ngIf="cargandoReporteGeneral">
+              <!-- <img src="../../../assets/media/smiles/espere.gif" alt="aqui es"> -->
+              <!-- <img src="../../../assets/media/smiles/25b47055b2751219198c3e1775cba618_w200.gif" alt="aqui es"> -->
+              <img src="../../../assets/media/smiles/IllinformedMeaslyKoi-size_restricted.gif" alt="aqui es">
+              <img src="../../../assets/media/smiles/loading (1).gif" alt="aqui es">
+              <!-- <img src="../../../assets/media/smiles/loading.gif" alt="aqui es"> -->
+            </div>
+        </div>
+        <!-- <div class="col-md-6">
+            <button class="btn btn-danger btn-sm w-100"><i class="fa fa-file-pdf"></i> PDF</button>
+        </div> -->
+      </div>
+    </form>
+	</div>
+	<div class="modal-footer">
+		<!-- <button type="button" class="btn btn-sm btn-success w-100" (click)="modal.close('guardar')">Guardar</button> -->
+	</div>
+</ng-template>
+<!-- end del modal liberacion-->
+
+
+<div class="container" style="width:100%;">
+    <div class="card mb-5 mb-xxl-8" >
+        <div class="card-body pt-9 pb-0">
+            <div class="row w-100">
+                <div class="col">
+                    <div class="card mb-5 mb-xxl-8 bg-hover-light-success">
+                        <div class="card-body">
+                            <h1 class="text-center">FORMULARIO DE INCORPORACION</h1>
+                            <button class="btn btn-sm btn-success w-100 mt-5" (click)="abreModalReportFormularioIncorporacion(modalFormularioIncorporacion)">Reporte</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card mb-5 mb-xxl-8 bg-hover-light-success">
+                        <div class="card-body">
+                            <h1 class="text-center">REPORTE GENERAL</h1>
+                            <button class="btn btn-sm btn-success mt-5 w-100" (click)="abreModalReportGeneral(modalReportGeneral)">Reporte</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card mb-5 mb-xxl-8">
+                        <div class="card-body">
+                            <h1>como es</h1>
+                            <button class="btn btn-sm btn-success">Reporte</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card mb-5 mb-xxl-8">
+                        <div class="card-body">
+                            <h1>como es</h1>
+                            <button class="btn btn-sm btn-success">Reporte</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+  
