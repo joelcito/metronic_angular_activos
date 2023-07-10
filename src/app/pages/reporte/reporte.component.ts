@@ -24,8 +24,6 @@ export class ReporteComponent implements OnInit {
 
   listaActivos          :any[];
   listaActivosGeneral   :any[];
-  // listaRegionales   :any[];
-
   listaRegionales        :Regional[];
 
   cargandoReporteGeneral : boolean  =   false;
@@ -39,6 +37,7 @@ export class ReporteComponent implements OnInit {
   formularioReportGeneral = new FormGroup({
     fechaInicio: new FormControl(''),
     fechaFin: new FormControl(''),
+    placa: new FormControl(''),
     regional: new FormControl('')
   });
 
@@ -94,6 +93,7 @@ export class ReporteComponent implements OnInit {
       }
     );
   }
+
 
   bucarReportIncoporacion(){
     this.reporteService.reportIncoporacion(this.formularioReportIncoporacion.value).subscribe(resul => {
@@ -462,5 +462,11 @@ export class ReporteComponent implements OnInit {
   isDateValid(dateString: string): boolean {
     const date = new Date(dateString);
     return date instanceof Date && !isNaN(date.getTime());
+  }
+
+  onPlacaInputChange(event: any) {
+    const inputValue: string = event.target.value;
+    const uppercaseValue: string = inputValue.toUpperCase();
+    this.formularioReportGeneral.get('placa')?.setValue(uppercaseValue);
   }
 }
