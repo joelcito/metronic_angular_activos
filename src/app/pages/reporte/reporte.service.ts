@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { URL_GLOBAL } from 'src/app/config';
+import { Observable } from 'rxjs';
 
 
 @Injectable({
@@ -19,5 +20,13 @@ export class ReporteService {
 
   reporteGeneral(json:any){
     return this.http.post<any[]>(`${this.urlEndPoint}/reporteGeneral`,json,{headers: this.httpHeaders});
+  }
+
+  reporteGeneralNew(json:any): Observable<Blob> {
+    return this.http.post(`${this.urlEndPoint}/reportGeneralPDF`,json,{headers: this.httpHeaders, responseType: 'blob'});
+  }
+
+  reportePorRegimen(json:any): Observable<Blob> {
+    return this.http.post(`${this.urlEndPoint}/reportePorRegimen`,json,{headers: this.httpHeaders, responseType: 'blob'});
   }
 }

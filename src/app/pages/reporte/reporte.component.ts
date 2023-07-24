@@ -4,6 +4,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { RegionalService } from '../regional/regional.service';
 import { ReporteService } from './reporte.service';
+import { RegimenService } from '../regimen/regimen.service';
 
 import { Regional } from '../regional/regional';
 
@@ -14,6 +15,7 @@ import { format } from 'date-fns';
 import { DatePipe } from '@angular/common';
 
 import swal from 'sweetalert2';
+import { Regimen } from '../regimen/regimen';
 
 @Component({
   selector: 'app-reporte',
@@ -24,7 +26,8 @@ export class ReporteComponent implements OnInit {
 
   listaActivos          :any[];
   listaActivosGeneral   :any[];
-  listaRegionales        :Regional[];
+  listaRegionales       :Regional[];
+  regimenes             :Regimen[];
 
   cargandoReporteGeneral : boolean  =   false;
 
@@ -41,12 +44,19 @@ export class ReporteComponent implements OnInit {
     regional: new FormControl('')
   });
 
+  formularioReportPorRegimen = new FormGroup({
+    fechaInicio: new FormControl(''),
+    fechaFin: new FormControl(''),
+    regimen: new FormControl('')
+  });
+
   constructor(
     private modalService    : NgbModal,
-    private regionalService :RegionalService,
-    private reporteService  :ReporteService,
-    private chdr            :ChangeDetectorRef,
-    private datePipe        : DatePipe
+    private regionalService : RegionalService,
+    private reporteService  : ReporteService,
+    private chdr            : ChangeDetectorRef,
+    private datePipe        : DatePipe,
+    private regimenService  : RegimenService               
   ) { }
 
   ngOnInit(): void {
@@ -55,6 +65,12 @@ export class ReporteComponent implements OnInit {
   listaRegional(){
     this.regionalService.getRegionales().subscribe(res =>{
       this.listaRegionales = res
+    })
+  }
+
+  listaRegimen(){
+    this.regimenService.getRegimenes().subscribe(resul =>{
+      this.regimenes = resul;
     })
   }
 
@@ -94,6 +110,25 @@ export class ReporteComponent implements OnInit {
     );
   }
 
+  abreModalReportPorRegimen(modalReportePorRegimen:any){
+    this.listaRegimen()
+    this.formularioReportPorRegimen.get('fechaInicio')?.setValue(this.getMinDate());
+    this.formularioReportPorRegimen.get('fechaFin')?.setValue(this.getCurrentDate());
+    this.modalService.open(modalReportePorRegimen, { size: 'lg' }).result.then(
+      (result) => {
+        if(result==='guardar'){
+          console.log("se guardara");
+        }else{
+          console.log("no guardara");
+        }
+        console.log("haber")
+      },
+      (reason)=>{
+        console.log(reason)
+      }
+    );
+  }
+
 
   bucarReportIncoporacion(){
     this.reporteService.reportIncoporacion(this.formularioReportIncoporacion.value).subscribe(resul => {
@@ -114,8 +149,6 @@ export class ReporteComponent implements OnInit {
     const day = String(today.getDate()).padStart(2, '0');
     return `${year}-${month}-${day}`;
   }
-
-  
 
   bucarReportGeneral(){
     if(this.isDateValid(String(this.formularioReportGeneral.value.fechaFin))){
@@ -240,22 +273,22 @@ export class ReporteComponent implements OnInit {
           });
           // Campos que deseas mostrar en la tabla
           const camposAMostrar = [
-                                  'codigo',
-                                  'descripcion', 
-                                  'fechacompra', 
-                                  // 'codigo', 
-                                  'precio', 
-                                  'valorActualizado', 
-                                  'depreciacionAcumuladaIni', 
-                                  // 'codigo', 
-                                  'actualizacion', 
-                                  'deprePeriodo', 
-                                  'valorActualizado', 
-                                  'Depre', 
-                                  'deprePeriodo', 
-                                  'actualzaiconDepre', 
-                                  'depreciacionAcumulada', 
-                                  'valorResidual'
+                                  'codigo',                     //Codigo'
+                                  'descripcion',                //Nombre / Descripcion'
+                                  'fechacompra',                //Fecha Adqui.
+                                  // 'codigo',                  //Indice Ufv
+                                  'precio',                     //Costo Historico
+                                  'valorActualizado',           //Costo Actual Inicial
+                                  'depreciacionAcumuladaIni',   //Dep. Acu Inicial
+                                  // 'codigo',                  //VUR
+                                  'actualizacion',              //Factor Actualizado
+                                  'deprePeriodo',               //Act Gestion
+                                  'valorActualizado',           //Costo Actualizado
+                                  'Depre',                      //'% Dep Anual
+                                  'deprePeriodo',               //Dep Gestion
+                                  'actualzaiconDepre',          //Act. Dep. Acum
+                                  'depreciacionAcumulada',      //Dep. Acum. Total
+                                  'valorResidual'               //Valor Net
                                 ];
             
           // Convertir la lista en un array de arrays para jspdf-autotable
@@ -458,6 +491,49 @@ export class ReporteComponent implements OnInit {
       })
     }
   }
+
+  reporteGeneralNew(){
+    if(this.isDateValid(String(this.formularioReportGeneral.value.fechaFin))){
+      this.cargandoReporteGeneral = true;
+      
+      this.reporteService.reporteGeneralNew(this.formularioReportGeneral.value).subscribe((response: Blob) => {
+        const file = new Blob([response], { type: 'application/pdf' });
+        const fileURL = URL.createObjectURL(file);
+        window.open(fileURL, '_blank');
+        this.cargandoReporteGeneral = false;
+      })
+
+    }else{
+      swal.fire({
+        icon: 'error',
+        title: 'Error!',
+        text: 'Introduzca una fecha valida',
+        // timer: 2000
+      })
+    }
+  }
+
+  reportePorRegimen(){
+    if(this.isDateValid(String(this.formularioReportPorRegimen.value.fechaFin))){
+      this.cargandoReporteGeneral = true;
+      
+      this.reporteService.reportePorRegimen(this.formularioReportPorRegimen.value).subscribe((response: Blob) => {
+        const file = new Blob([response], { type: 'application/pdf' });
+        const fileURL = URL.createObjectURL(file);
+        window.open(fileURL, '_blank');
+        this.cargandoReporteGeneral = false;
+      })
+
+    }else{
+      swal.fire({
+        icon: 'error',
+        title: 'Error!',
+        text: 'Introduzca una fecha valida',
+        // timer: 2000
+      })
+    }
+  }
+  
 
   isDateValid(dateString: string): boolean {
     const date = new Date(dateString);

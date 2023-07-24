@@ -259,7 +259,7 @@ export class ActivoComponent implements OnInit {
     // this.activoForm.get('codigo')?.setValue(String('COS-10-123'));
     // this.activo.codigo = "COS-10-123";
     
-    this.modalService.open(content, { size: 'xl' }).result.then(
+    this.modalService.open(content, { size: 'lg' }).result.then(
       (result) => {
         if(result==='guardar'){
           console.log("se guardara");
