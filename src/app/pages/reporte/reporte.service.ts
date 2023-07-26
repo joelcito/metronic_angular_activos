@@ -29,4 +29,8 @@ export class ReporteService {
   reportePorRegimen(json:any): Observable<Blob> {
     return this.http.post(`${this.urlEndPoint}/reportePorRegimen`,json,{headers: this.httpHeaders, responseType: 'blob'});
   }
+
+  reportePorGrupo(json:any): Observable<Blob> {
+    return this.http.post(`${this.urlEndPoint}/reportePorGrupo`,json,{headers: this.httpHeaders, responseType: 'blob'});
+  }
 }
