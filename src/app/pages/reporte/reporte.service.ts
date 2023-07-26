@@ -33,4 +33,12 @@ export class ReporteService {
   reportePorGrupo(json:any): Observable<Blob> {
     return this.http.post(`${this.urlEndPoint}/reportePorGrupo`,json,{headers: this.httpHeaders, responseType: 'blob'});
   }
+
+  reporteAsignacion(json:any): Observable<Blob> {
+    return this.http.post(`${this.urlEndPoint}/reporteAsignacion`,json,{headers: this.httpHeaders, responseType: 'blob'});
+  }
+
+  buscarPersona(json:any){
+    return this.http.post<any[]>(`${this.urlEndPoint}/buscarPersona`,json,{headers: this.httpHeaders});
+  }
 }

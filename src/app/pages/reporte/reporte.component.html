@@ -133,6 +133,77 @@
 </ng-template>
 <!-- end del modal liberacion-->
 
+<!-- aqui el modal REPORTE ASIGANCIONA -->
+<ng-template #modalReporteAsigancion let-modal>
+	<div class="modal-header modal-lg">
+		<h3 class="modal-title text-center" id="modal-basic-title">REPORTE DE ASIGNACION POR USUARIO</h3>
+		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+	</div>
+	<div class="modal-body">
+    <form [formGroup]="formularioReportAsignacion">
+      <div class="row mt-5">
+        <div class="col-md-3">
+          <label for="descripcion">Cedula</label>
+          <input type="number" class="form-control" formControlName="cedula" (keyup)="buscarPersona()">
+        </div>
+        <div class="col-md-3">
+          <label for="descripcion">Apellido Paterno</label>
+          <input type="text" class="form-control" formControlName="ap_paterno" (keyup)="buscarPersona()">
+        </div>
+        <div class="col-md-3">
+          <label for="descripcion">Apellido Materno</label>
+          <input type="text" class="form-control" formControlName="ap_materno" (keyup)="buscarPersona()">
+        </div>
+        <div class="col-md-3">
+          <label for="descripcion">Nombres</label>
+          <input type="text" class="form-control" formControlName="nombre" (keyup)="buscarPersona()">
+        </div>
+      </div>
+      <div class="row mt-5">
+        <div class="col-md-12">
+          <table class="table table-hover table-dark">
+            <thead>
+              <tr>
+                <th>CEDULA</th>
+                <th>AP PATERNO</th>
+                <th>AP MATERNO</th>
+                <th>NOMBRE</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let persona of listadoPersonasBuscadas">
+                <td>{{ persona.ci }}</td>
+                <td>{{ persona.des }}</td>
+                <td>{{ persona.des1 }}</td>
+                <td>{{ persona.des2 }}</td>
+                <td>
+                  <button class="btn btn-icon btn-success btn-sm" (click)="seleccionar( persona.des+' '+persona.des1+' '+persona.des2 , persona.ci)"><i class="fa fa-check"></i></button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="row mt-6">
+        <div class="col-md-12">
+            <!-- <button class="btn btn-danger btn-sm w-100" [disabled]="cargandoReporteGeneral" (click)="bucarReportGeneral()"><i class="fa fa-file-pdf"></i> PDF</button> -->
+            <button class="btn btn-danger btn-sm w-100" [disabled]="cargandoReporteGeneral" (click)="reporteAsignacion()"><i class="fa fa-file-pdf"></i> PDF</button>
+            <div style="display: flex;justify-content: center;align-items: center;height: 100%;" class="aling-center" *ngIf="cargandoReporteGeneral">
+              <img style="width: 25%; max-width: 100%;" width="20%" src="assets/media/smiles/IllinformedMeaslyKoi-size_restricted.gif" alt="aqui es">
+              <!-- <img src="assets/media/smiles/loading (1).gif" alt="aqui es"> -->
+            </div>
+        </div>
+      </div>
+    </form>
+	</div>
+	<div class="modal-footer">
+		<!-- <button type="button" class="btn btn-sm btn-success w-100" (click)="modal.close('guardar')">Guardar</button> -->
+	</div>
+</ng-template>
+<!-- end del modal liberacion-->
+
 
 <div class="container" style="width:100%;">
     <div class="card mb-5 mb-xxl-8" >
@@ -168,7 +239,7 @@
                 <div class="card mb-5 mb-xxl-8 bg-hover-light-success">
                   <div class="card-body">
                     <h1 class="text-center">REPORTE ASIGNACION POR USUARIO</h1>
-                    <button class="btn btn-sm btn-success mt-5 w-100">Acceder</button>
+                    <button class="btn btn-sm btn-success mt-5 w-100" (click)="abreModalReportAsignacion(modalReporteAsigancion)">Acceder</button>
                   </div>
                 </div>
               </div>

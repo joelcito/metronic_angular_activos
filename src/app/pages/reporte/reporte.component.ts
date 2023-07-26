@@ -26,11 +26,14 @@ import { Grupo } from '../grupos/grupo';
 })
 export class ReporteComponent implements OnInit {
 
-  listaActivos          :any[];
-  listaActivosGeneral   :any[];
-  listaRegionales       :Regional[];
-  regimenes             :Regimen[];
-  grupos              :Grupo[];
+  listaActivos              :any[];
+  listaActivosGeneral       :any[];
+  listaRegionales           :Regional[];
+  regimenes                 :Regimen[];
+  grupos                    :Grupo[];
+
+  listadoPersonasBuscadas   : any[];
+
 
   cargandoReporteGeneral : boolean  =   false;
 
@@ -57,6 +60,13 @@ export class ReporteComponent implements OnInit {
     fechaInicio: new FormControl(''),
     fechaFin: new FormControl(''),
     grupo: new FormControl('')
+  });
+
+  formularioReportAsignacion = new FormGroup({
+    cedula: new FormControl(''),
+    ap_paterno: new FormControl(''),
+    ap_materno: new FormControl(''),
+    nombre: new FormControl('')
   });
 
   constructor(
@@ -131,6 +141,25 @@ export class ReporteComponent implements OnInit {
     this.formularioReportPorRegimen.get('fechaInicio')?.setValue(this.getMinDate());
     this.formularioReportPorRegimen.get('fechaFin')?.setValue(this.getCurrentDate());
     this.modalService.open(modalReportePorRegimen, { size: 'lg' }).result.then(
+      (result) => {
+        if(result==='guardar'){
+          console.log("se guardara");
+        }else{
+          console.log("no guardara");
+        }
+        console.log("haber")
+      },
+      (reason)=>{
+        console.log(reason)
+      }
+    );
+  }
+
+  abreModalReportAsignacion(modalReporteAsigancion:any){
+    this.listaRegimen()
+    this.formularioReportPorRegimen.get('fechaInicio')?.setValue(this.getMinDate());
+    this.formularioReportPorRegimen.get('fechaFin')?.setValue(this.getCurrentDate());
+    this.modalService.open(modalReporteAsigancion, { size: 'lg' }).result.then(
       (result) => {
         if(result==='guardar'){
           console.log("se guardara");
@@ -586,6 +615,30 @@ export class ReporteComponent implements OnInit {
         text: 'Introduzca una fecha valida',
       })
     }
+  }
+
+  reporteAsignacion(){
+    this.cargandoReporteGeneral = true;
+    this.reporteService.reporteAsignacion(this.formularioReportPorGrupo.value).subscribe((response: Blob) => {
+      const file = new Blob([response], { type: 'application/pdf' });
+      const fileURL = URL.createObjectURL(file);
+      window.open(fileURL, '_blank');
+      this.cargandoReporteGeneral = false;
+    })
+  }
+
+  buscarPersona(){
+    this.formularioReportAsignacion.get('ap_paterno')?.setValue(String(this.formularioReportAsignacion.value.ap_paterno?.toUpperCase()))
+    this.formularioReportAsignacion.get('ap_materno')?.setValue(String(this.formularioReportAsignacion.value.ap_materno?.toUpperCase()))
+    this.formularioReportAsignacion.get('nombre')?.setValue(String(this.formularioReportAsignacion.value.nombre?.toUpperCase()))
+    this.reporteService.buscarPersona(this.formularioReportAsignacion.value).subscribe(resul =>{
+      // console.log(resul)
+      this.listadoPersonasBuscadas = resul;
+    })
+  }
+
+  seleccionar(nombre:string, ci:string){
+
   }
   
 
