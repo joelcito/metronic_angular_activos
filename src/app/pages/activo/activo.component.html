@@ -356,7 +356,7 @@
         data-bs-trigger="hover"
         title="Click to add a user"
       >
-        <a (click)="openModal(content)" class="btn btn-sm btn-light-primary">
+        <a (click)="openModal(content)" class="btn btn-sm btn-light-primary" *ngIf="agregarActivo">
           <span
             [inlineSVG]="'./assets/media/icons/duotune/arrows/arr075.svg'"
             class="svg-icon svg-icon-3"

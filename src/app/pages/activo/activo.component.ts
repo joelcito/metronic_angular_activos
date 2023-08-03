@@ -50,6 +50,7 @@ export class ActivoComponent implements OnInit {
   tabla: boolean          = false;
   botonBaja:boolean       = true;
   componentesView:Boolean = false;
+  agregarActivo:Boolean   = true;
 
   // activos1: any = [];
   activos:                Activo[];
@@ -137,11 +138,15 @@ export class ActivoComponent implements OnInit {
     private regimenService:RegimenService,
     private regionalService:RegionalService,
     private caracteristicaService:CaracteristicaService,
-    private ufvService:UfvService
+    private ufvService:UfvService,
+
   ){
   }
 
   ngOnInit(){
+
+    this.validaBotones()
+    
     //this.listaActivos()
     this.listaActivosPersonalizado()
     this.listaGrupos()
@@ -562,6 +567,16 @@ export class ActivoComponent implements OnInit {
         }
       }
     }) 
+  }
+
+  validaBotones(){
+    // para el boton de REGISTRO DE ACTIVO
+    let idpermiso = sessionStorage.getItem('tipoManejo');
+    if(idpermiso != "187"){
+      this.agregarActivo  = false;
+    }else{
+
+    }
   }
 
   // genera(){

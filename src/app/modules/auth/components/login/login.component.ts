@@ -14,13 +14,18 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class LoginComponent implements OnInit, OnDestroy {
   // KeenThemes mock, change it to:
   defaultAuth: any = {
-    email: 'admin@demo.com',
-    password: 'demo',
+    // email: 'admin@demo.com',
+    // password: 'demo',
+    
+    email: 'adminAF',
+    password: '123*',
   };
   loginForm: FormGroup;
   hasError: boolean;
   returnUrl: string;
   isLoading$: Observable<boolean>;
+
+  userLiber:any;
 
   // private fields
   private unsubscribe: Subscription[] = []; // Read more: => https://brianflove.com/2016/12/11/anguar-2-unsubscribe-observables/
@@ -29,7 +34,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private authService: AuthService,
     private route: ActivatedRoute,
-    private router: Router
+    private chdr:ChangeDetectorRef,
+    private router: Router,
   ) {
     this.isLoading$ = this.authService.isLoading$;
     // redirect to home if already logged in
@@ -56,7 +62,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.defaultAuth.email,
         Validators.compose([
           Validators.required,
-          Validators.email,
+          // Validators.email,
           Validators.minLength(3),
           Validators.maxLength(320), // https://stackoverflow.com/questions/386294/what-is-the-maximum-length-of-a-valid-email-address
         ]),
@@ -75,20 +81,49 @@ export class LoginComponent implements OnInit, OnDestroy {
   submit() {
 
     // console.log(this.f.email.value, this.f.password.value)
-
+    // this.authService.loginLiber(this.f.email.value, this.f.password.value).subscribe(result =>{
+    //   this.userLiber = result
+    //   this.chdr.detectChanges();
+    // })
     this.hasError = false;
-    const loginSubscr = this.authService
-      .login(this.f.email.value, this.f.password.value)
-      .pipe(first())
-      .subscribe((user: UserModel | undefined) => {
-        if (user) {
-          console.log(user)
-          this.router.navigate([this.returnUrl]);
-        } else {
-          this.hasError = true;
-        }
-      });
-    this.unsubscribe.push(loginSubscr);
+    this.authService.loginLiber(this.f.email.value, this.f.password.value).subscribe(
+      result => {
+        this.userLiber = result;
+        // this.hasError = false;
+        const loginSubscr = this.authService
+          .login(this.f.email.value, this.f.password.value, result)
+          .pipe(first())
+          .subscribe((user: UserModel | undefined) => {
+            if (user) {
+              this.router.navigate([this.returnUrl]);
+            } else {
+              this.hasError = true;
+            }
+          });
+        this.unsubscribe.push(loginSubscr);
+      },
+      error => {
+        console.error('Se produjo un error en la solicitud:', error);
+        this.hasError = true;
+        this.chdr.detectChanges();
+      }
+    );
+
+    // console.log(this.userLiber)
+
+    // this.hasError = false;
+    // const loginSubscr = this.authService
+    //   .login(this.f.email.value, this.f.password.value)
+    //   .pipe(first())
+    //   .subscribe((user: UserModel | undefined) => {
+    //     if (user) {
+    //       this.router.navigate([this.returnUrl]);
+    //     } else {
+    //       this.hasError = true;
+    //     }
+    //   });
+    // this.unsubscribe.push(loginSubscr);
+
   }
 
   ngOnDestroy() {

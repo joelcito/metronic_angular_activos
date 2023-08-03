@@ -8,6 +8,7 @@ import { DetalleComponent } from './detalle/detalle.component';
 
 import { DatePipe } from '@angular/common';
 import { AsignacionComponent } from './asignacion/asignacion.component';
+// import { UserInnerComponent } from 'src/app/_metronic/partials/layout/extras/dropdown-inner/user-inner/user-inner.component';
 
 
 

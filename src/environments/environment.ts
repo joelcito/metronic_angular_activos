@@ -159,6 +159,12 @@ export const environment = {
       thumbnail: './assets/media/demos/demo20.png',
     },
   },
+
+
+  // de aqui son las configuraciones LIBER
+  usrfe:'frontendapp',
+  pwdfe:'12345',
+  url_api:'http://10.150.10.13:9999/api'
 };
 
 /*

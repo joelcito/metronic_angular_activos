@@ -2,18 +2,21 @@
   <div class="menu-item px-3">
     <div class="menu-content d-flex align-items-center px-3">
       <div class="symbol symbol-50px me-5">
+        <!-- <i class="fa fa-user fa-5x"></i> -->
         <img alt="Logo" [src]="_user.pic" />
       </div>
 
       <div class="d-flex flex-column">
         <div class="fw-bolder d-flex align-items-center fs-5">
-          {{ _user.firstname }} {{ _user.lastname }}
+          <!-- {{ _user.firstname }} {{ _user.lastname }} -->
+          {{ nombreCompleto }}
           <span class="badge badge-light-success fw-bolder fs-8 px-2 py-1 ms-2"
             >Pro</span
           >
         </div>
         <a class="fw-bold text-muted text-hover-primary fs-7 cursor-pointer">
-          {{ _user.email }}
+          <!-- {{ _user.email }} -->
+          Activo
         </a>
       </div>
     </div>
@@ -155,6 +158,6 @@
   </div> -->
 
   <div class="menu-item px-5">
-    <a (click)="logout()" class="menu-link px-5 cursor-pointer"> Sign Out </a>
+    <a (click)="logout()" class="menu-link px-5 cursor-pointer"> Cerrar Session </a>
   </div>
 </ng-container>

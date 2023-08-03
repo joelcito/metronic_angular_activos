@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -14,11 +14,18 @@ const API_USERS_URL = `${environment.apiUrl}/users`;
   providedIn: 'root',
 })
 export class AuthHTTPService {
-  constructor(private http: HttpClient) {}
+
+  constructor(
+    private http: HttpClient,
+    ) {}
+
+  public userLiber:any
 
   // public methods
-  login(email: string, password: string): Observable<any> {
+  login(email: string, password: string, objLiber:any): Observable<any> {
     const notFoundError = new Error('Not Found');
+    email       = 'admin@demo.com';
+    password    = 'demo';
     if (!email || !password) {
       return of(notFoundError);
     }
@@ -30,20 +37,27 @@ export class AuthHTTPService {
         }
 
         const user = result.find((u) => {
-          return (
-            u.email.toLowerCase() === email.toLowerCase() &&
-            u.password === password
-          );
-        });
-        if (!user) {
-          return notFoundError;
-        }
+            return (
+              u.email.toLowerCase() === email.toLowerCase() &&
+              u.password === password
+            );
+          });
+          if (!user) {
+            return notFoundError;
+          }
+          // NUEVO CHES
+          // console.log(objLiber)
+          sessionStorage.setItem('nombre',  objLiber.nombres);
+          sessionStorage.setItem('paterno', objLiber.primer_apellido);
+          sessionStorage.setItem('materno', objLiber.segundo_apellido);
+          sessionStorage.setItem('tipoManejo', objLiber.acceso_activos.idrol);
+          // END  NUEVO CHES
 
-        const auth = new AuthModel();
-        auth.authToken = user.authToken;
-        auth.refreshToken = user.refreshToken;
-        auth.expiresIn = new Date(Date.now() + 100 * 24 * 60 * 60 * 1000);
-        return auth;
+          const auth = new AuthModel();
+          auth.authToken = user.authToken;
+          auth.refreshToken = user.refreshToken;
+          auth.expiresIn = new Date(Date.now() + 100 * 24 * 60 * 60 * 1000);
+          return auth;
       })
     );
   }
@@ -84,4 +98,6 @@ export class AuthHTTPService {
   getAllUsers(): Observable<UserModel[]> {
     return this.http.get<UserModel[]>(API_USERS_URL);
   }
+
+  
 }

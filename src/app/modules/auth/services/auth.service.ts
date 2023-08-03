@@ -6,6 +6,7 @@ import { AuthModel } from '../models/auth.model';
 import { AuthHTTPService } from './auth-http';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 export type UserType = UserModel | undefined;
 
@@ -33,7 +34,8 @@ export class AuthService implements OnDestroy {
 
   constructor(
     private authHttpService: AuthHTTPService,
-    private router: Router
+    private router: Router,
+    private http: HttpClient,
   ) {
     this.isLoadingSubject = new BehaviorSubject<boolean>(false);
     this.currentUserSubject = new BehaviorSubject<UserType>(undefined);
@@ -44,11 +46,9 @@ export class AuthService implements OnDestroy {
   }
 
   // public methods
-  login(email: string, password: string): Observable<UserType> {
-
-    // console.log(email, password)
+  login(email: string, password: string, objLiber:any): Observable<UserType> {
     this.isLoadingSubject.next(true);
-    return this.authHttpService.login(email, password).pipe(
+    return this.authHttpService.login(email, password, objLiber).pipe(
       map((auth: AuthModel) => {
         const result = this.setAuthFromLocalStorage(auth);
         return result;
@@ -60,6 +60,20 @@ export class AuthService implements OnDestroy {
       }),
       finalize(() => this.isLoadingSubject.next(false))
     );
+  }
+
+  loginLiber(email:string, password:string):Observable<any>{
+    let formData = new FormData();
+
+    formData.append('username', email);
+    formData.append('password', password);
+    
+    // formData.append('username', 'adminAF');
+    // formData.append('password', '123*');
+
+    formData.append('grant_type', 'password');
+    const headers = new HttpHeaders({ Authorization: 'Basic ' + btoa(environment.usrfe + ':' + environment.pwdfe) });
+    return this.http.post(environment.url_api + '/securityrh/oauthrh/token', formData, { headers: headers });
   }
 
   logout() {
@@ -90,20 +104,20 @@ export class AuthService implements OnDestroy {
   }
 
   // need create new user then login
-  registration(user: UserModel): Observable<any> {
-    this.isLoadingSubject.next(true);
-    return this.authHttpService.createUser(user).pipe(
-      map(() => {
-        this.isLoadingSubject.next(false);
-      }),
-      switchMap(() => this.login(user.email, user.password)),
-      catchError((err) => {
-        console.error('err', err);
-        return of(undefined);
-      }),
-      finalize(() => this.isLoadingSubject.next(false))
-    );
-  }
+    registration(user: UserModel): Observable<any> {
+      this.isLoadingSubject.next(true);
+      return this.authHttpService.createUser(user).pipe(
+        map(() => {
+          this.isLoadingSubject.next(false);
+        }),
+        switchMap(() => this.login(user.email, user.password, null)),
+        catchError((err) => {
+          console.error('err', err);
+          return of(undefined);
+        }),
+        finalize(() => this.isLoadingSubject.next(false))
+      );
+    }
 
   forgotPassword(email: string): Observable<boolean> {
     this.isLoadingSubject.next(true);

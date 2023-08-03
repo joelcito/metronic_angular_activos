@@ -17,6 +17,8 @@ export class UserInnerComponent implements OnInit, OnDestroy {
   langs = languages;
   private unsubscribe: Subscription[] = [];
 
+  nombreCompleto:String;
+
   constructor(
     private auth: AuthService,
     private translationService: TranslationService
@@ -24,6 +26,9 @@ export class UserInnerComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.user$ = this.auth.currentUserSubject.asObservable();
+
+    this.verificarConeccion()
+
     this.setLanguage(this.translationService.getSelectedLanguage());
   }
 
@@ -47,6 +52,19 @@ export class UserInnerComponent implements OnInit, OnDestroy {
         language.active = false;
       }
     });
+  }
+
+  verificarConeccion(){
+    if(
+      sessionStorage.getItem('nombre')  === null ||
+      sessionStorage.getItem('paterno') === null ||
+      sessionStorage.getItem('materno') === null ||
+      sessionStorage.getItem('tipoManejo') === null
+      ){
+        this.logout()
+    }else{
+      this.nombreCompleto = String(sessionStorage.getItem('nombre')+" "+sessionStorage.getItem('paterno')+" "+sessionStorage.getItem('paterno'));
+    }
   }
 
   ngOnDestroy() {
