@@ -49,26 +49,33 @@
 <!-- aqui el modal liberacion -->
 <ng-template #modalReportePorRegimen let-modal>
 	<div class="modal-header modal-lg">
-		<h3 class="modal-title text-center" id="modal-basic-title">REPORTE POR REGIMEN</h3>
+		<h3 class="modal-title text-center" id="modal-basic-title">REPORTE POR REGIMEN / GRUPO</h3>
 		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
 	</div>
 	<div class="modal-body">
     <form [formGroup]="formularioReportPorRegimen">
       <div class="row mt-5">
-        <div class="col-md-4">
+        <div class="col-md-3">
           <label for="descripcion">Fecha Inicio</label>
           <input type="date" class="form-control" formControlName="fechaInicio" [min]="getMinDate()" readonly>
           <!-- <input type="" class="form-control"> -->
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
           <label for="descripcion">Fecha Fin</label>
           <input type="date" class="form-control" formControlName="fechaFin" value="{{ getCurrentDate() }}">
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
           <label for="descripcion">REGIMEN</label>
           <select class="form-control me-2" formControlName="regimen">
             <option value="">SELECCIONE</option>
             <option [ngValue]="regimen.idregimen" *ngFor="let regimen of regimenes">{{ regimen.nombre }}</option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <label for="descripcion">GRUPO</label>
+          <select class="form-control me-2" formControlName="grupo">
+            <option value="">SELECCIONE</option>
+            <option [ngValue]="grupo.idgrupo" *ngFor="let grupo of grupos">{{ grupo.descripcion }}</option>
           </select>
         </div>
       </div>
@@ -206,45 +213,49 @@
 
 
 <div class="container" style="width:100%;">
-    <div class="card mb-5 mb-xxl-8" >
-        <div class="card-body pt-9 pb-0">
-            <div class="row w-100">
-                <div class="col">
-                    <div class="card mb-5 mb-xxl-8 bg-hover-light-success">
-                        <div class="card-body">
-                          <h1 class="text-center">REPORTE GENERAL ACTUALIZACION Y DEPRECIACION</h1>
-                          <button class="btn btn-sm btn-success mt-5 w-100" (click)="abreModalReportGeneral(modalReportGeneral)">Acceder</button>
-                        </div>
-                    </div>
+  <div class="card mb-5 mb-xxl-8" >
+    <div class="card-body pt-9 pb-0">
+      <div class="row w-100">
+        <div class="col">
+            <div class="card mb-5 mb-xxl-8 bg-hover-light-success">
+                <div class="card-body">
+                  <h1 class="text-center">REPORTE GENERAL ACTUALIZACION Y DEPRECIACION</h1>
+                  <button class="btn btn-sm btn-success mt-5 w-100" (click)="abreModalReportGeneral(modalReportGeneral)">Acceder</button>
                 </div>
-                <div class="col">
-                    <div class="card mb-5 mb-xxl-8 bg-hover-light-success">
-                        <div class="card-body">
-                          <h1 class="text-center">REPORTE GENERAL POR REGIMEN</h1>
-                          <button class="btn btn-sm btn-success mt-5 w-100" (click)="abreModalReportPorRegimen(modalReportePorRegimen)">Acceder</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                  <div class="card mb-5 mb-xxl-8 bg-hover-light-success">
-                      <div class="card-body">
-                        <h1 class="text-center">REPORTE GENERAL POR GRUPO</h1>
-                        <button class="btn btn-sm btn-success mt-5 w-100" (click)="abreModalReportPorGrupo(modalReportePorGrupo)">Acceder</button>
-                      </div>
-                  </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-4">
-                <div class="card mb-5 mb-xxl-8 bg-hover-light-success">
-                  <div class="card-body">
-                    <h1 class="text-center">REPORTE ASIGNACION POR USUARIO</h1>
-                    <button class="btn btn-sm btn-success mt-5 w-100" (click)="abreModalReportAsignacion(modalReporteAsigancion)">Acceder</button>
-                  </div>
-                </div>
-              </div>
             </div>
         </div>
+        <div class="col">
+            <div class="card mb-5 mb-xxl-8 bg-hover-light-success">
+                <div class="card-body">
+                  <h1 class="text-center">REPORTE GENERAL POR REGIMEN / GRUPO</h1>
+                  <button class="btn btn-sm btn-success mt-5 w-100" (click)="abreModalReportPorRegimen(modalReportePorRegimen)">Acceder</button>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+          <div class="card mb-5 mb-xxl-8 bg-hover-light-success">
+            <div class="card-body">
+              <h1 class="text-center">REPORTE ASIGNACION POR USUARIO</h1>
+              <button class="btn btn-sm btn-success mt-5 w-100" (click)="abreModalReportAsignacion(modalReporteAsigancion)">Acceder</button>
+            </div>
+              <!-- <div class="card-body">
+                <h1 class="text-center">REPORTE GENERAL POR GRUPO</h1>
+                <button class="btn btn-sm btn-success mt-5 w-100" (click)="abreModalReportPorGrupo(modalReportePorGrupo)">Acceder</button>
+              </div> -->
+          </div>
+        </div>
+      </div>
+      <!-- <div class="row">
+        <div class="col-md-4">
+          <div class="card mb-5 mb-xxl-8 bg-hover-light-success">
+            <div class="card-body">
+              <h1 class="text-center">REPORTE ASIGNACION POR USUARIO</h1>
+              <button class="btn btn-sm btn-success mt-5 w-100" (click)="abreModalReportAsignacion(modalReporteAsigancion)">Acceder</button>
+            </div>
+          </div>
+        </div>
+      </div> -->
     </div>
+  </div>
 </div>
   

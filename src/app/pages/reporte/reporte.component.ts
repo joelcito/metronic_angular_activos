@@ -53,7 +53,8 @@ export class ReporteComponent implements OnInit {
   formularioReportPorRegimen = new FormGroup({
     fechaInicio: new FormControl(''),
     fechaFin: new FormControl(''),
-    regimen: new FormControl('')
+    regimen: new FormControl(''),
+    grupo: new FormControl('')
   });
 
   formularioReportPorGrupo = new FormGroup({
@@ -138,6 +139,7 @@ export class ReporteComponent implements OnInit {
 
   abreModalReportPorRegimen(modalReportePorRegimen:any){
     this.listaRegimen()
+    this.listaGrupos()
     this.formularioReportPorRegimen.get('fechaInicio')?.setValue(this.getMinDate());
     this.formularioReportPorRegimen.get('fechaFin')?.setValue(this.getCurrentDate());
     this.modalService.open(modalReportePorRegimen, { size: 'lg' }).result.then(
