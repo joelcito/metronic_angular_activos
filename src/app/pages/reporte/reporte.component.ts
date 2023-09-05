@@ -67,7 +67,10 @@ export class ReporteComponent implements OnInit {
     cedula: new FormControl(''),
     ap_paterno: new FormControl(''),
     ap_materno: new FormControl(''),
-    nombre: new FormControl('')
+    nombre: new FormControl(''),
+    fechaIni: new FormControl(''),
+    fechaFin: new FormControl(''),
+    tipoAL: new FormControl('')
   });
 
   constructor(
@@ -559,7 +562,7 @@ export class ReporteComponent implements OnInit {
   // }
 
   reporteGeneralNew(){
-    if(this.isDateValid(String(this.formularioReportGeneral.value.fechaFin))){
+    // if(this.isDateValid(String(this.formularioReportGeneral.value.fechaFin))){
       this.cargandoReporteGeneral = true;
       
       this.reporteService.reporteGeneralNew(this.formularioReportGeneral.value).subscribe((response: Blob) => {
@@ -569,20 +572,20 @@ export class ReporteComponent implements OnInit {
         this.cargandoReporteGeneral = false;
       })
 
-    }else{
-      swal.fire({
-        icon: 'error',
-        title: 'Error!',
-        text: 'Introduzca una fecha valida',
-        // timer: 2000
-      })
-    }
+    // }else{
+    //   swal.fire({
+    //     icon: 'error',
+    //     title: 'Error!',
+    //     text: 'Introduzca una fecha valida',
+    //     // timer: 2000
+    //   })
+    // }
   }
 
   reportePorRegimen(){
-    if(this.isDateValid(String(this.formularioReportPorRegimen.value.fechaFin))){
+    // if(this.isDateValid(String(this.formularioReportPorRegimen.value.fechaFin))){
+
       this.cargandoReporteGeneral = true;
-      
       this.reporteService.reportePorRegimen(this.formularioReportPorRegimen.value).subscribe((response: Blob) => {
         const file = new Blob([response], { type: 'application/pdf' });
         const fileURL = URL.createObjectURL(file);
@@ -590,14 +593,14 @@ export class ReporteComponent implements OnInit {
         this.cargandoReporteGeneral = false;
       })
 
-    }else{
-      swal.fire({
-        icon: 'error',
-        title: 'Error!',
-        text: 'Introduzca una fecha valida',
-        // timer: 2000
-      })
-    }
+    // }else{
+    //   swal.fire({
+    //     icon: 'error',
+    //     title: 'Error!',
+    //     text: 'Introduzca una fecha valida',
+    //     // timer: 2000
+    //   })
+    // }
   }
 
   reportePorGrupo(){
@@ -640,9 +643,26 @@ export class ReporteComponent implements OnInit {
   }
 
   seleccionar(nombre:string, ci:string){
-
-  }
-  
+    // console.log(
+    //   this.formularioReportAsignacion.value,
+    //   this.formularioReportAsignacion.value.fechaIni,
+    //   this.formularioReportAsignacion.value.fechaFin,
+    //   this.formularioReportAsignacion.value.tipoAL
+    //   )
+    const persona = {
+      cedula  : ci,
+      nombre  : nombre,
+      fechaIni: this.formularioReportAsignacion.value.fechaIni,
+      fechaFin: this.formularioReportAsignacion.value.fechaFin,
+      tipo    : this.formularioReportAsignacion.value.tipoAL,
+    };
+    this.reporteService.reporteAsignacion(JSON.stringify(persona)).subscribe((response: Blob) => {
+      const file = new Blob([response], { type: 'application/pdf' });
+      const fileURL = URL.createObjectURL(file);
+      window.open(fileURL, '_blank');
+      // this.cargandoReporteGeneral = false;
+    })
+  }  
 
   isDateValid(dateString: string): boolean {
     const date = new Date(dateString);

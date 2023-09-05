@@ -17,8 +17,11 @@ export class LoginComponent implements OnInit, OnDestroy {
     // email: 'admin@demo.com',
     // password: 'demo',
     
-    email: 'adminAF',
-    password: '123*',
+    // email: 'adminAF',
+    // password: '123*',
+    
+    email: '',
+    password: '',
   };
   loginForm: FormGroup;
   hasError: boolean;

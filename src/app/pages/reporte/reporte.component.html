@@ -10,8 +10,8 @@
       <div class="row mt-5">
         <div class="col-md-3">
           <label for="descripcion">Fecha Inicio</label>
-          <input type="date" class="form-control" formControlName="fechaInicio" [min]="getMinDate()" readonly>
-          <!-- <input type="" class="form-control"> -->
+          <!-- <input type="date" class="form-control" formControlName="fechaInicio" [min]="getMinDate()" readonly> -->
+          <input type="date" class="form-control" formControlName="fechaInicio">
         </div>
         <div class="col-md-3">
           <label for="descripcion">Fecha Fin</label>
@@ -57,7 +57,7 @@
       <div class="row mt-5">
         <div class="col-md-3">
           <label for="descripcion">Fecha Inicio</label>
-          <input type="date" class="form-control" formControlName="fechaInicio" [min]="getMinDate()" readonly>
+          <input type="date" class="form-control" formControlName="fechaInicio" [min]="getMinDate()">
           <!-- <input type="" class="form-control"> -->
         </div>
         <div class="col-md-3">
@@ -149,6 +149,23 @@
 	<div class="modal-body">
     <form [formGroup]="formularioReportAsignacion">
       <div class="row mt-5">
+        <div class="col-md-4">
+          <label for="descripcion">Fecha Inicio</label>
+          <input type="date" class="form-control" formControlName="fechaIni">
+        </div>
+        <div class="col-md-4">
+          <label for="descripcion">Fecha Fin</label>
+          <input type="date" class="form-control" formControlName="fechaFin">
+        </div>
+        <div class="col-md-4">
+          <label for="descripcion">Asignacion/Liberacion</label>
+          <select class="form-control" formControlName="tipoAL">
+            <option value="1">Asignacion</option>
+            <option value="0">Liberacion</option>
+          </select>
+        </div>
+      </div>
+      <div class="row mt-5">
         <div class="col-md-3">
           <label for="descripcion">Cedula</label>
           <input type="number" class="form-control" formControlName="cedula" (keyup)="buscarPersona()">
@@ -185,7 +202,7 @@
                 <td>{{ persona.des1 }}</td>
                 <td>{{ persona.des2 }}</td>
                 <td>
-                  <button class="btn btn-icon btn-success btn-sm" (click)="seleccionar( persona.des+' '+persona.des1+' '+persona.des2 , persona.ci)"><i class="fa fa-check"></i></button>
+                  <button class="btn btn-icon btn-danger btn-sm" (click)="seleccionar( persona.des+' '+persona.des1+' '+persona.des2 , persona.ci)"><i class="fa fa-file-pdf"></i></button>
                 </td>
               </tr>
             </tbody>
@@ -193,16 +210,14 @@
         </div>
       </div>
 
-      <div class="row mt-6">
+      <!-- <div class="row mt-6">
         <div class="col-md-12">
-            <!-- <button class="btn btn-danger btn-sm w-100" [disabled]="cargandoReporteGeneral" (click)="bucarReportGeneral()"><i class="fa fa-file-pdf"></i> PDF</button> -->
             <button class="btn btn-danger btn-sm w-100" [disabled]="cargandoReporteGeneral" (click)="reporteAsignacion()"><i class="fa fa-file-pdf"></i> PDF</button>
             <div style="display: flex;justify-content: center;align-items: center;height: 100%;" class="aling-center" *ngIf="cargandoReporteGeneral">
               <img style="width: 25%; max-width: 100%;" width="20%" src="assets/media/smiles/IllinformedMeaslyKoi-size_restricted.gif" alt="aqui es">
-              <!-- <img src="assets/media/smiles/loading (1).gif" alt="aqui es"> -->
             </div>
         </div>
-      </div>
+      </div> -->
     </form>
 	</div>
 	<div class="modal-footer">
@@ -235,7 +250,7 @@
         <div class="col">
           <div class="card mb-5 mb-xxl-8 bg-hover-light-success">
             <div class="card-body">
-              <h1 class="text-center">REPORTE ASIGNACION POR USUARIO</h1>
+              <h1 class="text-center">REPORTE ASIGNACION/LIBERACION POR USUARIO</h1>
               <button class="btn btn-sm btn-success mt-5 w-100" (click)="abreModalReportAsignacion(modalReporteAsigancion)">Acceder</button>
             </div>
               <!-- <div class="card-body">
@@ -245,6 +260,22 @@
           </div>
         </div>
       </div>
+      <!-- <div class="row">
+        <div class="col-md-4">
+          <div class="card mb-5 mb-xxl-8 bg-hover-light-success">
+            <div class="card-body">
+              <h1 class="text-center">REPORTE LIBERACION POR USUARIO</h1>
+              <button class="btn btn-sm btn-success mt-5 w-100" (click)="abreModalReportAsignacion(modalReporteAsigancion)">Acceder</button>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+
+        </div>
+        <div class="col-md-4">
+
+        </div>
+      </div> -->
       <!-- <div class="row">
         <div class="col-md-4">
           <div class="card mb-5 mb-xxl-8 bg-hover-light-success">
