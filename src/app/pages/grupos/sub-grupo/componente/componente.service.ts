@@ -17,14 +17,21 @@ export class ComponenteService {
   // private urlEndPoint:String = "api/componente";
   private urlEndPoint: string = URL_GLOBAL+"/componente";
 
-  private httpHeaders = new HttpHeaders({'Content-Type': 'application/json'});
+  // DESARROLLO
+  // private httpHeaders = new HttpHeaders({'Content-Type': 'application/json'});
+  // END DESARROLLO
+  // PRODUCCION
+  private httpHeaders = new HttpHeaders({
+    'Authorization': 'Bearer '+sessionStorage.access_token
+  });
+  // END PRODUCCION
 
   constructor(
     private http:HttpClient
   ) { }
 
   getComponenteByIdSubGrupo(id:string){
-    return this.http.get<Componente[]>(`${this.urlEndPoint}/getComponeteByIdSubGrupo/${id}`)
+    return this.http.get<Componente[]>(`${this.urlEndPoint}/getComponeteByIdSubGrupo/${id}`, { headers: this.httpHeaders })
   }
 
   createComponente(componente:Componente):Observable<Componente>{

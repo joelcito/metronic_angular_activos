@@ -226,12 +226,56 @@
 </ng-template>
 <!-- end del modal liberacion-->
 
+<!-- aqui el modal REPORTE INCORPORACION -->
+<ng-template #modalIncorporacion let-modal>
+	<div class="modal-header modal-lg">
+		<h3 class="modal-title text-center" id="modal-basic-title">REPORTE DE INCORPORACION</h3>
+		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+	</div>
+	<div class="modal-body">
+    <form [formGroup]="formularioReportIncorporacion">
+      <div class="row mt-5">
+        <div class="col-md-3">
+          <label for="descripcion">Fecha Inicio</label>
+          <input type="date" class="form-control" formControlName="fechaIni">
+        </div>
+        <div class="col-md-3">
+          <label for="descripcion">Fecha Fin</label>
+          <input type="date" class="form-control" formControlName="fechaFin">
+        </div>
+        <div class="col-md-3">
+          <label for="descripcion">Regional</label>
+          <select class="form-control" formControlName="regional">
+            <option [ngValue]="regional.idregional" *ngFor="let regional of listaRegionales">{{ regional.descripcion }}</option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <label for="descripcion">Ubicacion General</label>
+          <select class="form-control" formControlName="ubiGeneral">
+            <option [ngValue]="ubiGral.codubicgral" *ngFor="let ubiGral of listadoUbiGral">{{ ubiGral.descripcion }} | {{ ubiGral.des }}</option>
+          </select>
+        </div>
+      </div>
+    </form>
+    <div class="row mt-2">
+      <button class="btn btn-danger w-100 btn-sm" (click)="reporteIncorporacion()">Generar Reporte</button>
+      <div style="display: flex;justify-content: center;align-items: center;height: 100%;" class="aling-center" *ngIf="cargandoReporteGeneral">
+        <img style="width: 25%; max-width: 100%;" width="20%" src="assets/media/smiles/IllinformedMeaslyKoi-size_restricted.gif" alt="aqui es">
+      </div>
+    </div>
+	</div>
+	<div class="modal-footer">
+		<!-- <button type="button" class="btn btn-sm btn-success w-100" (click)="modal.close('guardar')">Guardar</button> -->
+	</div>
+</ng-template>
+<!-- end del modal INCORPORACION-->
+
 
 <div class="container" style="width:100%;">
   <div class="card mb-5 mb-xxl-8" >
     <div class="card-body pt-9 pb-0">
       <div class="row w-100">
-        <div class="col">
+        <div class="col-md-4">
             <div class="card mb-5 mb-xxl-8 bg-hover-light-success">
                 <div class="card-body">
                   <h1 class="text-center">REPORTE GENERAL ACTUALIZACION Y DEPRECIACION</h1>
@@ -239,7 +283,7 @@
                 </div>
             </div>
         </div>
-        <div class="col">
+        <div class="col-md-4">
             <div class="card mb-5 mb-xxl-8 bg-hover-light-success">
                 <div class="card-body">
                   <h1 class="text-center">REPORTE GENERAL POR REGIMEN / GRUPO</h1>
@@ -247,7 +291,7 @@
                 </div>
             </div>
         </div>
-        <div class="col">
+        <div class="col-md-4">
           <div class="card mb-5 mb-xxl-8 bg-hover-light-success">
             <div class="card-body">
               <h1 class="text-center">REPORTE ASIGNACION/LIBERACION POR USUARIO</h1>
@@ -260,12 +304,12 @@
           </div>
         </div>
       </div>
-      <!-- <div class="row">
+      <div class="row">
         <div class="col-md-4">
           <div class="card mb-5 mb-xxl-8 bg-hover-light-success">
             <div class="card-body">
-              <h1 class="text-center">REPORTE LIBERACION POR USUARIO</h1>
-              <button class="btn btn-sm btn-success mt-5 w-100" (click)="abreModalReportAsignacion(modalReporteAsigancion)">Acceder</button>
+              <h1 class="text-center">REPORTE DE INCORPORACION</h1>
+              <button class="btn btn-sm btn-success mt-5 w-100" (click)="abreModalReportIncorporacion(modalIncorporacion)">Acceder</button>
             </div>
           </div>
         </div>
@@ -275,7 +319,7 @@
         <div class="col-md-4">
 
         </div>
-      </div> -->
+      </div>
       <!-- <div class="row">
         <div class="col-md-4">
           <div class="card mb-5 mb-xxl-8 bg-hover-light-success">

@@ -6,6 +6,7 @@ import { RegionalService } from '../regional/regional.service';
 import { ReporteService } from './reporte.service';
 import { RegimenService } from '../regimen/regimen.service';
 import { GrupoService } from '../grupos/grupo.service';
+import { ActivoService } from '../activo/activo.service';
 
 import { Regional } from '../regional/regional';
 
@@ -26,14 +27,13 @@ import { Grupo } from '../grupos/grupo';
 })
 export class ReporteComponent implements OnInit {
 
-  listaActivos              :any[];
-  listaActivosGeneral       :any[];
-  listaRegionales           :Regional[];
-  regimenes                 :Regimen[];
-  grupos                    :Grupo[];
-
-  listadoPersonasBuscadas   : any[];
-
+  listaRegionales        : Regional[];
+  regimenes              : Regimen[];
+  grupos                 : Grupo[];
+  listadoPersonasBuscadas: any[];
+  listaActivos           : any[];
+  listaActivosGeneral    : any[];
+  listadoUbiGral         : any[];
 
   cargandoReporteGeneral : boolean  =   false;
 
@@ -73,6 +73,13 @@ export class ReporteComponent implements OnInit {
     tipoAL: new FormControl('')
   });
 
+  formularioReportIncorporacion = new FormGroup({
+    fechaIni: new FormControl(''),
+    fechaFin: new FormControl(''),
+    regional: new FormControl(''),
+    ubiGeneral: new FormControl(''),
+  });
+
   constructor(
     private modalService    : NgbModal,
     private regionalService : RegionalService,
@@ -80,7 +87,8 @@ export class ReporteComponent implements OnInit {
     private chdr            : ChangeDetectorRef,
     private datePipe        : DatePipe,
     private regimenService  : RegimenService,
-    private grupoService    : GrupoService          
+    private grupoService    : GrupoService ,     
+    private activoService   : ActivoService    
   ) { }
 
   ngOnInit(): void {
@@ -101,6 +109,12 @@ export class ReporteComponent implements OnInit {
   listaGrupos(){
     this.grupoService.getGrupos().subscribe(resul =>{
       this.grupos = resul;
+    })
+  }
+
+  listaUbiGeneral(){
+    this.activoService.getUbiGral().subscribe(resul =>{
+      this.listadoUbiGral = resul;
     })
   }
 
@@ -184,6 +198,26 @@ export class ReporteComponent implements OnInit {
     this.formularioReportPorGrupo.get('fechaInicio')?.setValue(this.getMinDate());
     this.formularioReportPorGrupo.get('fechaFin')?.setValue(this.getCurrentDate());
     this.modalService.open(modalReportePorGrupo, { size: 'lg' }).result.then(
+      (result) => {
+        if(result==='guardar'){
+          console.log("se guardara");
+        }else{
+          console.log("no guardara");
+        }
+        console.log("haber")
+      },
+      (reason)=>{
+        console.log(reason)
+      }
+    );
+  }
+
+  abreModalReportIncorporacion(modalIncorporacion:any){
+    this.listaRegional();
+    this.listaUbiGeneral();
+    this.formularioReportPorGrupo.get('fechaInicio')?.setValue(this.getMinDate());
+    this.formularioReportPorGrupo.get('fechaFin')?.setValue(this.getCurrentDate());
+    this.modalService.open(modalIncorporacion, { size: 'lg' }).result.then(
       (result) => {
         if(result==='guardar'){
           console.log("se guardara");
@@ -632,6 +666,17 @@ export class ReporteComponent implements OnInit {
     })
   }
 
+  reporteIncorporacion(){
+    // console.log(this.formularioReportIncorporacion.value)
+    this.cargandoReporteGeneral = true;
+    this.reporteService.reporteIncorporacion(this.formularioReportIncorporacion.value).subscribe((response: Blob) => {
+      const file = new Blob([response], { type: 'application/pdf' });
+      const fileURL = URL.createObjectURL(file);
+      window.open(fileURL, '_blank');
+      this.cargandoReporteGeneral = false;
+    })
+  }
+
   buscarPersona(){
     this.formularioReportAsignacion.get('ap_paterno')?.setValue(String(this.formularioReportAsignacion.value.ap_paterno?.toUpperCase()))
     this.formularioReportAsignacion.get('ap_materno')?.setValue(String(this.formularioReportAsignacion.value.ap_materno?.toUpperCase()))
@@ -674,4 +719,6 @@ export class ReporteComponent implements OnInit {
     const uppercaseValue: string = inputValue.toUpperCase();
     this.formularioReportGeneral.get('placa')?.setValue(uppercaseValue);
   }
+
+  
 }

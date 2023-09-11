@@ -47,10 +47,14 @@ export class AuthHTTPService {
           }
           // NUEVO CHES
           // console.log(objLiber)
-          sessionStorage.setItem('nombre',  objLiber.nombres);
-          sessionStorage.setItem('paterno', objLiber.primer_apellido);
-          sessionStorage.setItem('materno', objLiber.segundo_apellido);
-          sessionStorage.setItem('tipoManejo', objLiber.acceso_activos.idrol);
+          sessionStorage.setItem('nombre',      objLiber.nombres);
+          sessionStorage.setItem('paterno',     objLiber.primer_apellido);
+          sessionStorage.setItem('materno',     objLiber.segundo_apellido);
+          sessionStorage.setItem('tipoManejo',  objLiber.acceso_activos.idrol);
+          sessionStorage.setItem('access_token',objLiber.access_token);
+
+          // console.log(objLiber.access_token)
+          
           // END  NUEVO CHES
 
           const auth = new AuthModel();

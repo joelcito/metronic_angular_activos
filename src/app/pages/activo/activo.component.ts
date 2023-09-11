@@ -572,7 +572,10 @@ export class ActivoComponent implements OnInit {
   validaBotones(){
     // para el boton de REGISTRO DE ACTIVO
     let idpermiso = sessionStorage.getItem('tipoManejo');
-    if(idpermiso != "187"){
+    const rolSA = "187"
+    const rolA = "188"
+    const rolOUMDB = "189"
+    if(idpermiso !== rolSA && idpermiso !== rolA && idpermiso !== rolOUMDB){
       this.agregarActivo  = false;
     }else{
 
