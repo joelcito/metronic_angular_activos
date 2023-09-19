@@ -34,6 +34,7 @@ export class ReporteComponent implements OnInit {
   listaActivos           : any[];
   listaActivosGeneral    : any[];
   listadoUbiGral         : any[];
+  listaprovedores        : any[];
 
   cargandoReporteGeneral : boolean  =   false;
 
@@ -70,6 +71,7 @@ export class ReporteComponent implements OnInit {
     nombre: new FormControl(''),
     fechaIni: new FormControl(''),
     fechaFin: new FormControl(''),
+    numActa: new FormControl(''),
     tipoAL: new FormControl('')
   });
 
@@ -78,6 +80,9 @@ export class ReporteComponent implements OnInit {
     fechaFin: new FormControl(''),
     regional: new FormControl(''),
     ubiGeneral: new FormControl(''),
+    numero: new FormControl(''),
+    provedor: new FormControl(''),
+    numeroFactura: new FormControl(''),
   });
 
   constructor(
@@ -115,6 +120,13 @@ export class ReporteComponent implements OnInit {
   listaUbiGeneral(){
     this.activoService.getUbiGral().subscribe(resul =>{
       this.listadoUbiGral = resul;
+    })
+  }
+
+  listadoPrvedores() {
+    this.activoService.listaProvedores().subscribe(result =>{
+      this.listaprovedores = result
+      console.log(result)
     })
   }
 
@@ -215,6 +227,7 @@ export class ReporteComponent implements OnInit {
   abreModalReportIncorporacion(modalIncorporacion:any){
     this.listaRegional();
     this.listaUbiGeneral();
+    this.listadoPrvedores()
     this.formularioReportPorGrupo.get('fechaInicio')?.setValue(this.getMinDate());
     this.formularioReportPorGrupo.get('fechaFin')?.setValue(this.getCurrentDate());
     this.modalService.open(modalIncorporacion, { size: 'lg' }).result.then(
@@ -694,13 +707,16 @@ export class ReporteComponent implements OnInit {
     //   this.formularioReportAsignacion.value.fechaFin,
     //   this.formularioReportAsignacion.value.tipoAL
     //   )
+    
     const persona = {
       cedula  : ci,
       nombre  : nombre,
       fechaIni: this.formularioReportAsignacion.value.fechaIni,
       fechaFin: this.formularioReportAsignacion.value.fechaFin,
       tipo    : this.formularioReportAsignacion.value.tipoAL,
+      numActa : this.formularioReportAsignacion.value.numActa,
     };
+
     this.reporteService.reporteAsignacion(JSON.stringify(persona)).subscribe((response: Blob) => {
       const file = new Blob([response], { type: 'application/pdf' });
       const fileURL = URL.createObjectURL(file);

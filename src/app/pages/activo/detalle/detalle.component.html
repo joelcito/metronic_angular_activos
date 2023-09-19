@@ -78,7 +78,7 @@
 
 <!-- aqui el modal asignacion-->
 <ng-template #modalAsignacion let-modal>
-	<div class="modal-header modal-lg">
+	<div class="modal-header">
 		<h3 class="modal-title" id="modal-basic-title">FORMULARIO DE <span class="text-info"> ( ASIGNACION ) </span></h3>
 		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
 	</div>
@@ -141,14 +141,7 @@
         </div>
       </div>
       <div class="row mt-5">
-        <div class="col-md-3">
-          <label for="descripcion">Fecha</label>
-          <input type="date" class="form-control" formControlName="fecha">
-          <div *ngIf="formularioAsignacion.get('fecha')?.invalid">
-            <small *ngIf="formularioAsignacion.get('fecha')?.errors?.required" class="text-danger"><i class="fa fa-exclamation-circle text-danger"></i> La fecha es requerido</small>
-          </div>
-        </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
           <label for="descripcion">Cargo</label>
           <select class="form-control" formControlName="cargo">
             <option value="">SELECCIONE</option>
@@ -169,7 +162,21 @@
           </div>
         </div>
         <div class="col-md-3">
-          <label for="descripcion">Ubicacion</label>
+          <label for="descripcion">Regional</label>
+          <select class="form-control" formControlName="regional" (change)="sacarvalor(this)">
+            <option value="">SELECCIONE</option>
+            <option value="{{ regional.idregional }}" *ngFor="let regional of regionales">{{ regional.descripcion }}</option>
+          </select>
+        </div>
+        <div class="col-md-2">
+          <label for="descripcion">Ubicacion General</label>
+          <select class="form-control" formControlName="ubiGral" (change)="sacarvalorUbiGral(this)">
+            <option value="">SELECCIONE</option>
+            <option value="{{ ubiGral.codubicgral }}" *ngFor="let ubiGral of listadoUbiGral">{{ ubiGral.des }}</option>
+          </select>
+        </div>
+        <div class="col-md-2">
+          <label for="descripcion">Ubicacion Especifica</label>
           <select class="form-control"  formControlName="ubicacion">
             <option value="">SELECCIONE</option>
             <option value="{{ ubi.cod }}" *ngFor="let ubi of listadoUbiEsp">{{ ubi.des }}</option>
@@ -180,15 +187,22 @@
         </div>
       </div>
       <div class="row mt-5">
-        <div class="col-md-4">
+        <div class="col-md-3">
+          <label for="descripcion">Fecha</label>
+          <input type="date" class="form-control" formControlName="fecha">
+          <div *ngIf="formularioAsignacion.get('fecha')?.invalid">
+            <small *ngIf="formularioAsignacion.get('fecha')?.errors?.required" class="text-danger"><i class="fa fa-exclamation-circle text-danger"></i> La fecha es requerido</small>
+          </div>
+        </div>
+        <div class="col-md-3">
           <label for="descripcion">Res/Ger, Val/Sal, No ingreso</label>
           <input type="text" class="form-control" formControlName="descgeneral">
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
           <label for="descripcion">Destino o Uso del bien</label>
           <input type="text" class="form-control"  formControlName="destino">
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
           <label for="descripcion">Observacion de Administracion</label>
           <input type="text" class="form-control" formControlName="observacion">
         </div>

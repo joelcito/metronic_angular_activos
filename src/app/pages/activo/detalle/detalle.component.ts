@@ -46,24 +46,25 @@ export class DetalleComponent implements OnInit {
 
   @Input() activo: Activo = new Activo();
 
-  grupos           :Grupo[];
-  subGrupos        :SubGrupo[];
-  incorporaciones  :Incorporacion[];
-  unidadManejos    :UnidadManejo[];
-  regimenes        :Regimen[];
-  regionales       :Regional[];
-  caracteristicas  :Caracteristica[];
-  provedores       :any[];
-  listMovimientos  :any[];
-  estadoActivo     :boolean;
-  ultimoActivoMov  :any;
-  listadoCargos   : any[];
-  listadoUbiEsp   : any[];
+  grupos                 : Grupo[];
+  subGrupos              : SubGrupo[];
+  incorporaciones        : Incorporacion[];
+  unidadManejos          : UnidadManejo[];
+  regimenes              : Regimen[];
+  regionales             : Regional[];
+  caracteristicas        : Caracteristica[];
+  provedores             : any[];
+  listMovimientos        : any[];
+  estadoActivo           : boolean;
+  ultimoActivoMov        : any;
+  listadoCargos          : any[];
+  listadoUbiEsp          : any[];
+  listadoUbiGral          : any[];
   listadoreparticiones   : any[];
-  listadoRefacciones   : any[];
-  listadoDepreciaciones   : any[];
-  llavesListadoDepre   : any[];
-  listadoPersonasBuscadas   : any[];
+  listadoRefacciones     : any[];
+  listadoDepreciaciones  : any[];
+  llavesListadoDepre     : any[];
+  listadoPersonasBuscadas: any[];
 
 
   idGrupo          :String = '0';
@@ -141,12 +142,15 @@ export class DetalleComponent implements OnInit {
     ubicacion: new FormControl('', Validators.required),
     descgeneral: new FormControl(''),
     destino: new FormControl(''),
+    regional: new FormControl(''),
+    ubiGral: new FormControl(''),
     observacion: new FormControl(''),
     nombre: new FormControl('', Validators.required),
     cedula: new FormControl('', Validators.required),
     activo: new FormControl('', Validators.required),
     ultimoMov: new FormControl('', Validators.required),
     estadoregistro: new FormControl('', Validators.required),
+    
     tipo: new FormControl('ASI'),
   });
 
@@ -191,7 +195,7 @@ export class DetalleComponent implements OnInit {
     this.listaProvedores();
 
     this.listaCargos();
-    this.listadoUbiEspecifica();
+    // this.listadoUbiEspecifica();
     this.listaReparticiones();
     this.listaIncorporacion()
   }
@@ -577,7 +581,7 @@ export class DetalleComponent implements OnInit {
     //   console.log(resul)
     // })
 
-    this.modalService.open(modalAsignacion, { size: 'lg' }).result.then(
+    this.modalService.open(modalAsignacion, { size: 'xl' }).result.then(
       (result) => {
         if(result==='guardar'){
           console.log("se guardara");
@@ -1556,5 +1560,22 @@ export class DetalleComponent implements OnInit {
     }else{
       doc.save('table.pdf')
     }
+  }
+
+  sacarvalor(valor:any){
+    let regional = valor.formularioAsignacion.value.regional;
+    this.activoService.getUbiGralByIdRegional(regional).subscribe(result =>{
+      this.listadoUbiGral = result
+      this.listadoUbiEsp  = []
+      // console.log(result)
+    })
+  }
+
+  sacarvalorUbiGral(valor:any){
+    let ubiGral = valor.formularioAsignacion.value.ubiGral;
+    this.activoService.getUbiEspByIdGral(ubiGral).subscribe(result =>{
+      this.listadoUbiEsp = result
+      // console.log(ubiGral, result)
+    })
   }
 }

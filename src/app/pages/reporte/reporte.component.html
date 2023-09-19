@@ -149,20 +149,24 @@
 	<div class="modal-body">
     <form [formGroup]="formularioReportAsignacion">
       <div class="row mt-5">
-        <div class="col-md-4">
+        <div class="col-md-3">
           <label for="descripcion">Fecha Inicio</label>
           <input type="date" class="form-control" formControlName="fechaIni">
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
           <label for="descripcion">Fecha Fin</label>
           <input type="date" class="form-control" formControlName="fechaFin">
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
           <label for="descripcion">Asignacion/Liberacion</label>
           <select class="form-control" formControlName="tipoAL">
             <option value="1">Asignacion</option>
             <option value="0">Liberacion</option>
           </select>
+        </div>
+        <div class="col-md-3">
+          <label for="descripcion">Numero de Acta</label>
+          <input type="text" formControlName="numActa" placeholder="011/2023" class="form-control">
         </div>
       </div>
       <div class="row mt-5">
@@ -254,6 +258,23 @@
           <select class="form-control" formControlName="ubiGeneral">
             <option [ngValue]="ubiGral.codubicgral" *ngFor="let ubiGral of listadoUbiGral">{{ ubiGral.descripcion }} | {{ ubiGral.des }}</option>
           </select>
+        </div>
+      </div>
+      <div class="row mt-5">
+        <div class="col-md-4">
+          <label for="descripcion">No.</label>
+          <input type="text" class="form-control" formControlName="numero">
+        </div>
+        <div class="col-md-4">
+          <label for="descripcion">Proveedor</label>
+          <select class="form-control"formControlName="provedor">
+            <option value="">Seleccione</option>
+            <option [ngValue]="provedor.cod" *ngFor="let provedor of listaprovedores">{{ provedor.des }}</option>
+          </select>
+        </div>
+        <div class="col-md-4">
+          <label for="descripcion">No. Factura</label>
+          <input type="text" class="form-control" formControlName="numeroFactura">
         </div>
       </div>
     </form>

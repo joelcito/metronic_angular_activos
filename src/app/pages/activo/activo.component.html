@@ -110,6 +110,9 @@
               <option value="">SELECCIONE</option>
               <option value="{{ provedor.cod }}" *ngFor="let provedor of provedores">{{ provedor.des }}</option>
             </select>
+            <div *ngIf="activoForm.get('provedor')?.invalid">
+              <small *ngIf="activoForm.get('provedor')?.errors?.required" class="text-danger"><i class="fa fa-exclamation-circle text-danger"></i> El proveedor es requerido</small>
+            </div>
           </div>
         </div>
         <div class="col-md-4">
@@ -122,16 +125,17 @@
           <div class="form-group">
             <label for="descripcion">Factura</label>
             <input type="text" class="form-control" formControlName="factura" [(ngModel)]="activo.factura">
+            <div *ngIf="activoForm.get('factura')?.invalid">
+              <small *ngIf="activoForm.get('factura')?.errors?.required" class="text-danger"><i class="fa fa-exclamation-circle text-danger"></i> El numero de factura es requerido</small>
+            </div>
           </div>
         </div>
       </div>
       <div class="row mt-5">
         <div class="col-md-3">
           <label for="dateOfBirth">Regional</label>
-          <!-- <select class="form-control me-2" formControlName="regional" [(ngModel)]="activo.regional" (change)="generaCodRegional()" [compareWith]="compareRegionales"> -->
           <select class="form-control me-2" formControlName="regional" [(ngModel)]="activo.regional" (change)="generaCodRegional()">
             <option value="">SELECCIONE</option>
-            <!-- <option [ngValue]="undefined">SELECCIONE</option> -->
             <option [ngValue]="regional" *ngFor="let regional of regionales">{{ regional.idregional }} | {{ regional.nombre }}</option>
           </select>
           <div *ngIf="activoForm.get('regional')?.invalid">
@@ -331,7 +335,7 @@
       </div>
       <div class="row mt-5">
         <div class="col-md-12">
-          <button class="btn btn-success w-100" type="submit">Guardar</button>
+          <button class="btn btn-success w-100" type="submit"[disabled]="botoAgregaActivo">Guardar</button>
         </div>
       </div>
     </form>

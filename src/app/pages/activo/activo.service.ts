@@ -215,4 +215,14 @@ export class ActivoService {
     return this.http.get<any>(`${this.urlEndPoint}/images/${image}`, { headers: headersGLOBAL });
   }
 
+  getUbiGralByIdRegional(regional:String){
+    const headersGLOBAL = HEADERS_GLOBAL;
+    return this.http.get<any[]>(`${this.urlEndPointExterno}/getUbiGralByIdRegional/${regional}`,{headers: headersGLOBAL })
+  }
+
+  getUbiEspByIdGral(idUbiGral:String){
+    const headersGLOBAL = HEADERS_GLOBAL;
+    return this.http.get<any[]>(`${this.urlEndPointExterno}/getUbiEspByIdGral/${idUbiGral}`,{headers: headersGLOBAL })
+  }
+  
 }

@@ -51,29 +51,30 @@ export class ActivoComponent implements OnInit {
   botonBaja:boolean       = true;
   componentesView:Boolean = false;
   agregarActivo:Boolean   = true;
+  botoAgregaActivo:Boolean   = false;
 
   // activos1: any = [];
-  activos:                Activo[];
-  grupos:                 Grupo[];
-  subGrupos:              SubGrupo[];
-  subGruposBuscados:      SubGrupo[];
-  componentes:            Componente[];
-  incorporaciones:        Incorporacion[];
-  unidadManejos:          UnidadManejo[];
-  regimenes:              Regimen[];
-  regionales:             Regional[];
+  activos          : Activo[];
+  grupos           : Grupo[];
+  subGrupos        : SubGrupo[];
+  subGruposBuscados: SubGrupo[];
+  componentes      : Componente[];
+  incorporaciones  : Incorporacion[];
+  unidadManejos    : UnidadManejo[];
+  regimenes        : Regimen[];
+  regionales       : Regional[];
 
   jsonComponente = [];
 
-  idsComponentes:String[]   = [];
-  estados:String[]          = [];
-  estadosValores:String[]   = [];
+  idsComponentes:String[] = [];
+  estados       :String[] = [];
+  estadosValores:String[] = [];
 
-  valorComponente:String    = "";
-  codRegional:String        = "";
-  codRegimen:String         = "";
-  codGrupo:String           = "";
-  codCorrelativo:String     = "";
+  valorComponente:String = "";
+  codRegional    :String = "";
+  codRegimen     :String = "";
+  codGrupo       :String = "";
+  codCorrelativo :String = "";
 
   componente = {};
 
@@ -105,15 +106,15 @@ export class ActivoComponent implements OnInit {
     // formainicial:             new FormControl('', [Validators.required]),
     // estadoregistro:           new FormControl('', [Validators.required]),
     fechacompra:              new FormControl('', [Validators.required]),
-    precio:                   new FormControl('', [Validators.required]),
+    precio:                   new FormControl('', [Validators.required, Validators.min(0)]),
     ufvcompra:                new FormControl('', [Validators.required]),
     porcentaje_depreciacion:  new FormControl('', [Validators.required]),
     vida_util:                new FormControl('', [Validators.required]),
     // placa:                    new FormControl('', [Validators.required]),
     estado:                   new FormControl('', [Validators.required]),
     codigoalterno:            new FormControl('', [Validators.required]),
-    provedor:                 new FormControl(''),
-    factura:                  new FormControl(''),
+    provedor:                 new FormControl('', [Validators.required]),
+    factura:                  new FormControl('', [Validators.required]),
   });
 
   formularioBaja = new FormGroup({
@@ -255,15 +256,9 @@ export class ActivoComponent implements OnInit {
     this.componentesView = true;
   }
 
-  openModal(content:any){
-    // this.grupo.idgrupo     = grupo.idgrupo
-    // this.grupo.descripcion = grupo.descripcion
-    // this.grupo.nroItems    = grupo.nroItems
-    // this.grupo.vidaUtil    = grupo.vidaUtil
-
-    // this.activoForm.get('codigo')?.setValue(String('COS-10-123'));
-    // this.activo.codigo = "COS-10-123";
-    
+  openModal(content:any){  
+    this.activo = new Activo();
+    this.activoForm.reset()
     this.modalService.open(content, { size: 'lg' }).result.then(
       (result) => {
         if(result==='guardar'){
@@ -271,27 +266,13 @@ export class ActivoComponent implements OnInit {
         }else{
           console.log("no guardara");
         }
-
-        //
         console.log("haber")
-
       },
       (reason)=>{
         console.log(reason)
       }
     );
   }
-
-  // open(content:any) {
-	// 	this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then(
-	// 		(result) => {
-	// 			this.closeResult = `Closed with: ${result}`;
-	// 		},
-	// 		(reason) => {
-	// 			this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-	// 		},
-	// 	);
-	// }
 
 	private getDismissReason(reason: any): string {
 		if (reason === ModalDismissReasons.ESC) {
@@ -307,10 +288,21 @@ export class ActivoComponent implements OnInit {
 
     let camposVacios:any = [];
     Object.keys(this.activoForm.controls).forEach(key => {
-      if(this.activoForm.get(key)?.errors?.required)
-        camposVacios.push("<br>"+key);
+      const control = this.activoForm.get(key);
+      if(key === 'precio'){
+        if (control?.errors?.min.actual <= 0)
+          camposVacios.push("<br>" + key+" es requerido y debe ser mayor a 0");
+      }else{
+        if(this.activoForm.get(key)?.errors?.required)
+          camposVacios.push("<br>"+key);
+      }
+
+      // if(this.activoForm.get(key)?.errors?.required)
+      //   camposVacios.push("<br>"+key);
+
     });
     if (camposVacios.length === 0) {
+      this.botoAgregaActivo  = true
       let codregion       = this.activoForm.value.codregion;
       let codcorrelativo  = this.activoForm.value.codigocorelativo;
       let newCod = String(codregion)+String(codcorrelativo);
@@ -327,7 +319,6 @@ export class ActivoComponent implements OnInit {
           }
         }
         this.caracteristicaService.agregaJson(datos).subscribe(result => {
-
         })
         this.listaActivosPersonalizado()
         swal.fire({
@@ -339,6 +330,7 @@ export class ActivoComponent implements OnInit {
         setTimeout(() => {
           this.modalService.dismissAll('content')
         }, 2500);
+        this.botoAgregaActivo  = false
       });
     }else{
       swal.fire({
