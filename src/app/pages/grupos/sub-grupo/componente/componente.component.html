@@ -43,7 +43,7 @@
         <!-- <span class="text-muted mt-1 fw-bold fs-7">Registros</span> -->
       </h3>
       <div
-        class="card-toolbar" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover" title="Click to add a user" >
+        class="card-toolbar" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover" title="Click to add a user" *ngIf="botoAgrega">
         <!-- <a class="btn btn-sm btn-light-primary" (click)="openLg(content,grupoReset)"> -->
         <a (click)="openModal(content, componenteReset)" class="btn btn-sm btn-light-primary">
           <span [inlineSVG]="'./assets/media/icons/duotune/arrows/arr075.svg'" class="svg-icon svg-icon-3" ></span>
@@ -74,7 +74,7 @@
               <td>{{ componente.estado }}</td>
               <td>{{ componente.fecha }}</td>
               <td class="text-end">
-                <button class="btn btn-warning btn-icon btn-sm me-1" (click)="openModal(content,componente)"><i class="fas fa-edit"></i></button>
+                <button class="btn btn-warning btn-icon btn-sm me-1" *ngIf="botoAgrega" (click)="openModal(content,componente)"><i class="fas fa-edit"></i></button>
                 <button class="btn btn-danger btn-icon btn-sm me-1"(click)="eliminarComponente(componente)" ><i class="fas fa-trash"></i></button>
               </td>
             </tr>

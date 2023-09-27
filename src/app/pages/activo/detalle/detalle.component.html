@@ -358,7 +358,8 @@
           <div class="col-md-3">
             <div class="form-group">
               <label for="descripcion">Fecha Compra</label>
-              <input type="date" class="form-control" name="fechacompra" [ngModel]='activo.fechacompra|date:"yyyy-MM-dd"'>
+              <!-- <input type="date" class="form-control" name="fechacompra" [ngModel]='activo.fechacompra|date:"yyyy-MM-dd"'> -->
+              <input type="date" class="form-control" name="fechacompra" [ngModel]='activo.fechacompra'>
             </div>
           </div>
           <div class="col-md-3">
@@ -531,32 +532,34 @@
         </div>
       </div>
     </div>
-    <div class="row mt-3" *ngIf="activo.estadoregistro != 'APR'">
+    <!-- <div class="row mt-3" *ngIf="activo.estadoregistro != 'APR'">
       <div class="col-md-12">
-        <button class="btn btn-success w-100">Editar Activo</button>
+        <button class="btn btn-success w-100 btn-sm">Editar Activo</button>
       </div>
-    </div>
-    <hr>
+    </div> -->
+
+
+    <!-- <hr>
     <div class="row">
       <div class="col-md-4">
         <button class="btn btn-sm btn-danger w-100" (click)="generaFormularioincorporacion()"><i class="fa fa-file-pdf"></i> Formulario de Incorporacion</button>
       </div>
       <div class="col-md-4">
-        <!-- <button class="btn btn-sm btn-danger w-100"><i class="fa fa-file-pdf"></i> Formulario de Incorporacion</button> -->
+        <button class="btn btn-sm btn-danger w-100"><i class="fa fa-file-pdf"></i> Formulario de Incorporacion</button>
       </div>
       <div class="col-md-4">
-        <!-- <button class="btn btn-sm btn-danger w-100"><i class="fa fa-file-pdf"></i> Formulario de Incorporacion</button> -->
+        <button class="btn btn-sm btn-danger w-100"><i class="fa fa-file-pdf"></i> Formulario de Incorporacion</button>
       </div>
-    </div>
+    </div> -->
     <hr>
     <div class="row">
-      <div class="col-md-4">
+      <!-- <div class="col-md-4">
         <button #btnDepre class="btn btn-light-primary w-100 btn-sm" value="btnDepre" (click)="visualizar(btnDepre)" >Depreciacion</button>
-      </div>
-      <div class="col-md-4">
+      </div> -->
+      <div class="col-md-6">
         <button #btnmovimiento class="btn btn-light-primary w-100 btn-sm" value="btnmovimiento" (click)="visualizar(btnmovimiento)" >Movimientos</button>
       </div>
-      <div class="col-md-4">
+      <div class="col-md-6">
         <button #btnmodificacion class="btn btn-light-primary w-100 btn-sm" value="btnmodificacion" (click)="visualizar(btnmodificacion)" >Refacciones</button>
       </div>
     </div>
@@ -679,9 +682,11 @@
         <h3 class="text-center text-primary">Historial de asignacion</h3>
         <div class="row">
           <div class="col-md-12">
-            <button class="btn btn-info w-100 btn-sm" (click)="abreModalAsignacion(modalAsignacion)" *ngIf="!ultimoActivoMov?.estado">ASIGNAR</button>
-            <button class="btn btn-info w-100 btn-sm" (click)="abreModalAsignacion(modalAsignacion)" *ngIf="ultimoActivoMov?.estado == '0'">ASIGNAR</button>
-            <button class="btn btn-dark w-100 btn-sm" (click)="liberarActivo(content)" *ngIf="ultimoActivoMov?.estado == '1'">LIBERAR</button>
+            <div *ngIf="botoAsigMejo">
+              <button class="btn btn-info w-100 btn-sm" (click)="abreModalAsignacion(modalAsignacion)" *ngIf="!ultimoActivoMov?.estado">ASIGNAR</button>
+              <button class="btn btn-info w-100 btn-sm" (click)="abreModalAsignacion(modalAsignacion)" *ngIf="ultimoActivoMov?.estado == '0'">ASIGNAR</button>
+              <button class="btn btn-dark w-100 btn-sm" (click)="liberarActivo(content)" *ngIf="ultimoActivoMov?.estado == '1'">LIBERAR</button>
+            </div>
           </div>
         </div>
         <div class="table-responsive">
@@ -725,7 +730,9 @@
         <h3 class="text-center text-primary">Historial de refacciones</h3>
         <div class="row">
           <div class="col-md-12">
-            <button class="btn w-100 btn-info btn-sm" (click)="abreModalModificacion(modalModificacion)">Nueva refaccion</button>
+            <div *ngIf="botoMejora">
+              <button class="btn w-100 btn-info btn-sm" (click)="abreModalModificacion(modalModificacion)">Nueva refaccion</button>
+            </div>
           </div>
           <div class="table-responsive">
             <table class="table align-middle gs-0 gy-4">

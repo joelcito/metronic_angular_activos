@@ -17,11 +17,13 @@ import { Grupo } from '../grupo';
 })
 export class SubGrupoComponent implements OnInit {
 
-  subGrupos:SubGrupo [] = [];
-  subGrupoReset = new SubGrupo();
-  grupo = new Grupo();
-  mostrar:Boolean = false;
+  subGrupos :SubGrupo []   = [];
+  mostrar   :Boolean       = false;
+  botoAgrega:Boolean       = true
   
+  subGrupoReset = new SubGrupo();
+  grupo         = new Grupo();
+
   subGrupoForm = new FormGroup({
     descripcion: new FormControl(''),
     subgrupo: new FormControl(''),
@@ -36,6 +38,7 @@ export class SubGrupoComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.validaBotonesAgregaEditar()
     this.cargarListaSubGrupo();
   }
 
@@ -130,6 +133,22 @@ export class SubGrupoComponent implements OnInit {
         })
       }
     })
+  }
+
+  validaBotonesAgregaEditar(){
+    // para el boton de REGISTRO DE ACTIVO
+    let   idpermiso = sessionStorage.getItem('tipoManejo');
+    const rolSA     = "187"
+    const rolA      = "188"
+    const rolOUMDB  = "189"
+    
+    if(
+        idpermiso !== rolSA && 
+        idpermiso !== rolA && 
+        idpermiso !== rolOUMDB
+      ){
+      this.botoAgrega  = false;
+    }
   }
 
 }

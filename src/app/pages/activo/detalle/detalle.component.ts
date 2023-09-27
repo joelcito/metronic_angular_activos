@@ -59,7 +59,7 @@ export class DetalleComponent implements OnInit {
   ultimoActivoMov        : any;
   listadoCargos          : any[];
   listadoUbiEsp          : any[];
-  listadoUbiGral          : any[];
+  listadoUbiGral         : any[];
   listadoreparticiones   : any[];
   listadoRefacciones     : any[];
   listadoDepreciaciones  : any[];
@@ -67,46 +67,48 @@ export class DetalleComponent implements OnInit {
   listadoPersonasBuscadas: any[];
 
 
-  idGrupo          :String = '0';
-  idSubGrupo       :String = '0';
-  idregimen        :String = '0';
-  idregional       :String = '0';
-  idunidadmanejo   :String = '0';
-  idcodprovedor    :String = '';
-  idincorpracion   :String = '';
-  rutaImagen       :String = "";
+  idGrupo        :String = '0';
+  idSubGrupo     :String = '0';
+  idregimen      :String = '0';
+  idregional     :String = '0';
+  idunidadmanejo :String = '0';
+  idcodprovedor  :String = '';
+  idincorpracion :String = '';
+  rutaImagen     :String = "";
 
-  // myObject: any;
+      // myObject: any;
 
-  DepGes:string;
-  ufvIni:string;
-  ufvFin:string;
-  precio:string;
-  cantMes:string;
-  ValorNeto:string;
-  costoActual:string;
-
-
-  PERDepGes:string;
-  PERufvIni:string;
-  PERufvFin:string;
-  PERprecio:string;
-  PERcantMes:string;
-  PERValorNeto:string;
-  PERcostoActual:string;
+  DepGes     : string;
+  ufvIni     : string;
+  ufvFin     : string;
+  precio     : string;
+  cantMes    : string;
+  ValorNeto  : string;
+  costoActual: string;
 
 
-  defaultDate:String;
-  fechaMin:String;
-  valorFechaIni:String;
-  depreValorMaxFechaFin:String;
+  PERDepGes     : string;
+  PERufvIni     : string;
+  PERufvFin     : string;
+  PERprecio     : string;
+  PERcantMes    : string;
+  PERValorNeto  : string;
+  PERcostoActual: string;
 
-  buscaCedulaAsignacion:boolean = false;
 
-  contenidoDepre:boolean = false;
-  contenidoMovimiento:boolean = false;
-  contenidoModificacion:boolean = false;
-  mostraTablaBuscadosPersonas:boolean =false;
+  defaultDate          : String;
+  fechaMin             : String;
+  valorFechaIni        : String;
+  depreValorMaxFechaFin: String;
+
+  buscaCedulaAsignacion:boolean  = false;
+  botoAsigMejo          :Boolean = true;
+  botoMejora            :Boolean = true;
+
+  contenidoDepre              :boolean = false;
+  contenidoMovimiento         :boolean = false;
+  contenidoModificacion       :boolean = false;
+  mostraTablaBuscadosPersonas:boolean  = false;
 
   selectedImage: File;
 
@@ -181,6 +183,9 @@ export class DetalleComponent implements OnInit {
   ) { }
 
   ngOnInit(){
+
+    this.validaBotonesAsignaMejo();
+
     this.cargarActivo();
     this.listaGrupos();
     this.listaSubGrupos();
@@ -226,12 +231,14 @@ export class DetalleComponent implements OnInit {
     this.activatedRoute.params.subscribe(params => {
       let id = params['id']
       if(id){
-        this.activoService.getActivo(id.toString()).subscribe(activo => {
-          this.activo = activo;
-          console.log(activo)
-          if(activo.grupo){
-            this.idGrupo = activo.grupo.idgrupo;
-            let idgrupoB = activo.grupo.idgrupo.toString();
+        this.activoService.getActivo(id.toString()).subscribe(activoResp => {
+          const fecha = new Date(activoResp.fechacompra);
+          const fechaFormateada = fecha.toISOString().split('T')[0];  
+          activoResp.fechacompra = fechaFormateada
+          this.activo = activoResp; 
+          if(activoResp.grupo){
+            this.idGrupo = activoResp.grupo.idgrupo;
+            let idgrupoB = activoResp.grupo.idgrupo.toString();
             this.subGrupoService.getSubGruposByIdGrupo(idgrupoB).subscribe(result =>{
               this.subGrupos = result;
               this.chdr.detectChanges();
@@ -245,45 +252,104 @@ export class DetalleComponent implements OnInit {
             })
           }
           // // valores para la depreciacion
-          if(activo.fechacompra){
-            this.valorFechaIni = new Date(activo.fechacompra.toString()).toISOString().substring(0,10);
+          if(activoResp.fechacompra){
+            this.valorFechaIni = new Date(activoResp.fechacompra.toString()).toISOString().substring(0,10);
           }
           this.depreciacionForm.get('depreFechaIni')?.setValue(String(this.valorFechaIni))
-          this.depreciacionForm.get('depreUfvIni')?.setValue(String(activo.ufvcompra))
-          this.depreciacionForm.get('depreActivoId')?.setValue(String(activo.idactivo))
+          this.depreciacionForm.get('depreUfvIni')?.setValue(String(activoResp.ufvcompra))
+          this.depreciacionForm.get('depreActivoId')?.setValue(String(activoResp.idactivo))
           // // END valores para la depreciacion
-          if(activo.subgrupo){
-            this.idSubGrupo = activo.subgrupo.idsubgrupo
+          if(activoResp.subgrupo){
+            this.idSubGrupo = activoResp.subgrupo.idsubgrupo
           }
-          if(activo.regimen){
-            this.idregimen = activo.regimen.idregimen
+          if(activoResp.regimen){
+            this.idregimen = activoResp.regimen.idregimen
           }
-          if(activo.regional){
-            this.idregional = activo.regional.idregional
+          if(activoResp.regional){
+            this.idregional = activoResp.regional.idregional
           }
-          if(activo.unidadmanejo){
-            this.idunidadmanejo = activo.unidadmanejo.idunidadmanejo;
+          if(activoResp.unidadmanejo){
+            this.idunidadmanejo = activoResp.unidadmanejo.idunidadmanejo;
           }
 
           // PARA EL PROVEDOR
-          if(activo.codprovedor){
-            this.idcodprovedor = activo.codprovedor;
+          if(activoResp.codprovedor){
+            this.idcodprovedor = activoResp.codprovedor;
             this.provedorService.getProvedor(this.idcodprovedor).subscribe(resul => {
               const nitprovedor = document.getElementById('nitprovedor') as HTMLInputElement;
               nitprovedor.value = resul.cod.toString();
             })
           }
 
-          if(activo.incorporacion){
-            this.idincorpracion = activo.incorporacion.idincorporacion
+          if(activoResp.incorporacion){
+            this.idincorpracion = activoResp.incorporacion.idincorporacion
           }
 
-          if(activo.foto){
-            this.ponerFoto(activo.foto.toString())
+          if(activoResp.foto){
+            this.ponerFoto(activoResp.foto.toString())
           }
 
           this.chdr.detectChanges();
         })
+
+
+        // this.activoService.getActivo(id.toString()).subscribe(activo => {
+        //   this.activo = activo;
+        //   if(activo.grupo){
+        //     this.idGrupo = activo.grupo.idgrupo;
+        //     let idgrupoB = activo.grupo.idgrupo.toString();
+        //     this.subGrupoService.getSubGruposByIdGrupo(idgrupoB).subscribe(result =>{
+        //       this.subGrupos = result;
+        //       this.chdr.detectChanges();
+        //     })
+
+        //     this.grupoService.getCuentaPartidaByIdGrupo(idgrupoB).subscribe(resul => {
+        //       (document.querySelector('#cuentaContableId') as HTMLInputElement).value = resul.cuenta_id;
+        //       (document.querySelector('#cuentaContableDescripcion') as HTMLInputElement).value = resul.des1;
+        //       (document.querySelector('#partidaContableId') as HTMLInputElement).value = resul.cod1;
+        //       (document.querySelector('#partidaContableDescipcion') as HTMLInputElement).value = resul.des2;
+        //     })
+        //   }
+        //   // // valores para la depreciacion
+        //   if(activo.fechacompra){
+        //     this.valorFechaIni = new Date(activo.fechacompra.toString()).toISOString().substring(0,10);
+        //   }
+        //   this.depreciacionForm.get('depreFechaIni')?.setValue(String(this.valorFechaIni))
+        //   this.depreciacionForm.get('depreUfvIni')?.setValue(String(activo.ufvcompra))
+        //   this.depreciacionForm.get('depreActivoId')?.setValue(String(activo.idactivo))
+        //   // // END valores para la depreciacion
+        //   if(activo.subgrupo){
+        //     this.idSubGrupo = activo.subgrupo.idsubgrupo
+        //   }
+        //   if(activo.regimen){
+        //     this.idregimen = activo.regimen.idregimen
+        //   }
+        //   if(activo.regional){
+        //     this.idregional = activo.regional.idregional
+        //   }
+        //   if(activo.unidadmanejo){
+        //     this.idunidadmanejo = activo.unidadmanejo.idunidadmanejo;
+        //   }
+
+        //   // PARA EL PROVEDOR
+        //   if(activo.codprovedor){
+        //     this.idcodprovedor = activo.codprovedor;
+        //     this.provedorService.getProvedor(this.idcodprovedor).subscribe(resul => {
+        //       const nitprovedor = document.getElementById('nitprovedor') as HTMLInputElement;
+        //       nitprovedor.value = resul.cod.toString();
+        //     })
+        //   }
+
+        //   if(activo.incorporacion){
+        //     this.idincorpracion = activo.incorporacion.idincorporacion
+        //   }
+
+        //   if(activo.foto){
+        //     this.ponerFoto(activo.foto.toString())
+        //   }
+
+        //   this.chdr.detectChanges();
+        // })
 
         this.caracteristicaService.getCaracteristicasByIdActivo(id).subscribe(res => {
           this.caracteristicas = res;
@@ -1573,9 +1639,32 @@ export class DetalleComponent implements OnInit {
 
   sacarvalorUbiGral(valor:any){
     let ubiGral = valor.formularioAsignacion.value.ubiGral;
-    this.activoService.getUbiEspByIdGral(ubiGral).subscribe(result =>{
+    let regional = valor.formularioAsignacion.value.regional;
+    this.activoService.getUbiEspByIdGral(ubiGral,regional).subscribe(result =>{
       this.listadoUbiEsp = result
-      // console.log(ubiGral, result)
     })
+  }
+
+  validaBotonesAsignaMejo(){
+    // para el boton de REGISTRO DE ACTIVO
+    let   idpermiso = sessionStorage.getItem('tipoManejo');
+    const rolSA     = "187"
+    const rolA      = "188"
+    const rolOUMDB  = "189"
+    const rolOMOV   = "196"
+    
+    if(
+      idpermiso !== rolSA && 
+      idpermiso !== rolA && 
+      idpermiso !== rolOUMDB && 
+      idpermiso !== rolOMOV){
+      this.botoAsigMejo  = false;
+    }
+
+    if(idpermiso !== rolSA && 
+      idpermiso !== rolA && 
+      idpermiso !== rolOUMDB){
+        this.botoMejora = false
+    }
   }
 }

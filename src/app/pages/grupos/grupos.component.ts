@@ -14,11 +14,13 @@ import { GrupoService } from './grupo.service';
 })
 export class GrupoComponent implements OnInit {
 
-  grupos:Grupo[];
-  eliminado:Boolean = false;
+  grupos    : Grupo[];
+  eliminado : Boolean = false;
+  mostrar   : Boolean     = false;
+  cuentas   : Cuenta[];
+  botoAgrega: Boolean = true
+
   closeResult = '';
-  mostrar:Boolean = false;
-  cuentas:Cuenta[];
 
   grupoReset:Grupo = new Grupo();
 
@@ -42,6 +44,7 @@ export class GrupoComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.validaBotonesAgregaEditar()
     this.cargarLista()
     this.listaCuentas()
   }
@@ -175,6 +178,22 @@ export class GrupoComponent implements OnInit {
 			return `with: ${reason}`;
 		}
 	}
+
+  validaBotonesAgregaEditar(){
+    // para el boton de REGISTRO DE ACTIVO
+    let   idpermiso = sessionStorage.getItem('tipoManejo');
+    const rolSA     = "187"
+    const rolA      = "188"
+    const rolOUMDB  = "189"
+    
+    if(
+        idpermiso !== rolSA && 
+        idpermiso !== rolA && 
+        idpermiso !== rolOUMDB
+      ){
+      this.botoAgrega  = false;
+    }
+  }
 
 
 

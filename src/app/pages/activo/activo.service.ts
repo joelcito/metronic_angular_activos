@@ -220,9 +220,10 @@ export class ActivoService {
     return this.http.get<any[]>(`${this.urlEndPointExterno}/getUbiGralByIdRegional/${regional}`,{headers: headersGLOBAL })
   }
 
-  getUbiEspByIdGral(idUbiGral:String){
+  getUbiEspByIdGral(idUbiGral:String, idRegional:String){
     const headersGLOBAL = HEADERS_GLOBAL;
-    return this.http.get<any[]>(`${this.urlEndPointExterno}/getUbiEspByIdGral/${idUbiGral}`,{headers: headersGLOBAL })
+    return this.http.get<any[]>(`${this.urlEndPointExterno}/getUbiEspByIdGral/${idUbiGral}/${idRegional}`,{headers: headersGLOBAL })
+    // return this.http.get<any[]>(`${this.urlEndPointExterno}/getUbiEspByIdGral/${idUbiGral}`,{headers: headersGLOBAL })
   }
   
 }

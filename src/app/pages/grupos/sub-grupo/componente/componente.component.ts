@@ -16,10 +16,12 @@ import { SubGrupoService } from '../sub-grupo.service';
 })
 export class ComponenteComponent implements OnInit {
 
-  componentes:Componente[] = [];
-  cadena:String = "";
-  idSubGrupo:String;
-  subGrupoO = new SubGrupo();
+  componentes: Componente[] = [];
+  cadena     : String = "";
+  idSubGrupo : String;
+  botoAgrega : Boolean       = true
+
+  subGrupoO       = new SubGrupo();
   componenteReset = new Componente();
 
   componenteForm = new FormGroup({
@@ -39,6 +41,7 @@ export class ComponenteComponent implements OnInit {
 
   ngOnInit(): void {
     this.listadoComponentes()
+    this.validaBotonesAgregaEditar()
   }
 
   listadoComponentes(){
@@ -146,5 +149,20 @@ export class ComponenteComponent implements OnInit {
         })
       }
     })
+  }
+  validaBotonesAgregaEditar(){
+    // para el boton de REGISTRO DE ACTIVO
+    let   idpermiso = sessionStorage.getItem('tipoManejo');
+    const rolSA     = "187"
+    const rolA      = "188"
+    const rolOUMDB  = "189"
+    
+    if(
+        idpermiso !== rolSA && 
+        idpermiso !== rolA && 
+        idpermiso !== rolOUMDB
+      ){
+      this.botoAgrega  = false;
+    }
   }
 }
